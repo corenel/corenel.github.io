@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://www.yuthon.com/about/</loc>
+    <lastmod>2019-01-11T19:34:52+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.yuthon.com/resume/</loc>
+    <lastmod>2019-01-11T19:38:29+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.yuthon.com/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.yuthon.com/tags/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.yuthon.com/</loc>
+    <lastmod>2019-01-11T19:34:52+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+</urlset>
