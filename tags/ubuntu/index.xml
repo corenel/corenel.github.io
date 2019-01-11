@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ubuntu on Yuthon&#39;s Blog</title>
+    <link>https://www.yuthon.com/tags/ubuntu/</link>
+    <description>Recent content in Ubuntu on Yuthon&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
+    <lastBuildDate>Fri, 10 Mar 2017 18:12:18 +0000</lastBuildDate>
+    
+	<atom:link href="https://www.yuthon.com/tags/ubuntu/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>TensorFlow r1.0 on TX1 (now successful)</title>
+      <link>https://www.yuthon.com/post/practices/tensorflow-r1-0-on-tx1/</link>
+      <pubDate>Fri, 10 Mar 2017 18:12:18 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/practices/tensorflow-r1-0-on-tx1/</guid>
+      <description>&lt;p&gt;TensorFlow r1.0已经发布了不少时间，事实证明1.0版本在内存使用上改善了不少，以前一些在r0.11上内存满报错的程序在r1.0上能够正常运行了。同时，r1.0相较于r0.11在API上做了很大的改动，也有很多新的东西（比如Keras）将要集成进TF。&lt;/p&gt;
+
+&lt;p&gt;总而言之，r1.0是未来的方向，所以说我希望将原先在TX1上装的r0.11换成r1.0。不过网上最新的教程还是只有r0.11的。&lt;a href=&#34;https://github.com/rwightman&#34;&gt;rwightman&lt;/a&gt;这位仁兄编译成功了r1.0alpha版本，并且放出了&lt;a href=&#34;https://github.com/rwightman/tensorflow/releases/tag/v1.0.0-alpha-tegra-ugly_hack&#34;&gt;whl文件&lt;/a&gt;，不过没有编译正式版。本文将阐述如何在TX1上安装TensorFlow r1.0的正式版本&lt;del&gt;，不过目前由于&lt;code&gt;nvcc&lt;/code&gt;的一个bug，还没有编译成功&lt;/del&gt;。&lt;/p&gt;
+
+&lt;p&gt;Update: 做了一些非常ugly的改动之后编译成功了。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Backup system partition on TX1</title>
+      <link>https://www.yuthon.com/post/practices/backup-system-partition-on-tx1/</link>
+      <pubDate>Sun, 18 Dec 2016 18:18:59 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/practices/backup-system-partition-on-tx1/</guid>
+      <description>&lt;p&gt;由于实验室只有要用到多块 TX1 开发板, 然而一个个都用 JetPack 刷机, 再用自动化脚本装软件和依赖实在是太麻烦了, 因此我和梅老板就开始研究怎么直接备份 TX1 上的 Ubuntu 系统.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Installation of TensorFlow r0.11 on TX1</title>
+      <link>https://www.yuthon.com/post/practices/installation-of-tensorflow-r0-11-on-tx1/</link>
+      <pubDate>Sun, 04 Dec 2016 20:53:55 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/practices/installation-of-tensorflow-r0-11-on-tx1/</guid>
+      <description>&lt;p&gt;今天折腾了一个下午, 特此记录一下其中遇到的坑, 主要还是因为 TX1 的 aarch64 架构, 以及小得可怜的内存与存储容量.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>CUDA and Tensorflow Installation on Ubuntu 16.04</title>
+      <link>https://www.yuthon.com/post/practices/cuda-and-tensorflow-installation-on-ubuntu-16-04/</link>
+      <pubDate>Tue, 25 Oct 2016 20:53:50 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/practices/cuda-and-tensorflow-installation-on-ubuntu-16-04/</guid>
+      <description>&lt;p&gt;昨天折腾了一个下午开发环境的配置，记录一下其中遇到的坑。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

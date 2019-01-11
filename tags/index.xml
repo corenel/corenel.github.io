@@ -7,9 +7,262 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
+    <lastBuildDate>Tue, 25 Oct 2016 20:53:50 +0000</lastBuildDate>
     
 	<atom:link href="https://www.yuthon.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Cuda</title>
+      <link>https://www.yuthon.com/tags/cuda/</link>
+      <pubDate>Tue, 25 Oct 2016 20:53:50 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/cuda/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Darknet</title>
+      <link>https://www.yuthon.com/tags/darknet/</link>
+      <pubDate>Sat, 03 Dec 2016 11:29:04 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/darknet/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Dcgan</title>
+      <link>https://www.yuthon.com/tags/dcgan/</link>
+      <pubDate>Sat, 12 Aug 2017 19:24:14 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/dcgan/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Deep Learning</title>
+      <link>https://www.yuthon.com/tags/deep-learning/</link>
+      <pubDate>Tue, 15 Aug 2017 20:19:46 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/deep-learning/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Domain Adaptation</title>
+      <link>https://www.yuthon.com/tags/domain-adaptation/</link>
+      <pubDate>Tue, 15 Aug 2017 20:19:46 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/domain-adaptation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Faster R Cnn</title>
+      <link>https://www.yuthon.com/tags/faster-r-cnn/</link>
+      <pubDate>Thu, 27 Apr 2017 12:55:33 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/faster-r-cnn/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Gans</title>
+      <link>https://www.yuthon.com/tags/gans/</link>
+      <pubDate>Tue, 15 Aug 2017 20:19:46 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/gans/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Generative Adversarial Networks</title>
+      <link>https://www.yuthon.com/tags/generative-adversarial-networks/</link>
+      <pubDate>Sat, 12 Aug 2017 19:24:14 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/generative-adversarial-networks/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Jetson Tx1</title>
+      <link>https://www.yuthon.com/tags/jetson-tx1/</link>
+      <pubDate>Fri, 10 Mar 2017 18:12:18 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/jetson-tx1/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Lstm</title>
+      <link>https://www.yuthon.com/tags/lstm/</link>
+      <pubDate>Sun, 30 Oct 2016 13:53:32 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/lstm/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Mask R Cnn</title>
+      <link>https://www.yuthon.com/tags/mask-r-cnn/</link>
+      <pubDate>Thu, 27 Apr 2017 12:55:33 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/mask-r-cnn/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Nvidia</title>
+      <link>https://www.yuthon.com/tags/nvidia/</link>
+      <pubDate>Fri, 10 Mar 2017 18:12:18 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/nvidia/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Nvidia Jetson Tx1</title>
+      <link>https://www.yuthon.com/tags/nvidia-jetson-tx1/</link>
+      <pubDate>Thu, 10 Nov 2016 20:36:34 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/nvidia-jetson-tx1/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Object Detection</title>
+      <link>https://www.yuthon.com/tags/object-detection/</link>
+      <pubDate>Thu, 27 Apr 2017 12:55:33 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/object-detection/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Os X</title>
+      <link>https://www.yuthon.com/tags/os-x/</link>
+      <pubDate>Mon, 16 May 2016 20:20:08 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/os-x/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Rnn</title>
+      <link>https://www.yuthon.com/tags/rnn/</link>
+      <pubDate>Sun, 30 Oct 2016 13:53:32 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/rnn/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Scene Segmentation</title>
+      <link>https://www.yuthon.com/tags/scene-segmentation/</link>
+      <pubDate>Sun, 20 Nov 2016 18:26:24 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/scene-segmentation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Scribblesup</title>
+      <link>https://www.yuthon.com/tags/scribblesup/</link>
+      <pubDate>Sun, 20 Nov 2016 18:26:24 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/scribblesup/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Semantic Segmentation</title>
+      <link>https://www.yuthon.com/tags/semantic-segmentation/</link>
+      <pubDate>Wed, 14 Jun 2017 14:20:01 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/semantic-segmentation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Slic</title>
+      <link>https://www.yuthon.com/tags/slic/</link>
+      <pubDate>Tue, 01 Nov 2016 18:21:04 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/slic/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Superpixel</title>
+      <link>https://www.yuthon.com/tags/superpixel/</link>
+      <pubDate>Tue, 01 Nov 2016 18:21:04 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/superpixel/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Tensorflow</title>
+      <link>https://www.yuthon.com/tags/tensorflow/</link>
+      <pubDate>Fri, 10 Mar 2017 18:12:18 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/tensorflow/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Traffic Prediction</title>
+      <link>https://www.yuthon.com/tags/traffic-prediction/</link>
+      <pubDate>Sun, 30 Oct 2016 13:53:32 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/traffic-prediction/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Ubuntu</title>
+      <link>https://www.yuthon.com/tags/ubuntu/</link>
+      <pubDate>Fri, 10 Mar 2017 18:12:18 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/ubuntu/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Wgan</title>
+      <link>https://www.yuthon.com/tags/wgan/</link>
+      <pubDate>Sat, 12 Aug 2017 19:24:14 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/wgan/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Wgan Gp</title>
+      <link>https://www.yuthon.com/tags/wgan-gp/</link>
+      <pubDate>Sat, 12 Aug 2017 19:24:14 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/wgan-gp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Xps</title>
+      <link>https://www.yuthon.com/tags/xps/</link>
+      <pubDate>Mon, 16 May 2016 20:20:08 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/xps/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Yolo</title>
+      <link>https://www.yuthon.com/tags/yolo/</link>
+      <pubDate>Sat, 03 Dec 2016 11:29:04 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/yolo/</guid>
+      <description></description>
+    </item>
     
   </channel>
 </rss>

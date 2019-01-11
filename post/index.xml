@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Yuthon&#39;s Blog</title>
+    <link>https://www.yuthon.com/post/</link>
+    <description>Recent content in Posts on Yuthon&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
+    <lastBuildDate>Tue, 15 Aug 2017 20:19:46 +0000</lastBuildDate>
+    
+	<atom:link href="https://www.yuthon.com/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Notes for Adversarial Discriminative Domain Adaptation</title>
+      <link>https://www.yuthon.com/post/papers/notes-for-adversarial-discriminative-domain-adaptation/</link>
+      <pubDate>Tue, 15 Aug 2017 20:19:46 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/papers/notes-for-adversarial-discriminative-domain-adaptation/</guid>
+      <description>&lt;h2 id=&#34;about-this-paper&#34;&gt;About this paper&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Title&lt;/strong&gt;: Adversarial Discriminative Domain Adaptation&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Authors&lt;/strong&gt;: Eric Tzeng, Judy Hoffman, Kate Saenko, Trevor Darrell&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Topic&lt;/strong&gt;: Domain Adaptation&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;From&lt;/strong&gt;: &lt;a href=&#34;https://arxiv.org/abs/1702.05464&#34;&gt;arXiv:1702.05464&lt;/a&gt;, appearing in CVPR 2017&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;contributions&#34;&gt;Contributions&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;将之前的论文里提到的一些方法，例如weight sharing、base models、adversarial loss等，归入了统一的框架之中，并进行了测试；&lt;/li&gt;
+&lt;li&gt;提出了一种新的框架ADDA，主要思想是不做分类器的自适应，而是设法将目标域的数据映射到域源域差不多的特征空间上，这样就能够复用源域的分类器。&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Something about GAN</title>
+      <link>https://www.yuthon.com/post/tutorials/something-about-gans/</link>
+      <pubDate>Sat, 12 Aug 2017 19:24:14 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/tutorials/something-about-gans/</guid>
+      <description>&lt;p&gt;最近在看关于GANs的论文，并且自己动手用PyTorch写了一些经典文章的实现，想要稍微总结一下，故有此文。在最后我总结了我自己看过的有关GANs的一些比较好的资源，希望对读者有所帮助。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Let&#39;s talk about Zero-Shot Learning.</title>
+      <link>https://www.yuthon.com/post/tutorials/let-s-talk-about-zero-shot-learning/</link>
+      <pubDate>Wed, 14 Jun 2017 14:20:01 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/tutorials/let-s-talk-about-zero-shot-learning/</guid>
+      <description>&lt;p&gt;最近在看Zero-Shot learning方面的文章，有些想要记录备忘的东西，就写在这儿吧。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Notes for Amortized Inference and Learning in Latent CRF</title>
+      <link>https://www.yuthon.com/post/papers/notes-for-amortized-inference-and-learning-in-latent-crf/</link>
+      <pubDate>Wed, 10 May 2017 22:05:31 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/papers/notes-for-amortized-inference-and-learning-in-latent-crf/</guid>
+      <description>&lt;p&gt;This is my notes for &lt;strong&gt;Amortized Inference and Learning in Latent Conditional Random Fields for Weakly-Supervised Semantic Image Segmentation&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/1705.01262&#34;&gt;arXiv:1705.01262&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.ece.iisc.ernet.in/~divsymposium/EECS2017/slides_posters/EECS_2017_paper_31.pdf&#34;&gt;Poster &amp;amp; Slides&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Notes for SEC</title>
+      <link>https://www.yuthon.com/post/papers/notes-for-sec/</link>
+      <pubDate>Fri, 28 Apr 2017 09:13:33 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/papers/notes-for-sec/</guid>
+      <description>&lt;p&gt;This is my notes for &lt;strong&gt;Seed, Expand and Constrain: Three Principles for Weakly-Supervised Image Segmentation&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;arxiv: &lt;a href=&#34;https://arxiv.org/abs/1603.06098&#34;&gt;https://arxiv.org/abs/1603.06098&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;github: &lt;a href=&#34;https://github.com/kolesman/SEC&#34;&gt;https://github.com/kolesman/SEC&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Notes: From Faster R-CNN to Mask R-CNN</title>
+      <link>https://www.yuthon.com/post/tutorials/notes-from-faster-r-cnn-to-mask-r-cnn/</link>
+      <pubDate>Thu, 27 Apr 2017 12:55:33 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/tutorials/notes-from-faster-r-cnn-to-mask-r-cnn/</guid>
+      <description>&lt;p&gt;That&amp;rsquo;s my notes for the talk &amp;ldquo;From Faster-RCNN to Mask-RCNN&amp;rdquo; by Shaoqing Ren on April 26th, 2017.&lt;/p&gt;
+
+&lt;h2 id=&#34;yesterday-background-and-pre-works-of-mask-r-cnn&#34;&gt;Yesterday – background and pre-works of Mask R-CNN&lt;/h2&gt;
+
+&lt;h3 id=&#34;key-functions&#34;&gt;Key functions&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Classification&lt;/strong&gt; - What are in the image?&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Localization&lt;/strong&gt; - Where are they?&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Mask (per pixel) classification&lt;/strong&gt; - Where+ ?
+
+&lt;ul&gt;
+&lt;li&gt;More precise to bounding box&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Landmarks localization&lt;/strong&gt; - What+, Where+ ?
+
+&lt;ul&gt;
+&lt;li&gt;Not only per-pixel mask, but also key points in the objects&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>TensorFlow r1.0 on TX1 (now successful)</title>
+      <link>https://www.yuthon.com/post/practices/tensorflow-r1-0-on-tx1/</link>
+      <pubDate>Fri, 10 Mar 2017 18:12:18 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/practices/tensorflow-r1-0-on-tx1/</guid>
+      <description>&lt;p&gt;TensorFlow r1.0已经发布了不少时间，事实证明1.0版本在内存使用上改善了不少，以前一些在r0.11上内存满报错的程序在r1.0上能够正常运行了。同时，r1.0相较于r0.11在API上做了很大的改动，也有很多新的东西（比如Keras）将要集成进TF。&lt;/p&gt;
+
+&lt;p&gt;总而言之，r1.0是未来的方向，所以说我希望将原先在TX1上装的r0.11换成r1.0。不过网上最新的教程还是只有r0.11的。&lt;a href=&#34;https://github.com/rwightman&#34;&gt;rwightman&lt;/a&gt;这位仁兄编译成功了r1.0alpha版本，并且放出了&lt;a href=&#34;https://github.com/rwightman/tensorflow/releases/tag/v1.0.0-alpha-tegra-ugly_hack&#34;&gt;whl文件&lt;/a&gt;，不过没有编译正式版。本文将阐述如何在TX1上安装TensorFlow r1.0的正式版本&lt;del&gt;，不过目前由于&lt;code&gt;nvcc&lt;/code&gt;的一个bug，还没有编译成功&lt;/del&gt;。&lt;/p&gt;
+
+&lt;p&gt;Update: 做了一些非常ugly的改动之后编译成功了。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Backup system partition on TX1</title>
+      <link>https://www.yuthon.com/post/practices/backup-system-partition-on-tx1/</link>
+      <pubDate>Sun, 18 Dec 2016 18:18:59 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/practices/backup-system-partition-on-tx1/</guid>
+      <description>&lt;p&gt;由于实验室只有要用到多块 TX1 开发板, 然而一个个都用 JetPack 刷机, 再用自动化脚本装软件和依赖实在是太麻烦了, 因此我和梅老板就开始研究怎么直接备份 TX1 上的 Ubuntu 系统.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Installation of TensorFlow r0.11 on TX1</title>
+      <link>https://www.yuthon.com/post/practices/installation-of-tensorflow-r0-11-on-tx1/</link>
+      <pubDate>Sun, 04 Dec 2016 20:53:55 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/practices/installation-of-tensorflow-r0-11-on-tx1/</guid>
+      <description>&lt;p&gt;今天折腾了一个下午, 特此记录一下其中遇到的坑, 主要还是因为 TX1 的 aarch64 架构, 以及小得可怜的内存与存储容量.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Train YOLOv2 on my own dataset</title>
+      <link>https://www.yuthon.com/post/practices/train-yolov2-on-my-own-dataset/</link>
+      <pubDate>Sat, 03 Dec 2016 11:29:04 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/practices/train-yolov2-on-my-own-dataset/</guid>
+      <description>&lt;p&gt;最近在看 Darkflow 的时候, 发现连 YOLOv2 都出了, 据称 mAP 和速度都提升了不少, 立马 clone 下来试了一番.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Train Caffe-YOLO on our own dataset</title>
+      <link>https://www.yuthon.com/post/practices/train-caffe-yolo-on-our-own-dataset/</link>
+      <pubDate>Sat, 26 Nov 2016 18:11:14 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/practices/train-caffe-yolo-on-our-own-dataset/</guid>
+      <description>&lt;p&gt;经过这几天不断地测试, YOLO 在 TX1 上跑得还是挺不错的, 符合我们实验室的要求. 但是 YOLO 依赖的 Darknet 框架还是太原始了, 不如 TensorFlow 或者 Caffe 用着顺手. 另外, 我负责的目标检测这一块还需要和梅老板写的新框架相结合, 所以更加需要把 YOLO 移植到一个成熟的框架上去.&lt;/p&gt;
+
+&lt;p&gt;很幸运的是, YOLO 在各个框架上的移植都有前人做过了, 比如 &lt;a href=&#34;https://github.com/thtrieu/darktf&#34;&gt;darktf&lt;/a&gt; 和 &lt;a href=&#34;https://github.com/yeahkun/caffe-yolo&#34;&gt;caffe-yolo&lt;/a&gt;. 今天以 caffe-yolo 为例, 谈一下在其上使用自己的数据集来训练.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Notes for ScribbleSup</title>
+      <link>https://www.yuthon.com/post/papers/notes-for-scribblesup/</link>
+      <pubDate>Sun, 20 Nov 2016 18:26:24 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/papers/notes-for-scribblesup/</guid>
+      <description>&lt;p&gt;毕设需要写一个图像标注的软件, 来给场景分割的数据集做标注. 经学长推荐, 看了今年的这篇文章, 作者中竟然还有 Kaiming He 大神, 给微软膜一秒.&lt;/p&gt;
+
+&lt;p&gt;这篇文章讲了一个弱监督的场景分割的算法 ScribbleSup, 主要是先通过 Graph Cut 将输入的 scribble 信息广播到没有标注的像素, 然后用 FCN 来做像素级别的预测. 令人遗憾的是 Github 上并没有人实现 (不能偷懒了TAT).&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Notes for YOLO</title>
+      <link>https://www.yuthon.com/post/papers/notes-for-yolo/</link>
+      <pubDate>Fri, 18 Nov 2016 22:43:26 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/papers/notes-for-yolo/</guid>
+      <description>&lt;p&gt;前几天发烧流鼻涕, 睡不了觉, 因此就熬夜读完了 YOLO 的论文. 可以说, YOLO 的实现方式相较于之前 R-CNN 一系的 Region Proposal 的方法来说, 很有新意. YOLO 将 Classification 和 Bounding Box Regression 合起来放进了 CNN 的输出层里面, 从而大大加快了速度.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Train YOLO on our own dataset</title>
+      <link>https://www.yuthon.com/post/practices/train-yolo-on-our-own-dataset/</link>
+      <pubDate>Sat, 12 Nov 2016 11:20:22 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/practices/train-yolo-on-our-own-dataset/</guid>
+      <description>&lt;p&gt;之前到手 TX1 之后试了一下 YOLO 的 Demo, 感觉很是不错, 帧数勉强达到实时要求, 因此就萌生了使用自己的数据集来训练看看效果的想法.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>YOLO on NVIDIA Jetson TX1</title>
+      <link>https://www.yuthon.com/post/practices/yolo-on-nvidia-jetson-tx1/</link>
+      <pubDate>Thu, 10 Nov 2016 20:36:34 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/practices/yolo-on-nvidia-jetson-tx1/</guid>
+      <description>&lt;p&gt;实验室昨天到了 NVIDIA 的 &lt;a href=&#34;http://www.nvidia.com/object/jetson-tx1-module.html&#34;&gt;Jetson TX1&lt;/a&gt;, 可以说是移动端比较好的带GPU的开发板子了, 于是可以试试在移动端上用YOLO (You Look Only Once) 来做目标识别.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Notes for SLIC</title>
+      <link>https://www.yuthon.com/post/papers/notes-for-slic/</link>
+      <pubDate>Tue, 01 Nov 2016 18:21:04 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/papers/notes-for-slic/</guid>
+      <description>&lt;p&gt;文章介绍了当前 State-of-the-Art 的5种&lt;strong&gt;超像素 (Superpixel)&lt;/strong&gt; 的算法, 并主要从其对于图像边缘信息的拟合程度 (their ability to adhere to image boundaries), 速度, 内存利用效率, 以及它们对于图像分割性能的影响 (their impact on segmentation performance) 来综合评价.&lt;/p&gt;
+
+&lt;p&gt;同时, 本文还提出了一种 &lt;strong&gt;SLIC (simple linear iterative clustering)&lt;/strong&gt; 的算法, 用的是 k-means clustering 的方法.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Traffic Prediction Using LSTM</title>
+      <link>https://www.yuthon.com/post/projects/traffic-prediction-using-lstm/</link>
+      <pubDate>Sun, 30 Oct 2016 13:53:32 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/projects/traffic-prediction-using-lstm/</guid>
+      <description>&lt;p&gt;最近上的一门课 &amp;ldquo;无线传感器网络&amp;rdquo; 快要结束了, 于是所谓的大作业的 DDL 也压上来了. TAT&lt;/p&gt;
+
+&lt;p&gt;不过这门课虽然说是讲无线传感器网络的, 但是大作业的要求却额外的宽松, 只要是和数据分析有关的就好了. 老师还给了些数据集, 比如说公共自行车的出借与归入记录啊, 出租车在各个路段的行驶速度啊, 或者是顺丰快递途径各个城市需要的时间啊这类的. 当然也可以自己选题.&lt;/p&gt;
+
+&lt;p&gt;我当然是想自己选题的, 然而想了一圈没想到什么好的方案, 于是只好回到了老师给的题目上面来, 选了道路速度预测这样的题目. 刚好之前在 CS231n 上看了 RNN 和 LSTM, 心想这总比传统方法好点吧, 于是就开始干了. (于是就有了之前的那篇装 CUDA 和 TF)&lt;/p&gt;
+
+&lt;p&gt;I wanna traffic prediction, I learn LSTM.&lt;/p&gt;
+
+&lt;p&gt;ugh, Traffic prediction using LSTM!&lt;/p&gt;
+
+&lt;p&gt;(此处应有 PPAP)&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>CUDA and Tensorflow Installation on Ubuntu 16.04</title>
+      <link>https://www.yuthon.com/post/practices/cuda-and-tensorflow-installation-on-ubuntu-16-04/</link>
+      <pubDate>Tue, 25 Oct 2016 20:53:50 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/practices/cuda-and-tensorflow-installation-on-ubuntu-16-04/</guid>
+      <description>&lt;p&gt;昨天折腾了一个下午开发环境的配置，记录一下其中遇到的坑。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>OS X 10.11.4 on XPS 15 9550</title>
+      <link>https://www.yuthon.com/post/practices/os-x-10-11-4-on-xps-15-9550/</link>
+      <pubDate>Mon, 16 May 2016 20:20:08 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/practices/os-x-10-11-4-on-xps-15-9550/</guid>
+      <description>&lt;p&gt;Thanks to the &lt;a href=&#34;http://www.tonymacx86.com/threads/guide-wip-dell-xps-15-9550-skylake-gtx960m-ssd-via-clover-uefi.192598/&#34;&gt;guide&lt;/a&gt; and its participants, I successfully installed OS X 10.11.4 on my XPS 15 9550.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

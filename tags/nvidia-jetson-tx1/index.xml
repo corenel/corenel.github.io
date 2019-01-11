@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Nvidia Jetson Tx1 on Yuthon&#39;s Blog</title>
+    <link>https://www.yuthon.com/tags/nvidia-jetson-tx1/</link>
+    <description>Recent content in Nvidia Jetson Tx1 on Yuthon&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
+    <lastBuildDate>Thu, 10 Nov 2016 20:36:34 +0000</lastBuildDate>
+    
+	<atom:link href="https://www.yuthon.com/tags/nvidia-jetson-tx1/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>YOLO on NVIDIA Jetson TX1</title>
+      <link>https://www.yuthon.com/post/practices/yolo-on-nvidia-jetson-tx1/</link>
+      <pubDate>Thu, 10 Nov 2016 20:36:34 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/practices/yolo-on-nvidia-jetson-tx1/</guid>
+      <description>&lt;p&gt;实验室昨天到了 NVIDIA 的 &lt;a href=&#34;http://www.nvidia.com/object/jetson-tx1-module.html&#34;&gt;Jetson TX1&lt;/a&gt;, 可以说是移动端比较好的带GPU的开发板子了, 于是可以试试在移动端上用YOLO (You Look Only Once) 来做目标识别.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

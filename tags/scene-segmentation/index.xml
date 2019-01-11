@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Scene Segmentation on Yuthon&#39;s Blog</title>
+    <link>https://www.yuthon.com/tags/scene-segmentation/</link>
+    <description>Recent content in Scene Segmentation on Yuthon&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
+    <lastBuildDate>Sun, 20 Nov 2016 18:26:24 +0000</lastBuildDate>
+    
+	<atom:link href="https://www.yuthon.com/tags/scene-segmentation/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Notes for ScribbleSup</title>
+      <link>https://www.yuthon.com/post/papers/notes-for-scribblesup/</link>
+      <pubDate>Sun, 20 Nov 2016 18:26:24 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/papers/notes-for-scribblesup/</guid>
+      <description>&lt;p&gt;毕设需要写一个图像标注的软件, 来给场景分割的数据集做标注. 经学长推荐, 看了今年的这篇文章, 作者中竟然还有 Kaiming He 大神, 给微软膜一秒.&lt;/p&gt;
+
+&lt;p&gt;这篇文章讲了一个弱监督的场景分割的算法 ScribbleSup, 主要是先通过 Graph Cut 将输入的 scribble 信息广播到没有标注的像素, 然后用 FCN 来做像素级别的预测. 令人遗憾的是 Github 上并没有人实现 (不能偷懒了TAT).&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

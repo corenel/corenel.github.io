@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Notes on Yuthon&#39;s Blog</title>
+    <link>https://www.yuthon.com/categories/notes/</link>
+    <description>Recent content in Notes on Yuthon&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
+    <lastBuildDate>Tue, 15 Aug 2017 20:19:46 +0000</lastBuildDate>
+    
+	<atom:link href="https://www.yuthon.com/categories/notes/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Notes for Adversarial Discriminative Domain Adaptation</title>
+      <link>https://www.yuthon.com/post/papers/notes-for-adversarial-discriminative-domain-adaptation/</link>
+      <pubDate>Tue, 15 Aug 2017 20:19:46 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/papers/notes-for-adversarial-discriminative-domain-adaptation/</guid>
+      <description>&lt;h2 id=&#34;about-this-paper&#34;&gt;About this paper&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Title&lt;/strong&gt;: Adversarial Discriminative Domain Adaptation&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Authors&lt;/strong&gt;: Eric Tzeng, Judy Hoffman, Kate Saenko, Trevor Darrell&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Topic&lt;/strong&gt;: Domain Adaptation&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;From&lt;/strong&gt;: &lt;a href=&#34;https://arxiv.org/abs/1702.05464&#34;&gt;arXiv:1702.05464&lt;/a&gt;, appearing in CVPR 2017&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;contributions&#34;&gt;Contributions&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;将之前的论文里提到的一些方法，例如weight sharing、base models、adversarial loss等，归入了统一的框架之中，并进行了测试；&lt;/li&gt;
+&lt;li&gt;提出了一种新的框架ADDA，主要思想是不做分类器的自适应，而是设法将目标域的数据映射到域源域差不多的特征空间上，这样就能够复用源域的分类器。&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Something about GAN</title>
+      <link>https://www.yuthon.com/post/tutorials/something-about-gans/</link>
+      <pubDate>Sat, 12 Aug 2017 19:24:14 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/tutorials/something-about-gans/</guid>
+      <description>&lt;p&gt;最近在看关于GANs的论文，并且自己动手用PyTorch写了一些经典文章的实现，想要稍微总结一下，故有此文。在最后我总结了我自己看过的有关GANs的一些比较好的资源，希望对读者有所帮助。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Let&#39;s talk about Zero-Shot Learning.</title>
+      <link>https://www.yuthon.com/post/tutorials/let-s-talk-about-zero-shot-learning/</link>
+      <pubDate>Wed, 14 Jun 2017 14:20:01 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/tutorials/let-s-talk-about-zero-shot-learning/</guid>
+      <description>&lt;p&gt;最近在看Zero-Shot learning方面的文章，有些想要记录备忘的东西，就写在这儿吧。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Notes for Amortized Inference and Learning in Latent CRF</title>
+      <link>https://www.yuthon.com/post/papers/notes-for-amortized-inference-and-learning-in-latent-crf/</link>
+      <pubDate>Wed, 10 May 2017 22:05:31 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/papers/notes-for-amortized-inference-and-learning-in-latent-crf/</guid>
+      <description>&lt;p&gt;This is my notes for &lt;strong&gt;Amortized Inference and Learning in Latent Conditional Random Fields for Weakly-Supervised Semantic Image Segmentation&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/1705.01262&#34;&gt;arXiv:1705.01262&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.ece.iisc.ernet.in/~divsymposium/EECS2017/slides_posters/EECS_2017_paper_31.pdf&#34;&gt;Poster &amp;amp; Slides&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Notes for SEC</title>
+      <link>https://www.yuthon.com/post/papers/notes-for-sec/</link>
+      <pubDate>Fri, 28 Apr 2017 09:13:33 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/papers/notes-for-sec/</guid>
+      <description>&lt;p&gt;This is my notes for &lt;strong&gt;Seed, Expand and Constrain: Three Principles for Weakly-Supervised Image Segmentation&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;arxiv: &lt;a href=&#34;https://arxiv.org/abs/1603.06098&#34;&gt;https://arxiv.org/abs/1603.06098&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;github: &lt;a href=&#34;https://github.com/kolesman/SEC&#34;&gt;https://github.com/kolesman/SEC&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Notes: From Faster R-CNN to Mask R-CNN</title>
+      <link>https://www.yuthon.com/post/tutorials/notes-from-faster-r-cnn-to-mask-r-cnn/</link>
+      <pubDate>Thu, 27 Apr 2017 12:55:33 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/tutorials/notes-from-faster-r-cnn-to-mask-r-cnn/</guid>
+      <description>&lt;p&gt;That&amp;rsquo;s my notes for the talk &amp;ldquo;From Faster-RCNN to Mask-RCNN&amp;rdquo; by Shaoqing Ren on April 26th, 2017.&lt;/p&gt;
+
+&lt;h2 id=&#34;yesterday-background-and-pre-works-of-mask-r-cnn&#34;&gt;Yesterday – background and pre-works of Mask R-CNN&lt;/h2&gt;
+
+&lt;h3 id=&#34;key-functions&#34;&gt;Key functions&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Classification&lt;/strong&gt; - What are in the image?&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Localization&lt;/strong&gt; - Where are they?&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Mask (per pixel) classification&lt;/strong&gt; - Where+ ?
+
+&lt;ul&gt;
+&lt;li&gt;More precise to bounding box&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Landmarks localization&lt;/strong&gt; - What+, Where+ ?
+
+&lt;ul&gt;
+&lt;li&gt;Not only per-pixel mask, but also key points in the objects&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Notes for ScribbleSup</title>
+      <link>https://www.yuthon.com/post/papers/notes-for-scribblesup/</link>
+      <pubDate>Sun, 20 Nov 2016 18:26:24 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/papers/notes-for-scribblesup/</guid>
+      <description>&lt;p&gt;毕设需要写一个图像标注的软件, 来给场景分割的数据集做标注. 经学长推荐, 看了今年的这篇文章, 作者中竟然还有 Kaiming He 大神, 给微软膜一秒.&lt;/p&gt;
+
+&lt;p&gt;这篇文章讲了一个弱监督的场景分割的算法 ScribbleSup, 主要是先通过 Graph Cut 将输入的 scribble 信息广播到没有标注的像素, 然后用 FCN 来做像素级别的预测. 令人遗憾的是 Github 上并没有人实现 (不能偷懒了TAT).&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Notes for YOLO</title>
+      <link>https://www.yuthon.com/post/papers/notes-for-yolo/</link>
+      <pubDate>Fri, 18 Nov 2016 22:43:26 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/papers/notes-for-yolo/</guid>
+      <description>&lt;p&gt;前几天发烧流鼻涕, 睡不了觉, 因此就熬夜读完了 YOLO 的论文. 可以说, YOLO 的实现方式相较于之前 R-CNN 一系的 Region Proposal 的方法来说, 很有新意. YOLO 将 Classification 和 Bounding Box Regression 合起来放进了 CNN 的输出层里面, 从而大大加快了速度.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Notes for SLIC</title>
+      <link>https://www.yuthon.com/post/papers/notes-for-slic/</link>
+      <pubDate>Tue, 01 Nov 2016 18:21:04 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/papers/notes-for-slic/</guid>
+      <description>&lt;p&gt;文章介绍了当前 State-of-the-Art 的5种&lt;strong&gt;超像素 (Superpixel)&lt;/strong&gt; 的算法, 并主要从其对于图像边缘信息的拟合程度 (their ability to adhere to image boundaries), 速度, 内存利用效率, 以及它们对于图像分割性能的影响 (their impact on segmentation performance) 来综合评价.&lt;/p&gt;
+
+&lt;p&gt;同时, 本文还提出了一种 &lt;strong&gt;SLIC (simple linear iterative clustering)&lt;/strong&gt; 的算法, 用的是 k-means clustering 的方法.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

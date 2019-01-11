@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Gans on Yuthon&#39;s Blog</title>
+    <link>https://www.yuthon.com/tags/gans/</link>
+    <description>Recent content in Gans on Yuthon&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
+    <lastBuildDate>Tue, 15 Aug 2017 20:19:46 +0000</lastBuildDate>
+    
+	<atom:link href="https://www.yuthon.com/tags/gans/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Notes for Adversarial Discriminative Domain Adaptation</title>
+      <link>https://www.yuthon.com/post/papers/notes-for-adversarial-discriminative-domain-adaptation/</link>
+      <pubDate>Tue, 15 Aug 2017 20:19:46 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/papers/notes-for-adversarial-discriminative-domain-adaptation/</guid>
+      <description>&lt;h2 id=&#34;about-this-paper&#34;&gt;About this paper&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Title&lt;/strong&gt;: Adversarial Discriminative Domain Adaptation&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Authors&lt;/strong&gt;: Eric Tzeng, Judy Hoffman, Kate Saenko, Trevor Darrell&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Topic&lt;/strong&gt;: Domain Adaptation&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;From&lt;/strong&gt;: &lt;a href=&#34;https://arxiv.org/abs/1702.05464&#34;&gt;arXiv:1702.05464&lt;/a&gt;, appearing in CVPR 2017&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;contributions&#34;&gt;Contributions&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;将之前的论文里提到的一些方法，例如weight sharing、base models、adversarial loss等，归入了统一的框架之中，并进行了测试；&lt;/li&gt;
+&lt;li&gt;提出了一种新的框架ADDA，主要思想是不做分类器的自适应，而是设法将目标域的数据映射到域源域差不多的特征空间上，这样就能够复用源域的分类器。&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Something about GAN</title>
+      <link>https://www.yuthon.com/post/tutorials/something-about-gans/</link>
+      <pubDate>Sat, 12 Aug 2017 19:24:14 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/tutorials/something-about-gans/</guid>
+      <description>&lt;p&gt;最近在看关于GANs的论文，并且自己动手用PyTorch写了一些经典文章的实现，想要稍微总结一下，故有此文。在最后我总结了我自己看过的有关GANs的一些比较好的资源，希望对读者有所帮助。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

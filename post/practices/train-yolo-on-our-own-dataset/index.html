@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Train YOLO on our own dataset</title>
+
+  
+  
+  <link href="//cdn.jsdelivr.net" rel="dns-prefetch">
+  <link href="//cdnjs.cloudflare.com" rel="dns-prefetch">
+  <link href="//at.alicdn.com" rel="dns-prefetch">
+  <link href="//fonts.googleapis.com" rel="dns-prefetch">
+  <link href="//fonts.gstatic.com" rel="dns-prefetch">
+  <link href="///disqus.com" rel="dns-prefetch">
+  <link href="//c.disquscdn.com" rel="dns-prefetch">
+  
+  <link href="//www.google-analytics.com" rel="dns-prefetch">
+  
+
+  
+
+  
+  
+  <meta name="description" content="之前到手 TX1 之后试了一下 YOLO 的 Demo, 感觉很是不错, 帧数勉强达到实时要求, 因此就萌生了使用自己的数据集来训练看看效果的想法.
+">
+
+  
+  
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@corenel">
+    <meta name="twitter:title" content="Train YOLO on our own dataset">
+    <meta name="twitter:description" content="之前到手 TX1 之后试了一下 YOLO 的 Demo, 感觉很是不错, 帧数勉强达到实时要求, 因此就萌生了使用自己的数据集来训练看看效果的想法.
+">
+    <meta name="twitter:image" content="/images/avatar.png">
+  
+
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Train YOLO on our own dataset">
+  <meta property="og:description" content="之前到手 TX1 之后试了一下 YOLO 的 Demo, 感觉很是不错, 帧数勉强达到实时要求, 因此就萌生了使用自己的数据集来训练看看效果的想法.
+">
+  <meta property="og:url" content="https://www.yuthon.com/post/practices/train-yolo-on-our-own-dataset/">
+  <meta property="og:image" content="/images/avatar.png">
+
+
+
+
+<meta name="generator" content="Hugo 0.53">
+
+
+<link rel="canonical" href="https://www.yuthon.com/post/practices/train-yolo-on-our-own-dataset/">
+
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="format-detection" content="telephone=no,email=no,adress=no">
+<meta http-equiv="Cache-Control" content="no-transform">
+
+
+<meta name="robots" content="index,follow">
+<meta name="referrer" content="origin-when-cross-origin">
+
+
+
+
+
+
+
+<meta name="theme-color" content="#02b875">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Yuthon&#39;s Blog">
+<meta name="msapplication-tooltip" content="Yuthon&#39;s Blog">
+<meta name='msapplication-navbutton-color' content="#02b875">
+<meta name="msapplication-TileColor" content="#02b875">
+<meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+<link rel="icon" href="https://www.yuthon.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.yuthon.com/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.yuthon.com/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="https://www.yuthon.com/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="https://www.yuthon.com/icons/icon-152x152.png">
+<link rel="manifest" href="https://www.yuthon.com/manifest.json">
+
+
+<link rel="preload" href="https://www.yuthon.com/styles/main.min.css" as="style">
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
+<link rel="preload" href="https://www.yuthon.com/images/avatar.png" as="image">
+<link rel="preload" href="https://www.yuthon.com/images/grey-prism.svg" as="image">
+
+
+<style>
+  body {
+    background: rgb(244, 243, 241) url('/images/grey-prism.svg') repeat fixed;
+  }
+</style>
+<link rel="stylesheet" href="https://www.yuthon.com/styles/main.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.2/dist/medium-zoom.min.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video-js.min.css">
+
+
+
+  
+  
+<!--[if lte IE 8]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/videojs-ie8@1.1.2/dist/videojs-ie8.min.js"></script>
+<![endif]-->
+
+<!--[if lte IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20180112/classList.min.js"></script>
+<![endif]-->
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a role="button" aria-label="Go to top" title="Go to top" class="to-top is-hide"><span class="icon icon-up" aria-hidden="true"></span></a>
+      
+        
+        <a role="button" aria-label="Go to comments" title="Go to comments" class="to-comment" href="#disqus_thread"><span class="icon icon-comment" aria-hidden="true"></span></a>
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="https://www.yuthon.com/images/avatar.png" alt="Avatar">
+  
+  <h2 class="title">Yuthon&#39;s Blog</h2>
+  
+  <p class="subtitle"></p>
+  <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
+    <span class="icon icon-menu" aria-hidden="true"></span>
+  </button>
+
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+          
+          
+           is-active">
+          <a href="https://www.yuthon.com/">Home</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="https://www.yuthon.com/categories/">Categories</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="https://www.yuthon.com/tags/">Tags</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="https://www.yuthon.com/about/">About</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="https://www.yuthon.com/resume/">Resume</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="https://github.com/corenel">Works</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list"><li class="social-item">
+          <a href="mailto:xxdsox@gmail.com" title="Email" aria-label="Email">
+            <span class="icon icon-email" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//github.com/corenel" title="GitHub" aria-label="GitHub">
+            <span class="icon icon-github" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//twitter.com/corenel" title="Twitter" aria-label="Twitter">
+            <span class="icon icon-twitter" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.facebook.com/xxdsox" title="Facebook" aria-label="Facebook">
+            <span class="icon icon-facebook" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.reddit.com/user/xxdsox" title="Reddit" aria-label="Reddit">
+            <span class="icon icon-reddit" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.quora.com/profile/Yusu-Pan" title="Quora" aria-label="Quora">
+            <span class="icon icon-quora" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//stackoverflow.com/users/5682817" title="stackOverflow"  aria-label="stackOverflow">
+            <span class="icon icon-stackoverflow" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.zhihu.com/people/pan-yu-su" title="Zhihu" aria-label="Zhihu">
+            <span class="icon icon-zhihu" aria-hidden="true"></span>
+          </a>
+        </li></ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Train YOLO on our own dataset</h1>
+      <p class="post-meta">@Yusu Pan · Nov 12, 2016 · 3 min read</p>
+    </header>
+    <article class="post-content"><p>之前到手 TX1 之后试了一下 YOLO 的 Demo, 感觉很是不错, 帧数勉强达到实时要求, 因此就萌生了使用自己的数据集来训练看看效果的想法.</p>
+
+<h2 id="dataset">Dataset</h2>
+
+<h3 id="get-the-imagenet-data">Get The ImageNet Data</h3>
+
+<p>为了最大限度地利用资源 (其实是为了偷懒, 但是之后发现给自己挖了个大坑), 我用的是从 ImageNet 上的图片与 Bounding Box 标注. 本次使用了两个类别, 分别是 <a href="http://imagenet.stanford.edu/synset?wnid=n04254680#">ball</a> 和 <a href="http://imagenet.stanford.edu/synset?wnid=n03820318">goal</a>.</p>
+
+<blockquote>
+<ul>
+<li>在<code>Downloads</code>内可以可以下到<code>images in the synset</code>以及<code>Bounding Boxes</code></li>
+<li>ImageNet 里的图片看起来多, 实际上摊到每个子类上的就1000多张, 能下下来的就500多, 能直接和 Bounding Box 标注匹配的只剩此案100多了TAT. 果然还是需要自己标注, 自力更生.</li>
+<li>另外 ImageNet 上的 Bounding Box 信息只有当前类别的. 比如说我下了 goal 的 Bounding Box, 其实某张图片里还有 ball 等 Object, 但是并不会被标出来. 这对于之后的训练有一定影响.</li>
+<li>注意如果要从 ImageNet 上下原始图片的话是需要注册账号, 并且通过邮箱认证的 (还不能是 Gmail 这类的可以免费注册的邮箱, 需要机构或者学校邮箱才行).</li>
+</ul>
+</blockquote>
+
+<p>下好的文件结构如下:</p>
+
+<pre><code>.
+├── Annotation
+│   ├── n03820318
+│   └── n04254680
+└── images
+    ├── n03820318
+    └── n04254680
+</code></pre>
+
+<p>其中<code>Annotation</code>目录下放标注, <code>images</code>目录下放图片.</p>
+
+<h3 id="convert-labels-for-darknet">Convert labels for darknet</h3>
+
+<p>ImageNet 上下下来的 Bounding Box 信息是 Pascal VOC 的 xml 格式:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;annotation&gt;</span>
+	<span style="color:#f92672">&lt;folder&gt;</span>n03820318<span style="color:#f92672">&lt;/folder&gt;</span>
+	<span style="color:#f92672">&lt;filename&gt;</span>n03820318_101<span style="color:#f92672">&lt;/filename&gt;</span>
+	<span style="color:#f92672">&lt;source&gt;</span>
+		<span style="color:#f92672">&lt;database&gt;</span>ImageNet database<span style="color:#f92672">&lt;/database&gt;</span>
+	<span style="color:#f92672">&lt;/source&gt;</span>
+	<span style="color:#f92672">&lt;size&gt;</span>
+		<span style="color:#f92672">&lt;width&gt;</span>500<span style="color:#f92672">&lt;/width&gt;</span>
+		<span style="color:#f92672">&lt;height&gt;</span>333<span style="color:#f92672">&lt;/height&gt;</span>
+		<span style="color:#f92672">&lt;depth&gt;</span>3<span style="color:#f92672">&lt;/depth&gt;</span>
+	<span style="color:#f92672">&lt;/size&gt;</span>
+	<span style="color:#f92672">&lt;segmented&gt;</span>0<span style="color:#f92672">&lt;/segmented&gt;</span>
+	<span style="color:#f92672">&lt;object&gt;</span>
+		<span style="color:#f92672">&lt;name&gt;</span>n03820318<span style="color:#f92672">&lt;/name&gt;</span>
+		<span style="color:#f92672">&lt;pose&gt;</span>Unspecified<span style="color:#f92672">&lt;/pose&gt;</span>
+		<span style="color:#f92672">&lt;truncated&gt;</span>0<span style="color:#f92672">&lt;/truncated&gt;</span>
+		<span style="color:#f92672">&lt;difficult&gt;</span>0<span style="color:#f92672">&lt;/difficult&gt;</span>
+		<span style="color:#f92672">&lt;bndbox&gt;</span>
+			<span style="color:#f92672">&lt;xmin&gt;</span>19<span style="color:#f92672">&lt;/xmin&gt;</span>
+			<span style="color:#f92672">&lt;ymin&gt;</span>43<span style="color:#f92672">&lt;/ymin&gt;</span>
+			<span style="color:#f92672">&lt;xmax&gt;</span>499<span style="color:#f92672">&lt;/xmax&gt;</span>
+			<span style="color:#f92672">&lt;ymax&gt;</span>214<span style="color:#f92672">&lt;/ymax&gt;</span>
+		<span style="color:#f92672">&lt;/bndbox&gt;</span>
+	<span style="color:#f92672">&lt;/object&gt;</span>
+<span style="color:#f92672">&lt;/annotation&gt;</span></code></pre></div>
+<p>而 darknet 需要的标注文件是 txt 格式:</p>
+
+<pre><code>&lt;object-class&gt; &lt;x&gt; &lt;y&gt; &lt;width&gt; &lt;height&gt;
+</code></pre>
+
+<p>于是就需要对于 labels 进行转换. 我写了<a href="https://github.com/corenel/darknet/blob/yuthon/scripts/imagenet_bb_label.py">一份 Python 脚本</a>, 将其放在数据集的根目录下执行即可:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ python imagenet_bb_label.py</code></pre></div>
+<p>之后得到目录结构如下:</p>
+
+<pre><code>.
+├── Annotation
+│   ├── n03820318
+│   └── n04254680
+├── imagenet_bb_label.py
+├── images
+│   ├── n03820318
+│   └── n04254680
+├── labels
+│   ├── n03820318
+│   └── n04254680
+└── train.txt
+</code></pre>
+
+<p>其中, <code>labels</code>目录保存着转换后的 Bounding Box 信息, <code>train.txt</code>则包含了所有图片文件的绝对路径.</p>
+
+<blockquote>
+<p>ImageNet 的 xml 文件里 object 的名字是类似<code>n03820318</code>这种格式的, 如果需要转成<code>goal</code>这样的话可以再目录下执行以下命令来批量替换:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; $ find . -name <span style="color:#e6db74">&#34;*.xml&#34;</span> -print | xargs sed -i <span style="color:#e6db74">&#39;s/&lt;name&gt;n03820318/&lt;name&gt;goal/g&#39;</span>
+&gt; <span style="color:#e6db74">```</span>
+
+<span style="color:#75715e">## Modify darknet</span>
+
+由于 class 的数量和名字都变了, 因此需要修改下 YOLO 的源代码.
+
+首先是从 clone repository. 可以选择 clone <span style="color:#f92672">[</span>官方的<span style="color:#f92672">](</span>https://github.com/pjreddie/darknet<span style="color:#f92672">)</span>, 也可以直接下<span style="color:#f92672">[</span>我修改好的<span style="color:#f92672">](</span>https://github.com/corenel/darknet<span style="color:#f92672">)</span>. 此处里官方 repo 为例.
+
+<span style="color:#e6db74">```</span>bash
+$ git clone https://github.com/pjreddie/darknet.git</code></pre></div></blockquote>
+
+<p>由于最新的 commit 修改了 label image 的显示方法, 并且改变了源文件里类别的定义, 因此需要先切回之前的 commit:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git checkout 73f7aacf35ec9b1d0f9de9ddf38af0889f213e99</code></pre></div>
+<p>首先修改<code>Makefile</code>:</p>
+
+<pre><code>GPU=1
+CUDNN=1
+OPENCV=1
+</code></pre>
+
+<p>之后是<code>src/yolo.c</code>, 主要是类别名称和数量, 以及<code>train.txt</code>与<code>backup</code>的地址.(<code>backup</code>目录用来存放训练得到的weights)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span><span style="color:#75715e">#define NUM_CLASS 2
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>voc_names[] <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;ball&#34;</span>, <span style="color:#e6db74">&#34;goal&#34;</span>};
+image voc_labels[NUM_CLASS];
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">train_yolo</span>(<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>cfgfile, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>weightfile)
+{
+    <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>train_images <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/home/m/workspace/dataset/train.txt&#34;</span>;
+    <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>backup_directory <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/home/m/workspace/backup/&#34;</span>;
+}
+<span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">test_yolo</span>(<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>cfgfile, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>weightfile, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>filename, <span style="color:#66d9ef">float</span> thresh)
+{
+  <span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>  draw_detections(im, l.side<span style="color:#f92672">*</span>l.side<span style="color:#f92672">*</span>l.n, thresh, boxes, probs, voc_names, voc_labels, NUM_CLASS);
+  <span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>}
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run_yolo</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>argv)
+{
+  <span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">for</span>(i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> NUM_CLASS; <span style="color:#f92672">++</span>i){
+    <span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>  }
+  <span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span>(<span style="color:#ae81ff">0</span><span style="color:#f92672">==</span>strcmp(argv[<span style="color:#ae81ff">2</span>], <span style="color:#e6db74">&#34;demo&#34;</span>)) demo(cfg, weights, thresh, cam_index, filename, voc_names, voc_labels, NUM_CLASS, frame_skip);
+}</code></pre></div>
+<p>接着是<code>yolo_kernels.cu</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span><span style="color:#75715e">#define NUM_CLASS 2
+</span><span style="color:#75715e"></span><span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">detect_in_thread</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>ptr)
+{
+  <span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>  draw_detections(det, l.side<span style="color:#f92672">*</span>l.side<span style="color:#f92672">*</span>l.n, demo_thresh, boxes, probs, voc_names, voc_labels, NUM_CLASS);
+  <span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>}
+<span style="color:#f92672">//</span> ...</code></pre></div>
+<p>然后是<code>cfg</code>(建议新建一个, 我的<a href="https://github.com/corenel/darknet/blob/yuthon/cfg/tiny-yolo.train.cfg">配置</a>可作为参考):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#75715e"># ...</span>
+<span style="color:#66d9ef">[connected]</span>
+<span style="color:#75715e"># output = Side x Side x (2x5 + class_num)</span>
+<span style="color:#a6e22e">output</span><span style="color:#f92672">=</span> <span style="color:#e6db74">588</span>
+<span style="color:#a6e22e">activation</span><span style="color:#f92672">=</span><span style="color:#e6db74">linear</span>
+
+<span style="color:#66d9ef">[detection]</span>
+<span style="color:#75715e"># modify the class num</span>
+<span style="color:#a6e22e">classes</span><span style="color:#f92672">=</span><span style="color:#e6db74">2</span>
+<span style="color:#a6e22e">coords</span><span style="color:#f92672">=</span><span style="color:#e6db74">4</span>
+<span style="color:#a6e22e">rescore</span><span style="color:#f92672">=</span><span style="color:#e6db74">1</span>
+<span style="color:#a6e22e">side</span><span style="color:#f92672">=</span><span style="color:#e6db74">7</span>
+<span style="color:#a6e22e">num</span><span style="color:#f92672">=</span><span style="color:#e6db74">2</span>
+<span style="color:#a6e22e">softmax</span><span style="color:#f92672">=</span><span style="color:#e6db74">0</span>
+<span style="color:#a6e22e">sqrt</span><span style="color:#f92672">=</span><span style="color:#e6db74">1</span>
+<span style="color:#a6e22e">jitter</span><span style="color:#f92672">=</span><span style="color:#e6db74">.2</span>
+
+<span style="color:#a6e22e">object_scale</span><span style="color:#f92672">=</span><span style="color:#e6db74">1</span>
+<span style="color:#a6e22e">noobject_scale</span><span style="color:#f92672">=</span><span style="color:#e6db74">.5</span>
+<span style="color:#a6e22e">class_scale</span><span style="color:#f92672">=</span><span style="color:#e6db74">1</span>
+<span style="color:#a6e22e">coord_scale</span><span style="color:#f92672">=</span><span style="color:#e6db74">5</span></code></pre></div>
+<p>最后, 如果使用了新的 class 的话, 需要在<code>data/labels</code>里修改<code>make_labels.py</code>并执行来生成新的 label image:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> os
+
+l <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;ball&#34;</span>, <span style="color:#e6db74">&#34;goal&#34;</span>]
+
+<span style="color:#66d9ef">for</span> word <span style="color:#f92672">in</span> l:
+    os<span style="color:#f92672">.</span>system(<span style="color:#e6db74">&#34;convert -fill black -background white -bordercolor white -border 4 -font ubuntu-mono -pointsize 18 label:</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">%s</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74"> </span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">.png</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">%</span>(word, word))</code></pre></div>
+<p>至此前期准备完成, 可以开始训练了.</p>
+
+<h2 id="training">Training</h2>
+
+<p>首先还需要下载 pre-trained weights.</p>
+
+<ul>
+<li>全尺寸的 YOLO 使用<a href="http://pjreddie.com/media/files/extraction.conv.weights">这个</a></li>
+<li>tiny-YOLO 使用<a href="http://pjreddie.com/media/files/darknet.conv.weights">这个</a></li>
+</ul>
+
+<p>之后就是慢慢训练之路了:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cd darknet
+$ make -j8
+$ ./darknet yolo train cfg/tiny-yolo.train.cfg darknet.conv.weights</code></pre></div>
+<p>我用上述的 dataset 训练 tiny-YOLO, 从 22:43 一直到 05:12, 总计 6 个小时左右, 最终得到<code>tiny-yolo_final.weights</code>文件.</p>
+
+<p>之后就可以拿来 test 或者 demo 了:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./darknet yolo test cfg/tiny-yolo.train.cfg tiny-yolo_final.weights</code></pre></div>
+<p>or</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./darknet yolo demo cfg/tiny-yolo.train.cfg tiny-yolo_final.weights</code></pre></div>
+<h2 id="results">Results</h2>
+
+<p><img src="https://www.yuthon.com/images/TinyYOLO_on_TX1_ball.jpg" alt="yolo-tiny_on_TX1_ball" /></p>
+
+<p><img src="https://www.yuthon.com/images/TinyYOLO_on_TX1_goal.jpg" alt="yolo-tiny_on_TX1_goal" /></p>
+
+<h2 id="reference">Reference</h2>
+
+<ul>
+<li><a href="http://guanghan.info/blog/en/my-works/train-yolo/">Start Training YOLO with Our Own Data</a></li>
+<li><a href="http://pjreddie.com/darknet/yolo/#train">Training YOLO</a></li>
+</ul></article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="https://www.yuthon.com/tags/yolo"><span class="tag">YOLO</span></a></li>
+        
+          <li><a href="https://www.yuthon.com/tags/deep-learning"><span class="tag">Deep Learning</span></a></li>
+        
+          <li><a href="https://www.yuthon.com/tags/object-detection"><span class="tag">Object Detection</span></a></li>
+        
+          <li><a href="https://www.yuthon.com/tags/darknet"><span class="tag">Darknet</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.This post was published <strong>790</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+      </p>
+    </footer>
+    
+      <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "yuthons-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      
+    
+  </section>
+  
+<footer class="site-footer">
+  <p>© 2017-2019 Yuthon&#39;s Blog</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank" rel="noopener">Nuo</a>.</p>
+  
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/smooth-scroll@15.0.0/dist/smooth-scroll.min.js"></script>
+
+
+
+<script async src="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video.min.js"></script>
+
+
+
+
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    },
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
+
+
+
+<script src="https://www.yuthon.com/scripts/index.min.js"></script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('\/service-worker.js').then(function() {
+      console.log('[ServiceWorker] Registered');
+    });
+  }
+</script>
+
+
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-76233259-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+  </body>
+</html>

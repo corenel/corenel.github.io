@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>CUDA and Tensorflow Installation on Ubuntu 16.04</title>
+
+  
+  
+  <link href="//cdn.jsdelivr.net" rel="dns-prefetch">
+  <link href="//cdnjs.cloudflare.com" rel="dns-prefetch">
+  <link href="//at.alicdn.com" rel="dns-prefetch">
+  <link href="//fonts.googleapis.com" rel="dns-prefetch">
+  <link href="//fonts.gstatic.com" rel="dns-prefetch">
+  <link href="///disqus.com" rel="dns-prefetch">
+  <link href="//c.disquscdn.com" rel="dns-prefetch">
+  
+  <link href="//www.google-analytics.com" rel="dns-prefetch">
+  
+
+  
+
+  
+  
+  <meta name="description" content="昨天折腾了一个下午开发环境的配置，记录一下其中遇到的坑。
+">
+
+  
+  
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@corenel">
+    <meta name="twitter:title" content="CUDA and Tensorflow Installation on Ubuntu 16.04">
+    <meta name="twitter:description" content="昨天折腾了一个下午开发环境的配置，记录一下其中遇到的坑。
+">
+    <meta name="twitter:image" content="/images/avatar.png">
+  
+
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="CUDA and Tensorflow Installation on Ubuntu 16.04">
+  <meta property="og:description" content="昨天折腾了一个下午开发环境的配置，记录一下其中遇到的坑。
+">
+  <meta property="og:url" content="https://www.yuthon.com/post/practices/cuda-and-tensorflow-installation-on-ubuntu-16-04/">
+  <meta property="og:image" content="/images/avatar.png">
+
+
+
+
+<meta name="generator" content="Hugo 0.53">
+
+
+<link rel="canonical" href="https://www.yuthon.com/post/practices/cuda-and-tensorflow-installation-on-ubuntu-16-04/">
+
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="format-detection" content="telephone=no,email=no,adress=no">
+<meta http-equiv="Cache-Control" content="no-transform">
+
+
+<meta name="robots" content="index,follow">
+<meta name="referrer" content="origin-when-cross-origin">
+
+
+
+
+
+
+
+<meta name="theme-color" content="#02b875">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Yuthon&#39;s Blog">
+<meta name="msapplication-tooltip" content="Yuthon&#39;s Blog">
+<meta name='msapplication-navbutton-color' content="#02b875">
+<meta name="msapplication-TileColor" content="#02b875">
+<meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+<link rel="icon" href="https://www.yuthon.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.yuthon.com/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.yuthon.com/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="https://www.yuthon.com/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="https://www.yuthon.com/icons/icon-152x152.png">
+<link rel="manifest" href="https://www.yuthon.com/manifest.json">
+
+
+<link rel="preload" href="https://www.yuthon.com/styles/main.min.css" as="style">
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
+<link rel="preload" href="https://www.yuthon.com/images/avatar.png" as="image">
+<link rel="preload" href="https://www.yuthon.com/images/grey-prism.svg" as="image">
+
+
+<style>
+  body {
+    background: rgb(244, 243, 241) url('/images/grey-prism.svg') repeat fixed;
+  }
+</style>
+<link rel="stylesheet" href="https://www.yuthon.com/styles/main.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.2/dist/medium-zoom.min.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video-js.min.css">
+
+
+
+  
+  
+<!--[if lte IE 8]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/videojs-ie8@1.1.2/dist/videojs-ie8.min.js"></script>
+<![endif]-->
+
+<!--[if lte IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20180112/classList.min.js"></script>
+<![endif]-->
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a role="button" aria-label="Go to top" title="Go to top" class="to-top is-hide"><span class="icon icon-up" aria-hidden="true"></span></a>
+      
+        
+        <a role="button" aria-label="Go to comments" title="Go to comments" class="to-comment" href="#disqus_thread"><span class="icon icon-comment" aria-hidden="true"></span></a>
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="https://www.yuthon.com/images/avatar.png" alt="Avatar">
+  
+  <h2 class="title">Yuthon&#39;s Blog</h2>
+  
+  <p class="subtitle"></p>
+  <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
+    <span class="icon icon-menu" aria-hidden="true"></span>
+  </button>
+
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+          
+          
+           is-active">
+          <a href="https://www.yuthon.com/">Home</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="https://www.yuthon.com/categories/">Categories</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="https://www.yuthon.com/tags/">Tags</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="https://www.yuthon.com/about/">About</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="https://www.yuthon.com/resume/">Resume</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="https://github.com/corenel">Works</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list"><li class="social-item">
+          <a href="mailto:xxdsox@gmail.com" title="Email" aria-label="Email">
+            <span class="icon icon-email" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//github.com/corenel" title="GitHub" aria-label="GitHub">
+            <span class="icon icon-github" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//twitter.com/corenel" title="Twitter" aria-label="Twitter">
+            <span class="icon icon-twitter" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.facebook.com/xxdsox" title="Facebook" aria-label="Facebook">
+            <span class="icon icon-facebook" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.reddit.com/user/xxdsox" title="Reddit" aria-label="Reddit">
+            <span class="icon icon-reddit" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.quora.com/profile/Yusu-Pan" title="Quora" aria-label="Quora">
+            <span class="icon icon-quora" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//stackoverflow.com/users/5682817" title="stackOverflow"  aria-label="stackOverflow">
+            <span class="icon icon-stackoverflow" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.zhihu.com/people/pan-yu-su" title="Zhihu" aria-label="Zhihu">
+            <span class="icon icon-zhihu" aria-hidden="true"></span>
+          </a>
+        </li></ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">CUDA and Tensorflow Installation on Ubuntu 16.04</h1>
+      <p class="post-meta">@Yusu Pan · Oct 25, 2016 · 3 min read</p>
+    </header>
+    <article class="post-content"><p>昨天折腾了一个下午开发环境的配置，记录一下其中遇到的坑。</p>
+
+<h2 id="硬件配置">硬件配置</h2>
+
+<p>我的硬件配置(XPS 15 9550):</p>
+
+<ul>
+<li>CPU: i5 6300HQ</li>
+<li>GPU: GTX960M 2G</li>
+<li>内存: 16G DDR4 2133</li>
+<li>硬盘: 512G SM951 NVMe</li>
+</ul>
+
+<blockquote>
+<p>基本上就只处于玩票的状态, 实验室快给我配1080啊~~~</p>
+</blockquote>
+
+<p>上一个 NVIDIA 钦定的 DevBox <a href="http://www.nvidia.com/object/deep-learning-system.html">配置</a>:</p>
+
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">GPUs</td>
+<td>8x Tesla P100</td>
+</tr>
+
+<tr>
+<td align="left">TFLOPS (GPU FP16 /CPU FP32)</td>
+<td><sup>170</sup>&frasl;<sub>3</sub></td>
+</tr>
+
+<tr>
+<td align="left">GPU Memory</td>
+<td>16 GB per GPU</td>
+</tr>
+
+<tr>
+<td align="left">CPU</td>
+<td>Dual 20-core Intel® Xeon®E5-2698 v4 2.2 GHz</td>
+</tr>
+
+<tr>
+<td align="left">NVIDIA CUDA® Cores</td>
+<td>28672</td>
+</tr>
+
+<tr>
+<td align="left">System Memory</td>
+<td>512 GB 2133 MHz DDR4</td>
+</tr>
+
+<tr>
+<td align="left">Storage</td>
+<td>4x 1.92 TB SSD RAID 0</td>
+</tr>
+
+<tr>
+<td align="left">Network</td>
+<td>Dual 10 GbE, 4 IB EDR</td>
+</tr>
+
+<tr>
+<td align="left">Software</td>
+<td>Ubuntu Server Linux OSDGX-1 Recommended GPUDriver</td>
+</tr>
+
+<tr>
+<td align="left">System Weight</td>
+<td>134 lbs</td>
+</tr>
+
+<tr>
+<td align="left">System Dimensions</td>
+<td>866 D x 444 W x 131 H (mm)</td>
+</tr>
+
+<tr>
+<td align="left">Packing Dimensions</td>
+<td>1180 D x 730 W x 284 H (mm)</td>
+</tr>
+
+<tr>
+<td align="left">Maximum Power Requirements</td>
+<td>3200W</td>
+</tr>
+
+<tr>
+<td align="left">Operating Temperature Range</td>
+<td>10 - 30°C</td>
+</tr>
+</tbody>
+</table>
+
+<p>这简直是吾辈梦想神机啊… 然而要 <strong>$129000</strong> !</p>
+
+<h2 id="系统环境">系统环境</h2>
+
+<p>推荐是用 Ubuntu 最新的 LTS 版本 16.04.1, 对 Skylake 系列的 CPU 和主板的支持都很不错. 关于在 XPS 15 9550 上的详细配置过程, 我计划稍后专门写一篇.</p>
+
+<p>本来想在 macOS 上跑的, 奈何黑苹果不支持独显.</p>
+
+<h2 id="安装-cuda">安装 CUDA</h2>
+
+<p><a href="https://developer.nvidia.com/cuda-downloads">CUDA</a> 与 <a href="https://developer.nvidia.com/cudnn">cuDNN</a> 的安装在 NVIDIA 与 Tensorflow的官网上都有<a href="https://www.tensorflow.org/versions/r0.11/get_started/os_setup.html#optional-install-cuda-gpus-on-linux">详细说明</a>, 此处仅就一些关键环节作出说明.</p>
+
+<ul>
+<li><p>禁用开源的 Nouveau 驱动</p>
+
+<ul>
+<li>首先看看有没有在使用这个开源驱动:</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"> $ lsmod | grep nouveau</code></pre></div>
+<ul>
+<li>创建<code>/etc/modprobe.d/blacklist-nouveau.conf</code>文件, 并写入以下内容</li>
+</ul>
+
+<pre><code>blacklist nouveau
+options nouveau modeset=0
+</code></pre>
+
+<ul>
+<li>重启kernel initramfs</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo update-initramfs -u</code></pre></div></li>
+
+<li><p>从ppa源下载最新版的驱动(&gt;364), 或者使用 CUDA-Toolkit 自带的驱动:</p></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">  $ sudo apt-get purge nvidia-*
+  $ sudo add-apt-repository ppa:graphics-drivers/ppa
+  $ sudo apt-get update
+  $ sudo apt-get install nvidia-370</code></pre></div>
+<ul>
+<li><p>下载 CUDA 的 runfile (local) 版本, 不要使用apt-get 的方式, 保证获取到的是最新的版本 (目前是8.0).</p></li>
+
+<li><p>安装过程中, 需要<code>Ctrl+Alt+F1</code>切换到 tty 界面, 然后关闭 X server:</p></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">  $ sudo service lightdm stop</code></pre></div>
+<p>之后再执行安装过程</p>
+
+<ul>
+<li><p>安装过程中, 如果是像我一样的 Intel 核显 + NVIDIA 独显的, <strong>绝对不要装 OpenGL</strong>, 否则重启后会陷入 login loop.</p></li>
+
+<li><p>安装完成之后, 设置环境变量:</p></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">  export LD_LIBRARY_PATH<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$LD_LIBRARY_PATH<span style="color:#e6db74">:/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64&#34;</span>
+  export CUDA_HOME<span style="color:#f92672">=</span>/usr/local/cuda</code></pre></div>
+<h2 id="安装-cudnn">安装 cuDNN</h2>
+
+<p>从<a href="https://developer.nvidia.com/cudnn">官网</a>下载之后, 执行以下命令 (目前最新版本5.1):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">tar xvzf cudnn-8.0-linux-x64-v5.1-ga.tgz
+sudo cp cuda/include/cudnn.h /usr/local/cuda/include
+sudo cp cuda/lib64/libcudnn* /usr/local/cuda/lib64
+sudo chmod a+r /usr/local/cuda/include/cudnn.h /usr/local/cuda/lib64/libcudnn*</code></pre></div>
+<h2 id="安装tensorflow">安装Tensorflow</h2>
+
+<p>这是最纠结的一步, 之前按照别人教程说最好从源码编译支持 GPU. 但是由于国内的网络环境, 源码编译需要下一堆的依赖包, 速度超级慢. 因此还是使用官网推荐的 pip 安装方式:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># Get pip</span>
+$ sudo apt-get install python-pip python-dev
+
+<span style="color:#75715e"># Ubuntu/Linux 64-bit, GPU enabled, Python 2.7</span>
+<span style="color:#75715e"># Requires CUDA toolkit 8.0 and CuDNN v5. For other versions, see &#34;Install from sources&#34; below.</span>
+$ export TF_BINARY_URL<span style="color:#f92672">=</span>https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow-0.11.0rc1-cp27-none-linux_x86_64.whl
+
+<span style="color:#75715e"># Python 2</span>
+$ sudo pip install --upgrade $TF_BINARY_URL</code></pre></div>
+<blockquote>
+<ul>
+<li>可以先把<code>tensorflow-0.11.0rc1-cp27-none-linux_x86_64.whl</code>下下来, 本地执行安装命令</li>
+<li>可以使用国内的 pip 源, 加快安装依赖的速度</li>
+</ul>
+</blockquote>
+
+<h2 id="测试-tensorflow">测试 Tensorflow</h2>
+
+<p>用下面的小例子来测试下 Tensorflow 安装得成不成功:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ python
+...
+&gt;&gt;&gt; import tensorflow as tf
+&gt;&gt;&gt; hello <span style="color:#f92672">=</span> tf.constant<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;Hello, TensorFlow!&#39;</span><span style="color:#f92672">)</span>
+&gt;&gt;&gt; sess <span style="color:#f92672">=</span> tf.Session<span style="color:#f92672">()</span>
+&gt;&gt;&gt; print<span style="color:#f92672">(</span>sess.run<span style="color:#f92672">(</span>hello<span style="color:#f92672">))</span>
+Hello, TensorFlow!
+&gt;&gt;&gt; a <span style="color:#f92672">=</span> tf.constant<span style="color:#f92672">(</span><span style="color:#ae81ff">10</span><span style="color:#f92672">)</span>
+&gt;&gt;&gt; b <span style="color:#f92672">=</span> tf.constant<span style="color:#f92672">(</span><span style="color:#ae81ff">32</span><span style="color:#f92672">)</span>
+&gt;&gt;&gt; print<span style="color:#f92672">(</span>sess.run<span style="color:#f92672">(</span>a + b<span style="color:#f92672">))</span>
+<span style="color:#ae81ff">42</span>
+&gt;&gt;&gt;</code></pre></div>
+<p>在 <code>import</code>的同时, 还会显示 CUDA 方面与 GPU 方面的信息.</p>
+
+<p>至此大功告成!</p>
+
+<h2 id="docker-for-tensorflow">Docker for tensorflow</h2>
+
+<p>其实在这期间还试过直接用装了 Tensorflow 的 Docker 镜像, 也有支持 GPU 的版本. 各位如有兴趣可以试试:</p>
+
+<ul>
+<li><a href="https://github.com/tensorflow/tensorflow/tree/master/tensorflow/tools/docker">Github - Using TensorFlow via Docker</a></li>
+<li><a href="https://github.com/saiprashanths/dl-docker">Github - An all-in-one Docker image for deep learning. Contains all the popular DL frameworks (TensorFlow, Theano, Torch, Caffe, etc.)</a></li>
+</ul></article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="https://www.yuthon.com/tags/cuda"><span class="tag">CUDA</span></a></li>
+        
+          <li><a href="https://www.yuthon.com/tags/tensorflow"><span class="tag">Tensorflow</span></a></li>
+        
+          <li><a href="https://www.yuthon.com/tags/ubuntu"><span class="tag">Ubuntu</span></a></li>
+        
+          <li><a href="https://www.yuthon.com/tags/deep-learning"><span class="tag">Deep Learning</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.This post was published <strong>807</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+      </p>
+    </footer>
+    
+      <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "yuthons-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      
+    
+  </section>
+  
+<footer class="site-footer">
+  <p>© 2017-2019 Yuthon&#39;s Blog</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank" rel="noopener">Nuo</a>.</p>
+  
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/smooth-scroll@15.0.0/dist/smooth-scroll.min.js"></script>
+
+
+
+<script async src="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video.min.js"></script>
+
+
+
+
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    },
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
+
+
+
+<script src="https://www.yuthon.com/scripts/index.min.js"></script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('\/service-worker.js').then(function() {
+      console.log('[ServiceWorker] Registered');
+    });
+  }
+</script>
+
+
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-76233259-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+  </body>
+</html>

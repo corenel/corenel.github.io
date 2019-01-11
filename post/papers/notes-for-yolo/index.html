@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Notes for YOLO</title>
+
+  
+  
+  <link href="//cdn.jsdelivr.net" rel="dns-prefetch">
+  <link href="//cdnjs.cloudflare.com" rel="dns-prefetch">
+  <link href="//at.alicdn.com" rel="dns-prefetch">
+  <link href="//fonts.googleapis.com" rel="dns-prefetch">
+  <link href="//fonts.gstatic.com" rel="dns-prefetch">
+  <link href="///disqus.com" rel="dns-prefetch">
+  <link href="//c.disquscdn.com" rel="dns-prefetch">
+  
+  <link href="//www.google-analytics.com" rel="dns-prefetch">
+  
+
+  
+
+  
+  
+  <meta name="description" content="前几天发烧流鼻涕, 睡不了觉, 因此就熬夜读完了 YOLO 的论文. 可以说, YOLO 的实现方式相较于之前 R-CNN 一系的 Region Proposal 的方法来说, 很有新意. YOLO 将 Classification 和 Bounding Box Regression 合起来放进了 CNN 的输出层里面, 从而大大加快了速度.
+">
+
+  
+  
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@corenel">
+    <meta name="twitter:title" content="Notes for YOLO">
+    <meta name="twitter:description" content="前几天发烧流鼻涕, 睡不了觉, 因此就熬夜读完了 YOLO 的论文. 可以说, YOLO 的实现方式相较于之前 R-CNN 一系的 Region Proposal 的方法来说, 很有新意. YOLO 将 Classification 和 Bounding Box Regression 合起来放进了 CNN 的输出层里面, 从而大大加快了速度.
+">
+    <meta name="twitter:image" content="/images/avatar.png">
+  
+
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Notes for YOLO">
+  <meta property="og:description" content="前几天发烧流鼻涕, 睡不了觉, 因此就熬夜读完了 YOLO 的论文. 可以说, YOLO 的实现方式相较于之前 R-CNN 一系的 Region Proposal 的方法来说, 很有新意. YOLO 将 Classification 和 Bounding Box Regression 合起来放进了 CNN 的输出层里面, 从而大大加快了速度.
+">
+  <meta property="og:url" content="https://www.yuthon.com/post/papers/notes-for-yolo/">
+  <meta property="og:image" content="/images/avatar.png">
+
+
+
+
+<meta name="generator" content="Hugo 0.53">
+
+
+<link rel="canonical" href="https://www.yuthon.com/post/papers/notes-for-yolo/">
+
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="format-detection" content="telephone=no,email=no,adress=no">
+<meta http-equiv="Cache-Control" content="no-transform">
+
+
+<meta name="robots" content="index,follow">
+<meta name="referrer" content="origin-when-cross-origin">
+
+
+
+
+
+
+
+<meta name="theme-color" content="#02b875">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Yuthon&#39;s Blog">
+<meta name="msapplication-tooltip" content="Yuthon&#39;s Blog">
+<meta name='msapplication-navbutton-color' content="#02b875">
+<meta name="msapplication-TileColor" content="#02b875">
+<meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+<link rel="icon" href="https://www.yuthon.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.yuthon.com/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.yuthon.com/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="https://www.yuthon.com/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="https://www.yuthon.com/icons/icon-152x152.png">
+<link rel="manifest" href="https://www.yuthon.com/manifest.json">
+
+
+<link rel="preload" href="https://www.yuthon.com/styles/main.min.css" as="style">
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
+<link rel="preload" href="https://www.yuthon.com/images/avatar.png" as="image">
+<link rel="preload" href="https://www.yuthon.com/images/grey-prism.svg" as="image">
+
+
+<style>
+  body {
+    background: rgb(244, 243, 241) url('/images/grey-prism.svg') repeat fixed;
+  }
+</style>
+<link rel="stylesheet" href="https://www.yuthon.com/styles/main.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.2/dist/medium-zoom.min.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video-js.min.css">
+
+
+
+  
+  
+<!--[if lte IE 8]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/videojs-ie8@1.1.2/dist/videojs-ie8.min.js"></script>
+<![endif]-->
+
+<!--[if lte IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20180112/classList.min.js"></script>
+<![endif]-->
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a role="button" aria-label="Go to top" title="Go to top" class="to-top is-hide"><span class="icon icon-up" aria-hidden="true"></span></a>
+      
+        
+        <a role="button" aria-label="Go to comments" title="Go to comments" class="to-comment" href="#disqus_thread"><span class="icon icon-comment" aria-hidden="true"></span></a>
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="https://www.yuthon.com/images/avatar.png" alt="Avatar">
+  
+  <h2 class="title">Yuthon&#39;s Blog</h2>
+  
+  <p class="subtitle"></p>
+  <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
+    <span class="icon icon-menu" aria-hidden="true"></span>
+  </button>
+
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+          
+          
+           is-active">
+          <a href="https://www.yuthon.com/">Home</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="https://www.yuthon.com/categories/">Categories</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="https://www.yuthon.com/tags/">Tags</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="https://www.yuthon.com/about/">About</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="https://www.yuthon.com/resume/">Resume</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="https://github.com/corenel">Works</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list"><li class="social-item">
+          <a href="mailto:xxdsox@gmail.com" title="Email" aria-label="Email">
+            <span class="icon icon-email" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//github.com/corenel" title="GitHub" aria-label="GitHub">
+            <span class="icon icon-github" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//twitter.com/corenel" title="Twitter" aria-label="Twitter">
+            <span class="icon icon-twitter" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.facebook.com/xxdsox" title="Facebook" aria-label="Facebook">
+            <span class="icon icon-facebook" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.reddit.com/user/xxdsox" title="Reddit" aria-label="Reddit">
+            <span class="icon icon-reddit" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.quora.com/profile/Yusu-Pan" title="Quora" aria-label="Quora">
+            <span class="icon icon-quora" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//stackoverflow.com/users/5682817" title="stackOverflow"  aria-label="stackOverflow">
+            <span class="icon icon-stackoverflow" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.zhihu.com/people/pan-yu-su" title="Zhihu" aria-label="Zhihu">
+            <span class="icon icon-zhihu" aria-hidden="true"></span>
+          </a>
+        </li></ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Notes for YOLO</h1>
+      <p class="post-meta">@Yusu Pan · Nov 18, 2016 · 4 min read</p>
+    </header>
+    <article class="post-content"><p>前几天发烧流鼻涕, 睡不了觉, 因此就熬夜读完了 YOLO 的论文. 可以说, YOLO 的实现方式相较于之前 R-CNN 一系的 Region Proposal 的方法来说, 很有新意. YOLO 将 Classification 和 Bounding Box Regression 合起来放进了 CNN 的输出层里面, 从而大大加快了速度.</p>
+
+<h2 id="unified-detection">Unified Detection</h2>
+
+<p>YOLO 将 Bounding Box 的位置回归和分类都放在了 CNN 的输出层中, 从整张图输入来预测 Bounding Box 的信息, 从而实现了 end-to-end 的训练, 实时的检测性能, 并且还保持了较高的精度.</p>
+
+<p><img src="https://www.yuthon.com/images/YOLO_the_model.png" alt="YOLO_the_model" /></p>
+
+<p>YOLO 将整张图分成了$S\times S$个网格 (论文中$S=2$), 如果一个物体的中心在某个网格内, 那么这个网格就负责预测这个物体的检测.</p>
+
+<p>每个网格需要预测$B$个 Bounding Box (论文中$B=2$), 以及它们的置信度 (confidence).</p>
+
+<ul>
+<li>置信度定义为$Pr(Object) * IOU^{truth}_{pred}$
+
+<ul>
+<li>$Pr(Object)$ 即为有物体的概率, 取0或1</li>
+<li>$IOU^{truth}_{pred}$ 即为 ground truth 与predicted box 区域的交并比</li>
+</ul></li>
+<li>每个 Bounding Box 有5个属性$(x,y,w,h,c)$
+
+<ul>
+<li>$(x,y)$ 代表 Bounding Box 的中心距离与网格边界的相对距离, 取值在0与1之间</li>
+<li>$x = \frac{x_{max} + x_{min}}{2 * width}$</li>
+<li>$y = \frac{y_{max} + y_{min}}{2 * height}$</li>
+<li>$(w,h)$ 代表 Bounding Box 的长宽与整个图像长宽的相对比值, 取值在0与1之间</li>
+<li>$x = \frac{x_{max} - x_{min}}{width}$</li>
+<li>$y = \frac{y_{max} - y_{min}}{height}$</li>
+<li>$c$ 即此 Bounding Box 的置信度</li>
+</ul></li>
+</ul>
+
+<p>每个格子还要预测 $C$ 个类别的概率, 记为$Pr(Class_i|Object)$. 此概率与网格中是否有物体有关, 并且使相对于每个网格来说的, 与网格中的 Bounding Box 数量 $B$ 无关.</p>
+
+<ul>
+<li>测试时, 将 class 的条件概率和 box 的置信度乘起来, 得到每个 box 关于 class 的置信度</li>
+<li>$Pr(Class_i|Object) * Pr(Object) * IOU^{truth}_{pred} = Pr(Class_i) * IOU^{truth}_{pred}$</li>
+<li>这个概率既包含了 box 属于哪个 class 的概率, 又包含了这个 box 对于 object 的拟合度</li>
+</ul>
+
+<p>合起来看, 最终的预测张量的维数是 $S\times S \times (B*5 + C)$. 论文里用 PASCAL VOC 数据集, 取$S=7, B=2, C=20$, 因此总计$7\times 7 \times 30$.</p>
+
+<h2 id="network-design">Network Design</h2>
+
+<p><img src="https://www.yuthon.com/images/YOLO_the_architecture.png" alt="YOLO_the_architecture" /></p>
+
+<p>整个网络参考了 GoogleNet, 总共有24个卷积层和两个全连接层.</p>
+
+<h2 id="training">Training</h2>
+
+<p>为了让整个网络有更好的性能, YOLO 使用了以下 tricks:</p>
+
+<ul>
+<li><p>前20层卷积层使用 ImageNet 进行 pretrain, 后4层卷积层和两层全连接层则是随机初始化</p></li>
+
+<li><p>将输入图像的分辨率从$224\times 224$提升到$448*448$</p></li>
+
+<li><p>将$(x,y,w,h)$全部都归一化 (详见上文)</p></li>
+
+<li><p>最后一层(输出层)采用线性激活函数, 其它层都用 Leaky ReLU.</p></li>
+
+<li><p>损失函数采用平方和误差(sum-squared error), 并且针对以下问题作出了改进:</p>
+
+<ul>
+<li>8维的 box 的位置信息$(x,y,w,h)$, 2维的置信度信息, 以及20维 box 的类别信息的平方和误差直接放在一起显然是不合理的. 因此增加 box 的位置信息的误差的权重系数$\lambda_{coord}$ (论文内取$5$).</li>
+<li>同时, 一个图像会有很多网格没有物体, 那么就会把格子里的 box 的置信度变成 0, 导致那些真正有物体的柜子被压制, 最终导致整个网络发散.因此减少没有物体的 box 的权重系数$\lambda_noobj$ (论文内取$0.5$).</li>
+<li>另外, 平方和误差会把 large box 和 small Box 的误差一视同仁. 然而相对于 large box 稍微偏一点, small box 的误差更加不能忍受. 因此使用$(\sqrt{w}, \sqrt{h})$而非$(w,h)$来计算误差.</li>
+<li>每个格子里都有多个 Bounding Box, 但是在训练的时候我们希望对于每个物体只有一个 Bounding Box Predictor. 因此就选择与 ground truth 的 IoU 最大的那个, 称对该 box 对 该 object &ldquo;负责&rdquo; (responsible).</li>
+</ul></li>
+</ul>
+
+<p>最终整个的 loss function 如下:</p>
+
+<p><img src="https://www.yuthon.com/images/YOLO_loss_function.png" alt="YOLO_loss_function" /></p>
+
+<ul>
+<li>$1^{obj}_{ij}$代表第$i$个网格中的第$j$个 box 是否对此 object &ldquo;负责&rdquo;, $1^{obj}_i$表示第$i$个网格中是否有 object.</li>
+
+<li><p>该损失函数仅仅对有物体的网格的分类误差, 以及对 ground truth box 负责的 box 的位置误差进行惩罚</p></li>
+
+<li><p>另外还采用了 Dropout 和 Data Augmentation 的方法来增强泛化能力.</p>
+
+<ul>
+<li>$Dropout = 0.5$</li>
+<li>对图像进行最大$20\%$的随机缩放和平移变换, 同时还有最大$1.5$的曝光与色调变换</li>
+</ul></li>
+</ul>
+
+<h2 id="limitations-of-yolo">Limitations of YOLO</h2>
+
+<ul>
+<li>由于 YOLO 每个网格只有 $B$ 个Bounding Box与1个 Class, 因此限制了临近物体检测到的个数</li>
+<li>泛化能力不够, 由于降采样比较多导致只能用比较粗的特征</li>
+<li>损失函数主要来源还是定位误差, 在对大小物体的位置误差的均衡上还需要改进.</li>
+</ul></article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="https://www.yuthon.com/tags/yolo"><span class="tag">YOLO</span></a></li>
+        
+          <li><a href="https://www.yuthon.com/tags/deep-learning"><span class="tag">Deep Learning</span></a></li>
+        
+          <li><a href="https://www.yuthon.com/tags/object-detection"><span class="tag">Object Detection</span></a></li>
+        
+          <li><a href="https://www.yuthon.com/tags/darknet"><span class="tag">Darknet</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.This post was published <strong>783</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+      </p>
+    </footer>
+    
+      <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "yuthons-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      
+    
+  </section>
+  
+<footer class="site-footer">
+  <p>© 2017-2019 Yuthon&#39;s Blog</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank" rel="noopener">Nuo</a>.</p>
+  
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/smooth-scroll@15.0.0/dist/smooth-scroll.min.js"></script>
+
+
+
+<script async src="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video.min.js"></script>
+
+
+
+
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    },
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
+
+
+
+<script src="https://www.yuthon.com/scripts/index.min.js"></script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('\/service-worker.js').then(function() {
+      console.log('[ServiceWorker] Registered');
+    });
+  }
+</script>
+
+
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-76233259-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+  </body>
+</html>

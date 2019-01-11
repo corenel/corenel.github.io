@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Train YOLOv2 on my own dataset</title>
+
+  
+  
+  <link href="//cdn.jsdelivr.net" rel="dns-prefetch">
+  <link href="//cdnjs.cloudflare.com" rel="dns-prefetch">
+  <link href="//at.alicdn.com" rel="dns-prefetch">
+  <link href="//fonts.googleapis.com" rel="dns-prefetch">
+  <link href="//fonts.gstatic.com" rel="dns-prefetch">
+  <link href="///disqus.com" rel="dns-prefetch">
+  <link href="//c.disquscdn.com" rel="dns-prefetch">
+  
+  <link href="//www.google-analytics.com" rel="dns-prefetch">
+  
+
+  
+
+  
+  
+  <meta name="description" content="最近在看 Darkflow 的时候, 发现连 YOLOv2 都出了, 据称 mAP 和速度都提升了不少, 立马 clone 下来试了一番.
+">
+
+  
+  
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@corenel">
+    <meta name="twitter:title" content="Train YOLOv2 on my own dataset">
+    <meta name="twitter:description" content="最近在看 Darkflow 的时候, 发现连 YOLOv2 都出了, 据称 mAP 和速度都提升了不少, 立马 clone 下来试了一番.
+">
+    <meta name="twitter:image" content="/images/avatar.png">
+  
+
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Train YOLOv2 on my own dataset">
+  <meta property="og:description" content="最近在看 Darkflow 的时候, 发现连 YOLOv2 都出了, 据称 mAP 和速度都提升了不少, 立马 clone 下来试了一番.
+">
+  <meta property="og:url" content="https://www.yuthon.com/post/practices/train-yolov2-on-my-own-dataset/">
+  <meta property="og:image" content="/images/avatar.png">
+
+
+
+
+<meta name="generator" content="Hugo 0.53">
+
+
+<link rel="canonical" href="https://www.yuthon.com/post/practices/train-yolov2-on-my-own-dataset/">
+
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="format-detection" content="telephone=no,email=no,adress=no">
+<meta http-equiv="Cache-Control" content="no-transform">
+
+
+<meta name="robots" content="index,follow">
+<meta name="referrer" content="origin-when-cross-origin">
+
+
+
+
+
+
+
+<meta name="theme-color" content="#02b875">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Yuthon&#39;s Blog">
+<meta name="msapplication-tooltip" content="Yuthon&#39;s Blog">
+<meta name='msapplication-navbutton-color' content="#02b875">
+<meta name="msapplication-TileColor" content="#02b875">
+<meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+<link rel="icon" href="https://www.yuthon.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.yuthon.com/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.yuthon.com/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="https://www.yuthon.com/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="https://www.yuthon.com/icons/icon-152x152.png">
+<link rel="manifest" href="https://www.yuthon.com/manifest.json">
+
+
+<link rel="preload" href="https://www.yuthon.com/styles/main.min.css" as="style">
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
+<link rel="preload" href="https://www.yuthon.com/images/avatar.png" as="image">
+<link rel="preload" href="https://www.yuthon.com/images/grey-prism.svg" as="image">
+
+
+<style>
+  body {
+    background: rgb(244, 243, 241) url('/images/grey-prism.svg') repeat fixed;
+  }
+</style>
+<link rel="stylesheet" href="https://www.yuthon.com/styles/main.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.2/dist/medium-zoom.min.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video-js.min.css">
+
+
+
+  
+  
+<!--[if lte IE 8]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/videojs-ie8@1.1.2/dist/videojs-ie8.min.js"></script>
+<![endif]-->
+
+<!--[if lte IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20180112/classList.min.js"></script>
+<![endif]-->
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a role="button" aria-label="Go to top" title="Go to top" class="to-top is-hide"><span class="icon icon-up" aria-hidden="true"></span></a>
+      
+        
+        <a role="button" aria-label="Go to comments" title="Go to comments" class="to-comment" href="#disqus_thread"><span class="icon icon-comment" aria-hidden="true"></span></a>
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="https://www.yuthon.com/images/avatar.png" alt="Avatar">
+  
+  <h2 class="title">Yuthon&#39;s Blog</h2>
+  
+  <p class="subtitle"></p>
+  <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
+    <span class="icon icon-menu" aria-hidden="true"></span>
+  </button>
+
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+          
+          
+           is-active">
+          <a href="https://www.yuthon.com/">Home</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="https://www.yuthon.com/categories/">Categories</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="https://www.yuthon.com/tags/">Tags</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="https://www.yuthon.com/about/">About</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="https://www.yuthon.com/resume/">Resume</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="https://github.com/corenel">Works</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list"><li class="social-item">
+          <a href="mailto:xxdsox@gmail.com" title="Email" aria-label="Email">
+            <span class="icon icon-email" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//github.com/corenel" title="GitHub" aria-label="GitHub">
+            <span class="icon icon-github" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//twitter.com/corenel" title="Twitter" aria-label="Twitter">
+            <span class="icon icon-twitter" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.facebook.com/xxdsox" title="Facebook" aria-label="Facebook">
+            <span class="icon icon-facebook" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.reddit.com/user/xxdsox" title="Reddit" aria-label="Reddit">
+            <span class="icon icon-reddit" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.quora.com/profile/Yusu-Pan" title="Quora" aria-label="Quora">
+            <span class="icon icon-quora" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//stackoverflow.com/users/5682817" title="stackOverflow"  aria-label="stackOverflow">
+            <span class="icon icon-stackoverflow" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.zhihu.com/people/pan-yu-su" title="Zhihu" aria-label="Zhihu">
+            <span class="icon icon-zhihu" aria-hidden="true"></span>
+          </a>
+        </li></ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Train YOLOv2 on my own dataset</h1>
+      <p class="post-meta">@Yusu Pan · Dec 3, 2016 · 3 min read</p>
+    </header>
+    <article class="post-content"><p>最近在看 Darkflow 的时候, 发现连 YOLOv2 都出了, 据称 mAP 和速度都提升了不少, 立马 clone 下来试了一番.</p>
+
+<h2 id="instruction">Instruction</h2>
+
+<h3 id="comparison">Comparison</h3>
+
+<p>下面是<a href="http://pjreddie.com/darknet/yolo/">官网</a>挂出来的一个对比表, 可以看出, YOLOv2 有 76.8 的mAP, 和 SSD500 相同, 但是 FPS 不知比 SSD 高到哪里去了. YOLOv2 544x544 提升到了 78.6 mAP, 比 Faster-RCNN 的 Baseline (ResNet-101, VOC07+12) 的 76.4 mAP 高, 但是比其 Baseline+++ (ResNet-101, COCO+VOC2007+VOC2012) 的 85.6 mAP 还是逊色了不少. 不过官网没有挂出来 training on Pascal + COCO data and testing on Pascal data 的数据, 想见应该也会在 80 mAP 以上.</p>
+
+<p>更加可喜的是, Tiny-YOLOv2比之前的Tiny-YOLO高出了52FPS, 达到了惊人的207FPS, 想必在 TX1 上跑的话应该也能上20FPS.</p>
+
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Train</th>
+<th>Test</th>
+<th>mAP</th>
+<th>FLOPS</th>
+<th>FPS</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Old YOLO</td>
+<td>VOC 2007+2012</td>
+<td>2007</td>
+<td>63.4</td>
+<td>40.19 Bn</td>
+<td>45</td>
+</tr>
+
+<tr>
+<td>SSD300</td>
+<td>VOC 2007+2012</td>
+<td>2007</td>
+<td>74.3</td>
+<td>-</td>
+<td>46</td>
+</tr>
+
+<tr>
+<td>SSD500</td>
+<td>VOC 2007+2012</td>
+<td>2007</td>
+<td>76.8</td>
+<td>-</td>
+<td>19</td>
+</tr>
+
+<tr>
+<td>YOLOv2</td>
+<td>VOC 2007+2012</td>
+<td>2007</td>
+<td>76.8</td>
+<td>34.90 Bn</td>
+<td>67</td>
+</tr>
+
+<tr>
+<td>YOLOv2 544x544</td>
+<td>VOC 2007+2012</td>
+<td>2007</td>
+<td>78.6</td>
+<td>59.68 Bn</td>
+<td>40</td>
+</tr>
+
+<tr>
+<td>Tiny YOLO</td>
+<td>VOC 2007+2012</td>
+<td>2007</td>
+<td>57.1</td>
+<td>6.97 Bn</td>
+<td>207</td>
+</tr>
+
+<tr>
+<td>SSD300</td>
+<td>COCO trainval</td>
+<td>test-dev</td>
+<td>41.2</td>
+<td>-</td>
+<td>46</td>
+</tr>
+
+<tr>
+<td>SSD500</td>
+<td>COCO trainval</td>
+<td>test-dev</td>
+<td>46.5</td>
+<td>-</td>
+<td>19</td>
+</tr>
+
+<tr>
+<td>YOLOv2 544x544</td>
+<td>COCO trainval</td>
+<td>test-dev</td>
+<td>44.0</td>
+<td>59.68 Bn</td>
+<td>40</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="what-s-new-in-version-2">What&rsquo;s New in Version 2</h3>
+
+<p>具体的文章还没在 Arxiv 上挂出来, 按照目前透露的信息, 主要是像 SSD 和 Overfeat 那样全部都用了卷积层, 而不是后面还跟着全连接层. 但是不同的是, 仍然是对整个图像进行训练. 同时还借鉴了 Faster-RCNN, 调整了 Bounding Box 的优先级, 不直接预测<code>w</code>, <code>h</code>, 但是仍然是直接预测<code>x</code>, <code>y</code>坐标.</p>
+
+<h3 id="video">Video</h3>
+
+<p>官网还挂了一个用 YOLOv2 识别过的 007 的 Trailer, 配乐+Bounding Box 使得这个视频莫名其妙地非常搞笑, 建议去<a href="https://youtu.be/VOC3huqHrss">看看</a>.</p>
+
+<h2 id="training">Training</h2>
+
+<p>下面讲讲使用 YOLOv2 在我自己做的数据集 ROBdevkit 上的训练过程.</p>
+
+<h3 id="make">Make</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git clone https://github.com/pjreddie/darknet
+$ cd darknet
+$ make -j8</code></pre></div>
+<p>在<code>make</code>之前, 为了最大发挥机器的性能, 还需要修改<code>Makefile</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">diff --git a/Makefile b/Makefile
+index 3d3d5e4..dd7a33d 100644
+<span style="color:#f92672">--- a/Makefile
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">+++ b/Makefile
+</span><span style="color:#a6e22e"></span><span style="color:#75715e">@@ -1,6 +1,6 @@
+</span><span style="color:#75715e"></span><span style="color:#f92672">-GPU=0
+</span><span style="color:#f92672">-CUDNN=0
+</span><span style="color:#f92672">-OPENCV=0
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">+GPU=1
+</span><span style="color:#a6e22e">+CUDNN=1
+</span><span style="color:#a6e22e">+OPENCV=1
+</span><span style="color:#a6e22e"></span> DEBUG=0
+
+ ARCH= -gencode arch=compute_20,code=[sm_20,sm_21] \
+<span style="color:#75715e">@@ -10,47 +10,47 @@ ARCH= -gencode arch=compute_20,code=[sm_20,sm_21] \
+</span><span style="color:#75715e"></span>       -gencode arch=compute_52,code=[sm_52,compute_52]
+
+ # This is what I use, uncomment if you know your arch and want to specify
+<span style="color:#f92672">-# ARCH=  -gencode arch=compute_52,code=compute_52
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">+ARCH=  -gencode arch=compute_61,code=compute_61
+</span><span style="color:#a6e22e"></span></code></pre></div>
+<h3 id="prepare">Prepare</h3>
+
+<p>YOLOv2这次不用改<code>yolo.c</code>源文件了, 只需要修改一些配置文件即可, 大大方便了我们用自己的数据集训练.</p>
+
+<p>首先修改<code>data/voc.names</code>, 另存为<code>data/rob.names</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#a6e22e">ball</span>
+<span style="color:#a6e22e">goal</span>
+<span style="color:#a6e22e">robot</span></code></pre></div>
+<p>修改<code>cfg/voc.data</code>, 另存为<code>cfg/rob.names</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Ini" data-lang="Ini"><span style="color:#a6e22e">classes</span><span style="color:#f92672">=</span> <span style="color:#e6db74">3</span>
+<span style="color:#a6e22e">train</span>  <span style="color:#f92672">=</span> <span style="color:#e6db74">/home/m/data/ROBdevkit/train.txt</span>
+<span style="color:#a6e22e">valid</span>  <span style="color:#f92672">=</span> <span style="color:#e6db74">/home/m/data/ROBdevkit/2017_test.txt</span>
+<span style="color:#a6e22e">names</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">data/rob.names</span>
+<span style="color:#a6e22e">backup</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">/home/m/workspace/backup/</span></code></pre></div>
+<p>其次修改<code>script/voc_label.py</code>, 另存为<code>script/rob_label.py</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> xml.etree.ElementTree <span style="color:#f92672">as</span> ET
+<span style="color:#f92672">import</span> pickle
+<span style="color:#f92672">import</span> os
+<span style="color:#f92672">from</span> os <span style="color:#f92672">import</span> listdir, getcwd
+<span style="color:#f92672">from</span> os.path <span style="color:#f92672">import</span> join
+
+sets <span style="color:#f92672">=</span> [(<span style="color:#e6db74">&#39;2017&#39;</span>, <span style="color:#e6db74">&#39;train&#39;</span>), (<span style="color:#e6db74">&#39;2017&#39;</span>, <span style="color:#e6db74">&#39;val&#39;</span>), (<span style="color:#e6db74">&#39;2017&#39;</span>, <span style="color:#e6db74">&#39;test&#39;</span>)]
+
+classes <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;ball&#39;</span>, <span style="color:#e6db74">&#39;goal&#39;</span>, <span style="color:#e6db74">&#39;robot&#39;</span>]
+
+<span style="color:#f92672">...</span></code></pre></div>
+<p>然后在<code>ROBdevkit</code>的根目录下执行<code>python rob_label.py</code>来生成 label 文件, 并用<code>cat 2017_* &gt; train.txt</code>生成<code>train.txt</code>. 最终目录结构为:</p>
+
+<pre><code>.
+├── ROBdevkit
+│   ├── 2017_test.txt
+│   ├── 2017_train.txt
+│   ├── 2017_val.txt
+│   ├── results
+│   ├── ROB2017
+│   ├── scripts
+│   ├── train.txt
+│   └── VOC0712
+├── rob_label.py
+</code></pre>
+
+<p>最后, 修改<code>cfg/voc.data</code>, 另存为<code>cfg/rob.names</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">diff --git a/cfg/tiny-yolo-voc.cfg b/cfg/tiny-yolo-rob.cfg
+<span style="color:#f92672">-- a/cfg/tiny-yolo-voc.cfg
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">++ b/cfg/tiny-yolo-rob.cfg
+</span><span style="color:#a6e22e"></span>[convolutional]
+size=1
+stride=1
+pad=1
+<span style="color:#f92672">-filters=250
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">+filters=40
+</span><span style="color:#a6e22e"></span>activation=linear
+
+[region]
+anchors = 1.08,1.19,  3.42,4.41,  6.63,11.38,  9.42,5.11,  16.62,10.52
+bias_match=1
+<span style="color:#f92672">-classes=20
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">+classes=3
+</span><span style="color:#a6e22e"></span>coords=4
+num=5
+softmax=1
+jitter=.2
+rescore=1
+
+object_scale=5
+noobject_scale=1
+class_scale=1
+coord_scale=1
+
+absolute=1
+thresh = .6
+random=1
+</code></pre></div>
+<blockquote>
+<p>注意<code>region</code>的前一层的<code>filter</code>值的计算方法为$num \times (classes+coords+1)$.</p>
+</blockquote>
+
+<h3 id="train">Train</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./darknet detector train cfg/rob.data cfg/tiny-yolo-rob.cfg darknet.conv.weights</code></pre></div></article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="https://www.yuthon.com/tags/yolo"><span class="tag">YOLO</span></a></li>
+        
+          <li><a href="https://www.yuthon.com/tags/deep-learning"><span class="tag">Deep Learning</span></a></li>
+        
+          <li><a href="https://www.yuthon.com/tags/object-detection"><span class="tag">Object Detection</span></a></li>
+        
+          <li><a href="https://www.yuthon.com/tags/darknet"><span class="tag">Darknet</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.This post was published <strong>769</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+      </p>
+    </footer>
+    
+      <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "yuthons-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      
+    
+  </section>
+  
+<footer class="site-footer">
+  <p>© 2017-2019 Yuthon&#39;s Blog</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank" rel="noopener">Nuo</a>.</p>
+  
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/smooth-scroll@15.0.0/dist/smooth-scroll.min.js"></script>
+
+
+
+<script async src="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video.min.js"></script>
+
+
+
+
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    },
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
+
+
+
+<script src="https://www.yuthon.com/scripts/index.min.js"></script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('\/service-worker.js').then(function() {
+      console.log('[ServiceWorker] Registered');
+    });
+  }
+</script>
+
+
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-76233259-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+  </body>
+</html>

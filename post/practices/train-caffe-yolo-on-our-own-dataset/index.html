@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Train Caffe-YOLO on our own dataset</title>
+
+  
+  
+  <link href="//cdn.jsdelivr.net" rel="dns-prefetch">
+  <link href="//cdnjs.cloudflare.com" rel="dns-prefetch">
+  <link href="//at.alicdn.com" rel="dns-prefetch">
+  <link href="//fonts.googleapis.com" rel="dns-prefetch">
+  <link href="//fonts.gstatic.com" rel="dns-prefetch">
+  <link href="///disqus.com" rel="dns-prefetch">
+  <link href="//c.disquscdn.com" rel="dns-prefetch">
+  
+  <link href="//www.google-analytics.com" rel="dns-prefetch">
+  
+
+  
+
+  
+  
+  <meta name="description" content="经过这几天不断地测试, YOLO 在 TX1 上跑得还是挺不错的, 符合我们实验室的要求. 但是 YOLO 依赖的 Darknet 框架还是太原始了, 不如 TensorFlow 或者 Caffe 用着顺手. 另外, 我负责的目标检测这一块还需要和梅老板写的新框架相结合, 所以更加需要把 YOLO 移植到一个成熟的框架上去.
+很幸运的是, YOLO 在各个框架上的移植都有前人做过了, 比如 darktf 和 caffe-yolo. 今天以 caffe-yolo 为例, 谈一下在其上使用自己的数据集来训练.
+">
+
+  
+  
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@corenel">
+    <meta name="twitter:title" content="Train Caffe-YOLO on our own dataset">
+    <meta name="twitter:description" content="经过这几天不断地测试, YOLO 在 TX1 上跑得还是挺不错的, 符合我们实验室的要求. 但是 YOLO 依赖的 Darknet 框架还是太原始了, 不如 TensorFlow 或者 Caffe 用着顺手. 另外, 我负责的目标检测这一块还需要和梅老板写的新框架相结合, 所以更加需要把 YOLO 移植到一个成熟的框架上去.
+很幸运的是, YOLO 在各个框架上的移植都有前人做过了, 比如 darktf 和 caffe-yolo. 今天以 caffe-yolo 为例, 谈一下在其上使用自己的数据集来训练.
+">
+    <meta name="twitter:image" content="/images/avatar.png">
+  
+
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Train Caffe-YOLO on our own dataset">
+  <meta property="og:description" content="经过这几天不断地测试, YOLO 在 TX1 上跑得还是挺不错的, 符合我们实验室的要求. 但是 YOLO 依赖的 Darknet 框架还是太原始了, 不如 TensorFlow 或者 Caffe 用着顺手. 另外, 我负责的目标检测这一块还需要和梅老板写的新框架相结合, 所以更加需要把 YOLO 移植到一个成熟的框架上去.
+很幸运的是, YOLO 在各个框架上的移植都有前人做过了, 比如 darktf 和 caffe-yolo. 今天以 caffe-yolo 为例, 谈一下在其上使用自己的数据集来训练.
+">
+  <meta property="og:url" content="https://www.yuthon.com/post/practices/train-caffe-yolo-on-our-own-dataset/">
+  <meta property="og:image" content="/images/avatar.png">
+
+
+
+
+<meta name="generator" content="Hugo 0.53">
+
+
+<link rel="canonical" href="https://www.yuthon.com/post/practices/train-caffe-yolo-on-our-own-dataset/">
+
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="format-detection" content="telephone=no,email=no,adress=no">
+<meta http-equiv="Cache-Control" content="no-transform">
+
+
+<meta name="robots" content="index,follow">
+<meta name="referrer" content="origin-when-cross-origin">
+
+
+
+
+
+
+
+<meta name="theme-color" content="#02b875">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Yuthon&#39;s Blog">
+<meta name="msapplication-tooltip" content="Yuthon&#39;s Blog">
+<meta name='msapplication-navbutton-color' content="#02b875">
+<meta name="msapplication-TileColor" content="#02b875">
+<meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+<link rel="icon" href="https://www.yuthon.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.yuthon.com/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.yuthon.com/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="https://www.yuthon.com/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="https://www.yuthon.com/icons/icon-152x152.png">
+<link rel="manifest" href="https://www.yuthon.com/manifest.json">
+
+
+<link rel="preload" href="https://www.yuthon.com/styles/main.min.css" as="style">
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
+<link rel="preload" href="https://www.yuthon.com/images/avatar.png" as="image">
+<link rel="preload" href="https://www.yuthon.com/images/grey-prism.svg" as="image">
+
+
+<style>
+  body {
+    background: rgb(244, 243, 241) url('/images/grey-prism.svg') repeat fixed;
+  }
+</style>
+<link rel="stylesheet" href="https://www.yuthon.com/styles/main.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.2/dist/medium-zoom.min.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video-js.min.css">
+
+
+
+  
+  
+<!--[if lte IE 8]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/videojs-ie8@1.1.2/dist/videojs-ie8.min.js"></script>
+<![endif]-->
+
+<!--[if lte IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20180112/classList.min.js"></script>
+<![endif]-->
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a role="button" aria-label="Go to top" title="Go to top" class="to-top is-hide"><span class="icon icon-up" aria-hidden="true"></span></a>
+      
+        
+        <a role="button" aria-label="Go to comments" title="Go to comments" class="to-comment" href="#disqus_thread"><span class="icon icon-comment" aria-hidden="true"></span></a>
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="https://www.yuthon.com/images/avatar.png" alt="Avatar">
+  
+  <h2 class="title">Yuthon&#39;s Blog</h2>
+  
+  <p class="subtitle"></p>
+  <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
+    <span class="icon icon-menu" aria-hidden="true"></span>
+  </button>
+
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+          
+          
+           is-active">
+          <a href="https://www.yuthon.com/">Home</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="https://www.yuthon.com/categories/">Categories</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="https://www.yuthon.com/tags/">Tags</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="https://www.yuthon.com/about/">About</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="https://www.yuthon.com/resume/">Resume</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="https://github.com/corenel">Works</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list"><li class="social-item">
+          <a href="mailto:xxdsox@gmail.com" title="Email" aria-label="Email">
+            <span class="icon icon-email" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//github.com/corenel" title="GitHub" aria-label="GitHub">
+            <span class="icon icon-github" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//twitter.com/corenel" title="Twitter" aria-label="Twitter">
+            <span class="icon icon-twitter" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.facebook.com/xxdsox" title="Facebook" aria-label="Facebook">
+            <span class="icon icon-facebook" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.reddit.com/user/xxdsox" title="Reddit" aria-label="Reddit">
+            <span class="icon icon-reddit" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.quora.com/profile/Yusu-Pan" title="Quora" aria-label="Quora">
+            <span class="icon icon-quora" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//stackoverflow.com/users/5682817" title="stackOverflow"  aria-label="stackOverflow">
+            <span class="icon icon-stackoverflow" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.zhihu.com/people/pan-yu-su" title="Zhihu" aria-label="Zhihu">
+            <span class="icon icon-zhihu" aria-hidden="true"></span>
+          </a>
+        </li></ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Train Caffe-YOLO on our own dataset</h1>
+      <p class="post-meta">@Yusu Pan · Nov 26, 2016 · 4 min read</p>
+    </header>
+    <article class="post-content"><p>经过这几天不断地测试, YOLO 在 TX1 上跑得还是挺不错的, 符合我们实验室的要求. 但是 YOLO 依赖的 Darknet 框架还是太原始了, 不如 TensorFlow 或者 Caffe 用着顺手. 另外, 我负责的目标检测这一块还需要和梅老板写的新框架相结合, 所以更加需要把 YOLO 移植到一个成熟的框架上去.</p>
+
+<p>很幸运的是, YOLO 在各个框架上的移植都有前人做过了, 比如 <a href="https://github.com/thtrieu/darktf">darktf</a> 和 <a href="https://github.com/yeahkun/caffe-yolo">caffe-yolo</a>. 今天以 caffe-yolo 为例, 谈一下在其上使用自己的数据集来训练.</p>
+
+<h2 id="reformat-our-dataset-as-pascal-voc-style">Reformat our dataset as PASCAL VOC style</h2>
+
+<p>为了之后的方便起见, 首先将我们的数据集转成 PASCAL VOC 的标准的目录格式.</p>
+
+<h3 id="structure-of-pascal-voc-dataset">Structure of PASCAL VOC dataset</h3>
+
+<p>其目录结构如下:</p>
+
+<pre><code>.
+├── VOC2007
+│   ├── Annotations
+│   ├── ImageSets
+│   ├── JPEGImages
+│   ├── SegmentationClass
+│   └── SegmentationObject
+└── VOC2012
+    ├── Annotations
+    ├── ImageSets
+    ├── JPEGImages
+    ├── SegmentationClass
+    └── SegmentationObject
+</code></pre>
+
+<p>其中<code>Annotations</code>目录放的是<code>.xml</code>文件, <code>JPEGImages</code>目录中存放的是对应的<code>.jpg</code>图像. 由于我们不做语义分割, 所以<code>SegmentationClass</code>与<code>SegmentationObject</code>对我们没什么用.</p>
+
+<p><code>ImageSets</code>目录中结构如下, 主要关注的是<code>Main</code>文件夹中的<code>trainval.txt</code>, <code>train.txt</code> , <code>val.txt</code>以及<code>test.txt</code>四个文件.</p>
+
+<pre><code>.
+├── Layout
+│   ├── test.txt
+│   ├── train.txt
+│   ├── trainval.txt
+│   └── val.txt
+├── Main
+│   ├── aeroplane_test.txt
+│   ├── aeroplane_train.txt
+│   ├── aeroplane_trainval.txt
+│   ├── aeroplane_val.txt
+│   ├── ...
+│   ├── test.txt
+│   ├── train.txt
+│   ├── trainval.txt
+│   └── val.txt
+└── Segmentation
+    ├── test.txt
+    ├── train.txt
+    ├── trainval.txt
+    └── val.txt
+</code></pre>
+
+<h3 id="reformat-our-dataset">Reformat our dataset</h3>
+
+<p>首先是把之前杂乱的图片文件名重新整理, 如下所示:</p>
+
+<pre><code>.
+├── image00001.jpg
+├── image00002.jpg
+├── image00012.jpg
+├── ...
+├── image04524.jpg
+├── image04525.jpg
+└── image04526.jpg
+</code></pre>
+
+<p>随后用<code>labelImg</code>重新标注这些图. 标注完成后, 建立我们自己的数据集的结构, 并且将图片和标注放到对应的文件夹里:</p>
+
+<pre><code>.
+├── ROB2017
+│   ├── Annotations
+│   ├── ImageSets
+│   ├── JPEGImages
+│   └── JPEGImages_original
+└── scripts
+    ├── clean.py
+    ├── conf.json
+    ├── convert_png2jpg.py
+    └── split_dataset.py
+</code></pre>
+
+<p>之后写了几个脚本, 其中<code>clean.py</code>用来清理未标注的图片; <code>split_dataset.py</code>用来分割训练集验证集测试集, 并且保存到<code>ImageSets/Main</code>中.</p>
+
+<p>至此, 把我们的数据集转成 PASCAL VOC 标准目录的工作就完成了, 可以进行下一步的训练工作.</p>
+
+<h2 id="train-yolo-on-caffe">Train YOLO on Caffe</h2>
+
+<h3 id="clone-make">Clone &amp; Make</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git clone https://github.com/yeahkun/caffe-yolo.git
+$ cd caffe-yolo
+$ cp Makefile.config.example Makefile.config
+$ make -j8</code></pre></div>
+<p>若是出现<code>src/caffe/net.cpp:8:18: fatal error: hdf5.h: No such file or directory</code>这一错误, 可以照下文修改<code>Makefile.config</code>文件:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">diff --git a/Makefile.config b/Makefile.config
+index a873502..88828cc 100644
+<span style="color:#f92672">--- a/Makefile.config.example
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">+++ b/Makefile.config.example
+</span><span style="color:#a6e22e"></span><span style="color:#75715e">@@ -69,8 +69,8 @@ PYTHON_LIB := /usr/lib
+</span><span style="color:#75715e"></span> # WITH_PYTHON_LAYER := 1
+
+ # Whatever else you find you need goes here.
+<span style="color:#f92672">-INCLUDE_DIRS := $(PYTHON_INCLUDE) /usr/local/include
+</span><span style="color:#f92672">-LIBRARY_DIRS := $(PYTHON_LIB) /usr/local/lib /usr/lib
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">+INCLUDE_DIRS := $(PYTHON_INCLUDE) /usr/local/include /usr/include/hdf5/serial/
+</span><span style="color:#a6e22e">+LIBRARY_DIRS := $(PYTHON_LIB) /usr/local/lib /usr/lib /usr/lib/x86_64-linux-gnu/hdf5/serial/
+</span><span style="color:#a6e22e"></span>
+ # If Homebrew is installed at a non standard location (for example your home directory) and you use it for general dependencies
+ # INCLUDE_DIRS += $(shell brew --prefix)/include
+</code></pre></div>
+<p>同时还可以开启 cuDNN 以及修改 compute, 充分发挥 GTX1080 的性能:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">## Refer to http://caffe.berkeleyvision.org/installation.html
+# Contributions simplifying and improving our build system are welcome!
+
+# cuDNN acceleration switch (uncomment to build with cuDNN).
+<span style="color:#f92672">-# USE_CUDNN := 1
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">+USE_CUDNN := 1
+</span><span style="color:#a6e22e"></span>
+# CPU-only switch (uncomment to build without GPU support).
+# CPU_ONLY := 1
+...
+# CUDA architecture setting: going with all of them.
+# For CUDA &lt; 6.0, comment the *_50 lines for compatibility.
+CUDA_ARCH := -gencode arch=compute_20,code=sm_20 \
+                -gencode arch=compute_20,code=sm_21 \
+                -gencode arch=compute_30,code=sm_30 \
+                -gencode arch=compute_35,code=sm_35 \
+                -gencode arch=compute_50,code=sm_50 \
+<span style="color:#f92672">-                -gencode arch=compute_50,code=compute_50
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">+                -gencode arch=compute_50,code=compute_50 \
+</span><span style="color:#a6e22e">+                -gencode arch=compute_61,code=compute_61
+</span><span style="color:#a6e22e"></span></code></pre></div>
+<h3 id="data-preparation">Data preparation</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"> $ cd data/yolo
+ $ ln -s /your/path/to/VOCdevkit/ .
+ $ python ./get_list.py
+ <span style="color:#75715e"># change related path in script convert.sh</span>
+ $ sudo rm -r lmdb
+ $ mkdir lmdb
+ $ ./convert.sh </code></pre></div>
+<p>有一些注意点:</p>
+
+<ul>
+<li><p>记得将<code>ln -s /your/path/to/VOCdevkit/ .</code>中的<code>/your/path/to/VOCdevkit/</code>换成自己数据集的路径, 例如<code>ln -s ~/data/ROBdevkit/ .</code></p></li>
+
+<li><p>修改<code>./get_list.py</code>:</p></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">  diff --git a/data/yolo/get_list.py b/data/yolo/get_list.py
+  index f519f1a..73b9858 100755
+  --- a/data/yolo/get_list.py
+  +++ b/data/yolo/get_list.py
+  @@ -3,12 +3,15 @@ import os
+
+   trainval_jpeg_list = []
+   trainval_xml_list = []
+  -test07_jpeg_list = []
+  -test07_xml_list = []
+  -test12_jpeg_list = []
+  -
+  -for name in [&#34;VOC2007&#34;, &#34;VOC2012&#34;]:
+  -  voc_dir = os.path.join(&#34;VOCdevkit&#34;, name)
+  +test_jpeg_list = []
+  +test_xml_list = []
+  +
+  +for name in [&#39;ROB2017&#39;]:
+  +  # voc_dir = os.path.join(&#34;VOCdevkit&#34;, name)
+  +  voc_dir = os.path.join(&#39;ROBdevkit&#39;, name)
+     txt_fold = os.path.join(voc_dir, &#34;ImageSets/Main&#34;)
+     jpeg_fold = os.path.join(voc_dir, &#34;JPEGImages&#34;)
+     xml_fold = os.path.join(voc_dir, &#34;Annotations&#34;)
+  @@ -23,35 +26,49 @@ for name in [&#34;VOC2007&#34;, &#34;VOC2012&#34;]:
+             print trainval_jpeg_list[-1], &#34;not exist&#34;
+           if not os.path.exists(trainval_xml_list[-1]):
+             print trainval_xml_list[-1], &#34;not exist&#34;
+  -  if name == &#34;VOC2007&#34;:
+  -    file_path = os.path.join(txt_fold, &#34;test.txt&#34;)
+  -    with open(file_path, &#39;r&#39;) as fp:
+  -      for line in fp:
+  -        line = line.strip()
+  -        test07_jpeg_list.append(os.path.join(jpeg_fold, &#34;{}.jpg&#34;.format(line)))
+  -        test07_xml_list.append(os.path.join(xml_fold, &#34;{}.xml&#34;.format(line)))
+  -        if not os.path.exists(test07_jpeg_list[-1]):
+  -          print test07_jpeg_list[-1], &#34;not exist&#34;
+  -        if not os.path.exists(test07_xml_list[-1]):
+  -          print test07_xml_list[-1], &#34;not exist&#34;
+  -  elif name == &#34;VOC2012&#34;:
+  +  if name == &#34;ROB2017&#34;:
+       file_path = os.path.join(txt_fold, &#34;test.txt&#34;)
+       with open(file_path, &#39;r&#39;) as fp:
+         for line in fp:
+           line = line.strip()
+  -        test12_jpeg_list.append(os.path.join(jpeg_fold, &#34;{}.jpg&#34;.format(line)))
+  -        if not os.path.exists(test12_jpeg_list[-1]):
+  -          print test12_jpeg_list[-1], &#34;not exist&#34;
+  +        test_jpeg_list.append(os.path.join(jpeg_fold, &#34;{}.jpg&#34;.format(line)))
+  +        test_xml_list.append(os.path.join(xml_fold, &#34;{}.xml&#34;.format(line)))
+  +        if not os.path.exists(test_jpeg_list[-1]):
+  +          print test_jpeg_list[-1], &#34;not exist&#34;
+  +        if not os.path.exists(test_xml_list[-1]):
+  +          print test_xml_list[-1], &#34;not exist&#34;
+
+   with open(&#34;trainval.txt&#34;, &#34;w&#34;) as wr:
+     for i in range(len(trainval_jpeg_list)):
+       wr.write(&#34;{} {}\n&#34;.format(trainval_jpeg_list[i], trainval_xml_list[i]))
+
+  -with open(&#34;test_2007.txt&#34;, &#34;w&#34;) as wr:
+  -  for i in range(len(test07_jpeg_list)):
+  -    wr.write(&#34;{} {}\n&#34;.format(test07_jpeg_list[i], test07_xml_list[i]))
+  -
+  -with open(&#34;test_2012.txt&#34;, &#34;w&#34;) as wr:
+  -  for i in range(len(test12_jpeg_list)):
+  -    wr.write(&#34;{}\n&#34;.format(test12_jpeg_list[i]))
+  +with open(&#34;test.txt&#34;, &#34;w&#34;) as wr:
+  +  for i in range(len(test_jpeg_list)):
+  +    wr.write(&#34;{} {}\n&#34;.format(test_jpeg_list[i], test_xml_list[i]))
+</code></pre></div>
+<ul>
+<li>修改<code>convert.sh</code></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">  diff --git a/data/yolo/convert.sh b/data/yolo/convert.sh
+  index 8a52525..a06eb69 100755
+  --- a/data/yolo/convert.sh
+  +++ b/data/yolo/convert.sh
+  @@ -1,7 +1,7 @@
+   #!/usr/bin/env sh
+
+   CAFFE_ROOT=../..
+  -ROOT_DIR=/your/path/to/vocroot/
+  +ROOT_DIR=/home/m/data/
+   LABEL_FILE=$CAFFE_ROOT/data/yolo/label_map.txt
+
+   # 2007 + 2012 trainval
+  @@ -10,13 +10,15 @@ LMDB_DIR=./lmdb/trainval_lmdb
+   SHUFFLE=true
+
+   # 2007 test
+  -# LIST_FILE=$CAFFE_ROOT/data/yolo/test_2007.txt
+  -# LMDB_DIR=./lmdb/test2007_lmdb
+  +# LIST_FILE=$CAFFE_ROOT/data/yolo/test.txt
+  +# LMDB_DIR=./lmdb/test_lmdb
+   # SHUFFLE=false
+
+   RESIZE_W=448
+   RESIZE_H=448
+
+   $CAFFE_ROOT/build/tools/convert_box_data --resize_width=$RESIZE_W --resize_height=$RESIZE_H \
+     --label_file=$LABEL_FILE $ROOT_DIR $LIST_FILE $LMDB_DIR --encoded=true --encode_type=jpg --shuffle=$SHUFFLE
+</code></pre></div>
+<ul>
+<li>修改<code>label_map.txt</code>:</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">  diff --git a/data/yolo/label_map.txt b/data/yolo/label_map.txt
+  index 1fe873a..bee8f82 100644
+  --- a/data/yolo/label_map.txt
+  +++ b/data/yolo/label_map.txt
+  @@ -1,20 +1,3 @@
+  -aeroplane 0
+  -bicycle 1
+  -bird 2
+  -boat 3
+  -bottle 4
+  -bus 5
+  -car 6
+  -cat 7
+  -chair 8
+  -cow 9
+  -diningtable 10
+  -dog 11
+  -horse 12
+  -motorbike 13
+  -person 14
+  -pottedplant 15
+  -sheep 16
+  -sofa 17
+  -train 18
+  -tvmonitor 19
+  +ball 0
+  +goal 1
+  +robot 2
+</code></pre></div>
+<h3 id="train">Train</h3>
+
+<pre><code>  cd examples/yolo
+  # change related path in script train.sh
+  mkdir models
+  nohup ./train.sh &amp;
+</code></pre>
+
+<p>也有一些注意点:</p>
+
+<ul>
+<li>修改<code>gnet_train.prototxt</code>:</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">  diff --git a/examples/yolo/gnet_train.prototxt b/examples/yolo/gnet_train.prototxt
+  index 8483a32..da01daf 100644
+  --- a/examples/yolo/gnet_train.prototxt
+  +++ b/examples/yolo/gnet_train.prototxt
+  @@ -36,7 +36,7 @@ layer {
+       mean_value: 123
+     }
+     data_param {
+  -    source: &#34;../../data/yolo/lmdb/test2007_lmdb&#34;
+  +    source: &#34;../../data/yolo/lmdb/test_lmdb&#34;
+       batch_size: 1
+       side: 7
+       backend: LMDB
+</code></pre></div>
+<ul>
+<li>修改<code>train.sh</code>:</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">  diff --git a/examples/yolo/train.sh b/examples/yolo/train.sh
+  index 416e2b0..ecd0872 100755
+  --- a/examples/yolo/train.sh
+  +++ b/examples/yolo/train.sh
+  @@ -3,8 +3,7 @@
+   CAFFE_HOME=../..
+
+   SOLVER=./gnet_solver.prototxt
+  -WEIGHTS=/your/path/to/bvlc_googlenet.caffemodel
+  +WEIGHTS=/home/m/workspace/caffe-yolo/models/bvlc_googlenet/bvlc_googlenet.caffemodel
+
+   $CAFFE_HOME/build/tools/caffe train \
+  -    --solver=$SOLVER --weights=$WEIGHTS --gpu=0,1
+  +    --solver=$SOLVER --weights=$WEIGHTS --gpu=0
+</code></pre></div>
+<ul>
+<li>注意还要预先下载 GoogleNet 的<a href="http://dl.caffe.berkeleyvision.org/bvlc_googlenet.caffemodel">预训练权重文件</a>, 并且放在<code>caffe-yolo/models/bvlc_googlenet/</code>(当然放哪里是随便的, 注意改<code>train.sh</code>中的相应地址即可).</li>
+</ul>
+
+<h3 id="test">Test</h3>
+
+<pre><code>  # if everything goes well, the map of gnet_yolo_iter_32000.caffemodel may reach ~56.
+  cd examples/yolo
+  ./test.sh model_path gpu_id
+</code></pre>
+
+<p>(To be continued)</p></article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="https://www.yuthon.com/tags/yolo"><span class="tag">YOLO</span></a></li>
+        
+          <li><a href="https://www.yuthon.com/tags/deep-learning"><span class="tag">Deep Learning</span></a></li>
+        
+          <li><a href="https://www.yuthon.com/tags/object-detection"><span class="tag">Object Detection</span></a></li>
+        
+          <li><a href="https://www.yuthon.com/tags/darknet"><span class="tag">Darknet</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.This post was published <strong>775</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+      </p>
+    </footer>
+    
+      <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "yuthons-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      
+    
+  </section>
+  
+<footer class="site-footer">
+  <p>© 2017-2019 Yuthon&#39;s Blog</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank" rel="noopener">Nuo</a>.</p>
+  
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/smooth-scroll@15.0.0/dist/smooth-scroll.min.js"></script>
+
+
+
+<script async src="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video.min.js"></script>
+
+
+
+
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    },
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
+
+
+
+<script src="https://www.yuthon.com/scripts/index.min.js"></script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('\/service-worker.js').then(function() {
+      console.log('[ServiceWorker] Registered');
+    });
+  }
+</script>
+
+
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-76233259-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+  </body>
+</html>

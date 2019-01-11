@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Generative Adversarial Networks on Yuthon&#39;s Blog</title>
+    <link>https://www.yuthon.com/tags/generative-adversarial-networks/</link>
+    <description>Recent content in Generative Adversarial Networks on Yuthon&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
+    <lastBuildDate>Sat, 12 Aug 2017 19:24:14 +0000</lastBuildDate>
+    
+	<atom:link href="https://www.yuthon.com/tags/generative-adversarial-networks/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Something about GAN</title>
+      <link>https://www.yuthon.com/post/tutorials/something-about-gans/</link>
+      <pubDate>Sat, 12 Aug 2017 19:24:14 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/tutorials/something-about-gans/</guid>
+      <description>&lt;p&gt;最近在看关于GANs的论文，并且自己动手用PyTorch写了一些经典文章的实现，想要稍微总结一下，故有此文。在最后我总结了我自己看过的有关GANs的一些比较好的资源，希望对读者有所帮助。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Traffic Prediction on Yuthon&#39;s Blog</title>
+    <link>https://www.yuthon.com/tags/traffic-prediction/</link>
+    <description>Recent content in Traffic Prediction on Yuthon&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
+    <lastBuildDate>Sun, 30 Oct 2016 13:53:32 +0000</lastBuildDate>
+    
+	<atom:link href="https://www.yuthon.com/tags/traffic-prediction/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Traffic Prediction Using LSTM</title>
+      <link>https://www.yuthon.com/post/projects/traffic-prediction-using-lstm/</link>
+      <pubDate>Sun, 30 Oct 2016 13:53:32 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/projects/traffic-prediction-using-lstm/</guid>
+      <description>&lt;p&gt;最近上的一门课 &amp;ldquo;无线传感器网络&amp;rdquo; 快要结束了, 于是所谓的大作业的 DDL 也压上来了. TAT&lt;/p&gt;
+
+&lt;p&gt;不过这门课虽然说是讲无线传感器网络的, 但是大作业的要求却额外的宽松, 只要是和数据分析有关的就好了. 老师还给了些数据集, 比如说公共自行车的出借与归入记录啊, 出租车在各个路段的行驶速度啊, 或者是顺丰快递途径各个城市需要的时间啊这类的. 当然也可以自己选题.&lt;/p&gt;
+
+&lt;p&gt;我当然是想自己选题的, 然而想了一圈没想到什么好的方案, 于是只好回到了老师给的题目上面来, 选了道路速度预测这样的题目. 刚好之前在 CS231n 上看了 RNN 和 LSTM, 心想这总比传统方法好点吧, 于是就开始干了. (于是就有了之前的那篇装 CUDA 和 TF)&lt;/p&gt;
+
+&lt;p&gt;I wanna traffic prediction, I learn LSTM.&lt;/p&gt;
+
+&lt;p&gt;ugh, Traffic prediction using LSTM!&lt;/p&gt;
+
+&lt;p&gt;(此处应有 PPAP)&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

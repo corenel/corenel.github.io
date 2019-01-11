@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Semantic Segmentation on Yuthon&#39;s Blog</title>
+    <link>https://www.yuthon.com/tags/semantic-segmentation/</link>
+    <description>Recent content in Semantic Segmentation on Yuthon&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
+    <lastBuildDate>Wed, 14 Jun 2017 14:20:01 +0000</lastBuildDate>
+    
+	<atom:link href="https://www.yuthon.com/tags/semantic-segmentation/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Let&#39;s talk about Zero-Shot Learning.</title>
+      <link>https://www.yuthon.com/post/tutorials/let-s-talk-about-zero-shot-learning/</link>
+      <pubDate>Wed, 14 Jun 2017 14:20:01 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/tutorials/let-s-talk-about-zero-shot-learning/</guid>
+      <description>&lt;p&gt;最近在看Zero-Shot learning方面的文章，有些想要记录备忘的东西，就写在这儿吧。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Notes for Amortized Inference and Learning in Latent CRF</title>
+      <link>https://www.yuthon.com/post/papers/notes-for-amortized-inference-and-learning-in-latent-crf/</link>
+      <pubDate>Wed, 10 May 2017 22:05:31 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/papers/notes-for-amortized-inference-and-learning-in-latent-crf/</guid>
+      <description>&lt;p&gt;This is my notes for &lt;strong&gt;Amortized Inference and Learning in Latent Conditional Random Fields for Weakly-Supervised Semantic Image Segmentation&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/abs/1705.01262&#34;&gt;arXiv:1705.01262&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.ece.iisc.ernet.in/~divsymposium/EECS2017/slides_posters/EECS_2017_paper_31.pdf&#34;&gt;Poster &amp;amp; Slides&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Notes for SEC</title>
+      <link>https://www.yuthon.com/post/papers/notes-for-sec/</link>
+      <pubDate>Fri, 28 Apr 2017 09:13:33 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/papers/notes-for-sec/</guid>
+      <description>&lt;p&gt;This is my notes for &lt;strong&gt;Seed, Expand and Constrain: Three Principles for Weakly-Supervised Image Segmentation&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;arxiv: &lt;a href=&#34;https://arxiv.org/abs/1603.06098&#34;&gt;https://arxiv.org/abs/1603.06098&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;github: &lt;a href=&#34;https://github.com/kolesman/SEC&#34;&gt;https://github.com/kolesman/SEC&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>Notes: From Faster R-CNN to Mask R-CNN</title>
+      <link>https://www.yuthon.com/post/tutorials/notes-from-faster-r-cnn-to-mask-r-cnn/</link>
+      <pubDate>Thu, 27 Apr 2017 12:55:33 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/tutorials/notes-from-faster-r-cnn-to-mask-r-cnn/</guid>
+      <description>&lt;p&gt;That&amp;rsquo;s my notes for the talk &amp;ldquo;From Faster-RCNN to Mask-RCNN&amp;rdquo; by Shaoqing Ren on April 26th, 2017.&lt;/p&gt;
+
+&lt;h2 id=&#34;yesterday-background-and-pre-works-of-mask-r-cnn&#34;&gt;Yesterday – background and pre-works of Mask R-CNN&lt;/h2&gt;
+
+&lt;h3 id=&#34;key-functions&#34;&gt;Key functions&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Classification&lt;/strong&gt; - What are in the image?&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Localization&lt;/strong&gt; - Where are they?&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Mask (per pixel) classification&lt;/strong&gt; - Where+ ?
+
+&lt;ul&gt;
+&lt;li&gt;More precise to bounding box&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Landmarks localization&lt;/strong&gt; - What+, Where+ ?
+
+&lt;ul&gt;
+&lt;li&gt;Not only per-pixel mask, but also key points in the objects&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

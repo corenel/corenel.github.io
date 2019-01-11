@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Superpixel on Yuthon&#39;s Blog</title>
+    <link>https://www.yuthon.com/tags/superpixel/</link>
+    <description>Recent content in Superpixel on Yuthon&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
+    <lastBuildDate>Tue, 01 Nov 2016 18:21:04 +0000</lastBuildDate>
+    
+	<atom:link href="https://www.yuthon.com/tags/superpixel/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Notes for SLIC</title>
+      <link>https://www.yuthon.com/post/papers/notes-for-slic/</link>
+      <pubDate>Tue, 01 Nov 2016 18:21:04 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/papers/notes-for-slic/</guid>
+      <description>&lt;p&gt;文章介绍了当前 State-of-the-Art 的5种&lt;strong&gt;超像素 (Superpixel)&lt;/strong&gt; 的算法, 并主要从其对于图像边缘信息的拟合程度 (their ability to adhere to image boundaries), 速度, 内存利用效率, 以及它们对于图像分割性能的影响 (their impact on segmentation performance) 来综合评价.&lt;/p&gt;
+
+&lt;p&gt;同时, 本文还提出了一种 &lt;strong&gt;SLIC (simple linear iterative clustering)&lt;/strong&gt; 的算法, 用的是 k-means clustering 的方法.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Notes for Amortized Inference and Learning in Latent CRF</title>
+
+  
+  
+  <link href="//cdn.jsdelivr.net" rel="dns-prefetch">
+  <link href="//cdnjs.cloudflare.com" rel="dns-prefetch">
+  <link href="//at.alicdn.com" rel="dns-prefetch">
+  <link href="//fonts.googleapis.com" rel="dns-prefetch">
+  <link href="//fonts.gstatic.com" rel="dns-prefetch">
+  <link href="///disqus.com" rel="dns-prefetch">
+  <link href="//c.disquscdn.com" rel="dns-prefetch">
+  
+  <link href="//www.google-analytics.com" rel="dns-prefetch">
+  
+
+  
+
+  
+  
+  <meta name="description" content="This is my notes for Amortized Inference and Learning in Latent Conditional Random Fields for Weakly-Supervised Semantic Image Segmentation.
+ arXiv:1705.01262 Poster &amp;amp; Slides ">
+
+  
+  
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@corenel">
+    <meta name="twitter:title" content="Notes for Amortized Inference and Learning in Latent CRF">
+    <meta name="twitter:description" content="This is my notes for Amortized Inference and Learning in Latent Conditional Random Fields for Weakly-Supervised Semantic Image Segmentation.
+ arXiv:1705.01262 Poster &amp;amp; Slides ">
+    <meta name="twitter:image" content="/images/avatar.png">
+  
+
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Notes for Amortized Inference and Learning in Latent CRF">
+  <meta property="og:description" content="This is my notes for Amortized Inference and Learning in Latent Conditional Random Fields for Weakly-Supervised Semantic Image Segmentation.
+ arXiv:1705.01262 Poster &amp;amp; Slides ">
+  <meta property="og:url" content="https://www.yuthon.com/post/papers/notes-for-amortized-inference-and-learning-in-latent-crf/">
+  <meta property="og:image" content="/images/avatar.png">
+
+
+
+
+<meta name="generator" content="Hugo 0.53">
+
+
+<link rel="canonical" href="https://www.yuthon.com/post/papers/notes-for-amortized-inference-and-learning-in-latent-crf/">
+
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="format-detection" content="telephone=no,email=no,adress=no">
+<meta http-equiv="Cache-Control" content="no-transform">
+
+
+<meta name="robots" content="index,follow">
+<meta name="referrer" content="origin-when-cross-origin">
+
+
+
+
+
+
+
+<meta name="theme-color" content="#02b875">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Yuthon&#39;s Blog">
+<meta name="msapplication-tooltip" content="Yuthon&#39;s Blog">
+<meta name='msapplication-navbutton-color' content="#02b875">
+<meta name="msapplication-TileColor" content="#02b875">
+<meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+<link rel="icon" href="https://www.yuthon.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.yuthon.com/icons/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.yuthon.com/icons/icon-32x32.png">
+<link rel="icon" sizes="192x192" href="https://www.yuthon.com/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="https://www.yuthon.com/icons/icon-152x152.png">
+<link rel="manifest" href="https://www.yuthon.com/manifest.json">
+
+
+<link rel="preload" href="https://www.yuthon.com/styles/main.min.css" as="style">
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
+<link rel="preload" href="https://www.yuthon.com/images/avatar.png" as="image">
+<link rel="preload" href="https://www.yuthon.com/images/grey-prism.svg" as="image">
+
+
+<style>
+  body {
+    background: rgb(244, 243, 241) url('/images/grey-prism.svg') repeat fixed;
+  }
+</style>
+<link rel="stylesheet" href="https://www.yuthon.com/styles/main.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.2/dist/medium-zoom.min.js"></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video-js.min.css">
+
+
+
+  
+  
+<!--[if lte IE 8]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/videojs-ie8@1.1.2/dist/videojs-ie8.min.js"></script>
+<![endif]-->
+
+<!--[if lte IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20180112/classList.min.js"></script>
+<![endif]-->
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a role="button" aria-label="Go to top" title="Go to top" class="to-top is-hide"><span class="icon icon-up" aria-hidden="true"></span></a>
+      
+        
+        <a role="button" aria-label="Go to comments" title="Go to comments" class="to-comment" href="#disqus_thread"><span class="icon icon-comment" aria-hidden="true"></span></a>
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="https://www.yuthon.com/images/avatar.png" alt="Avatar">
+  
+  <h2 class="title">Yuthon&#39;s Blog</h2>
+  
+  <p class="subtitle"></p>
+  <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
+    <span class="icon icon-menu" aria-hidden="true"></span>
+  </button>
+
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+          
+          
+           is-active">
+          <a href="https://www.yuthon.com/">Home</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="https://www.yuthon.com/categories/">Categories</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="https://www.yuthon.com/tags/">Tags</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="https://www.yuthon.com/about/">About</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="https://www.yuthon.com/resume/">Resume</a>
+        </li>
+      
+        <li class="menu-item
+          
+          
+          ">
+          <a href="https://github.com/corenel">Works</a>
+        </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list"><li class="social-item">
+          <a href="mailto:xxdsox@gmail.com" title="Email" aria-label="Email">
+            <span class="icon icon-email" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//github.com/corenel" title="GitHub" aria-label="GitHub">
+            <span class="icon icon-github" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//twitter.com/corenel" title="Twitter" aria-label="Twitter">
+            <span class="icon icon-twitter" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.facebook.com/xxdsox" title="Facebook" aria-label="Facebook">
+            <span class="icon icon-facebook" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.reddit.com/user/xxdsox" title="Reddit" aria-label="Reddit">
+            <span class="icon icon-reddit" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.quora.com/profile/Yusu-Pan" title="Quora" aria-label="Quora">
+            <span class="icon icon-quora" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//stackoverflow.com/users/5682817" title="stackOverflow"  aria-label="stackOverflow">
+            <span class="icon icon-stackoverflow" aria-hidden="true"></span>
+          </a>
+        </li><li class="social-item">
+          <a href="//www.zhihu.com/people/pan-yu-su" title="Zhihu" aria-label="Zhihu">
+            <span class="icon icon-zhihu" aria-hidden="true"></span>
+          </a>
+        </li></ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Notes for Amortized Inference and Learning in Latent CRF</h1>
+      <p class="post-meta">@Yusu Pan · May 10, 2017 · 5 min read</p>
+    </header>
+    <article class="post-content"><p>This is my notes for <strong>Amortized Inference and Learning in Latent Conditional Random Fields for Weakly-Supervised Semantic Image Segmentation</strong>.</p>
+
+<ul>
+<li><a href="https://arxiv.org/abs/1705.01262">arXiv:1705.01262</a></li>
+<li><a href="http://www.ece.iisc.ernet.in/~divsymposium/EECS2017/slides_posters/EECS_2017_paper_31.pdf">Poster &amp; Slides</a></li>
+</ul>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>CRF属于判别式的图模型，通常被用来标注或分析序列资料。2014年左右的时候，CRF也被用来做图像分割。但是随着深度学习的兴起，CRF慢慢就沦为了进行post-precessing的工具，以优化结果。一般的做法就是用分割网络输出的pixel-level的各类的概率分布作为CRF的unary potential，然后用*Efficient inference in fully connected CRFs with Gaussian edge potentials*里面的方法来设置pairwise potential。</p>
+
+<p>强监督的语义分割用这个方法当然很好，但是弱监督的话，因为没有pixel-level的标签，要把image-level的标签有选择地广播到所有像素还是一个很艰苦的工作。通常用的方法是基于localization cues的，比如说用saliency maps、objectness priors或者bounding boxes等等，就像之前介绍的<a href="http://www.yuthon.com/2017/04/28/Thesis-Notes-for-SEC/">SEC</a>一样。</p>
+
+<p>不过这篇文章里面用的不是localization cues的那一套，而是<strong>把pixel-level的标签作为CRF的latent variables（隐变量），然后把图像本身以及image-level的标签作为observed variables（观测变量）</strong>。然后想通过训练inference network以估计在给定observed variables的情况下latent variables的后验分布（posterior distribution）这样的方法，把latent variables的inference cost分摊到整个数据集中。值得注意的是，这种方法并没有学习CRF的uanry potential，而是要训练inference network，使其输出的pixel-level标签在全局上与image-level标签一致，在局部上与附近的标签一致。</p>
+
+<blockquote>
+<p>讲真上边这一句话我也读着不是很懂，慢慢看之后的说明就能理解了。</p>
+</blockquote>
+
+<p>这种方法的好处在于，inference network（也就是分割网络）的训练可以是end-to-end的，并不需要另外去生成localization cues。此外，用这种方法训练出来的模型也不需要post-processing步骤。</p>
+
+<p>这种方法的预测精度与使用了saliency masks的方法（比如说SEC）相近，也算是一种新的研究方向。</p>
+
+<h2 id="the-proposed-model">The proposed model</h2>
+
+<table>
+<thead>
+<tr>
+<th align="center">Symbol</th>
+<th align="left">Description</th>
+<th align="left">Note</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">$x^{(i)}$</td>
+<td align="left">第$i$幅图像</td>
+<td align="left">$1\le i \le n$</td>
+</tr>
+
+<tr>
+<td align="center">$y^{(i)}$</td>
+<td align="left">第$i$幅图像对应的image-level标签</td>
+<td align="left">Each $y^{(i)}$ is a boolean vector whose length equals the number of classes used for training.</td>
+</tr>
+
+<tr>
+<td align="center">$z^{(i)}=(z^{(i)}_j)$</td>
+<td align="left">第$i$幅图像对应pixel-level标签</td>
+<td align="left">$1\le j\le m$, and we use one-hot encoding for $z^{(i)}_j$</td>
+</tr>
+</tbody>
+</table>
+
+<p>本文的目标是，给定$(x^{(i)}, y^{(i)}), 1\le i \le n$的情况下，本算法希望能够学习到一个从$x^{(i)}$到$y^{(i)}$的映射关系，其能够对pixel-level的标注$z^{(i)}​$做出推断。</p>
+
+<p><img src="https://www.yuthon.com/images/AI-LCRF_the_latent_CRF.png" alt="the_latent_CRF" /></p>
+
+<p>当给定图像$x$的时候，image-level的标签$y$的条件分布如下所示，目标则是能最大化$\sum^n_{i=1} log p(y^{(i)}|x^{(i)})$。
+$$
+p(y|x) = \sum_z p(z|x)p(y|z,x)
+$$
+定义$p(z|x)$为CRF的pairwise项，同时也是<strong>先验概率（Prior）</strong>：
+$$
+p(z|x) \propto exp \left(-\sum_{j&lt;j&rsquo;} k(t_j, t_{j&rsquo;})\mu (z_j, z_{j&rsquo;}))\right)
+$$
+其中$t_j$为位置$j$处像素的feature vector，$\mu (z_j, z_{j&rsquo;})$为两个标签之间的compatibility。$p(z|x)$的意义在于<strong>使得相邻且色彩相似的像素具有同一标签。</strong>需要注意的是$p(z|x)$并不用训练，相反，需要学习的是作为CRF的unary potential的$p(y|z,x)$。</p>
+
+<p>不过由于从$p(z|x,y)$进行采样在计算上十分困难，因此不能用EM法来最大化$\log p(y|z,x)$，具体分析可见原论文。因此需要用其他方法来达成目的。该文章使用的方法是最大化$p(y|x)$的下界，来使得$p(y|x)$最大。</p>
+
+<h3 id="variational-lower-bound">Variational Lower Bound</h3>
+
+<p>用了一个变分分布$q(z|x,y)$，通过以下变换得到了$\log p(y|x)$的一个下界：
+$$
+\begin{align}
+\log p(y|x) &amp; = \log \sum _z p(z|x) p(y|z,x) \<br />
+&amp; = \log \sum _z q(z|y,x) \frac{p(y|z,x)p(z|x)}{q(z|y,x)} \<br />
+&amp; \ge \sum _z q(z|y,x) \log \frac{p(y|z,x)p(z|x)}{q(z|y,x)} \<br />
+&amp; = -KL(q(z|y,x)||p(z|x)) + E_{q(z|x,y)} \log p(y|z,x)
+\end{align}
+$$
+下界的第一项使得变分分布$q(z|y,x)$趋向于与图像$x$的先验分布$p(z|x)$接近，也就是说，使得$q所产生的分割遮罩在一定程度上遵循图像中的位置信息与色彩信息。也就是保持了局部的一致性。下界的第二项则能够使得变分分布所产生的遮罩能够提升图像分类的得分，即确保了pixel-level的标签与image-level标签一致。</p>
+
+<p>假设变分分布$q(z|y,x)$可以被完全地因式分解，其具体定义如下：
+$$
+q(z|x,y)= \prod _{j=1}^m q(z_j | y,x) <br />
+$$</p>
+
+<p>$$
+q(z_{jk}=1|x,y) = \frac{\exp (g_{jk}(x))}{\sum ^K_{k&rsquo;=1} \exp (g_{jk&rsquo;}(x))} \equiv \varphi_{jk} (x)
+$$</p>
+
+<p>其中$g$是全卷积网络或者说是分割网络，${g_{jk}(x), 1 \le j \le m, 1\le k \le K }$则是$g$对$x$的输出。</p>
+
+<p><img src="https://www.yuthon.com/images/AI-LCRF_inference_network.png" alt="AI-LCRF_inference_network" /></p>
+
+<h3 id="gradient-of-the-lower-bound">Gradient of the Lower Bound</h3>
+
+<p>下界的第一项其实是基于$g$的输出的KL散度损失，该损失的梯度可以精确计算出来的。第二项的梯度可以使用MCMC采样来估计。</p>
+
+<p><img src="https://www.yuthon.com/images/AI-LCRF_total_network.png" alt="AI-LCRF_total_network" /></p>
+
+<p>具体的推导过程可以看原论文的2.2节。</p>
+
+<h2 id="experiments">Experiments</h2>
+
+<p>在PASCAL VOC 2012上的表现很不错，能够与SEC等方法相媲美了。</p>
+
+<p><img src="https://www.yuthon.com/images/AI-LCRF_results.png" alt="AI-LCRF_results" /></p>
+
+<p><img src="https://www.yuthon.com/images/AI-LCRF_quantitative_results.png" alt="AI-LCRF_quantitative_results" /></p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<ul>
+<li>这是语义分割领域里面，第一篇在CRF中使用CNN来做inference network的文章，效果还很不错；</li>
+<li>该方法相比所有的不用saliency maps的方法来说，结果都要好；</li>
+<li>该方法的预测精度和用了saliency maps的方法相差无几</li>
+<li>该方法表明传统的概率模型与CNN结合之后能得到很好的效果。</li>
+</ul>
+
+<h2 id="future">Future</h2>
+
+<p>个人感觉这篇文章所用的方法还是很有借鉴意义的，不用很多tricks，不靠saliency maps就能达到这么高的mIoU。可以改进的地方我想应该有两个，一个是$p(z|x,y)$的形式可以修改，比如说参考ScribbleSup的，把纹理、色彩、空间之类的低阶信息都考虑上。另外，$p(y_k |x,z)$的计算方式也可以修改。总而言之，这还是一片比较粗糙的文章，还有很多需要精雕细琢的地方。</p></article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="https://www.yuthon.com/tags/semantic-segmentation"><span class="tag">Semantic Segmentation</span></a></li>
+        
+          <li><a href="https://www.yuthon.com/tags/deep-learning"><span class="tag">Deep Learning</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.This post was published <strong>610</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+      </p>
+    </footer>
+    
+      <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "yuthons-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      
+    
+  </section>
+  
+<footer class="site-footer">
+  <p>© 2017-2019 Yuthon&#39;s Blog</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank" rel="noopener">Nuo</a>.</p>
+  
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/smooth-scroll@15.0.0/dist/smooth-scroll.min.js"></script>
+
+
+
+<script async src="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video.min.js"></script>
+
+
+
+
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    },
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
+
+
+
+<script src="https://www.yuthon.com/scripts/index.min.js"></script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('\/service-worker.js').then(function() {
+      console.log('[ServiceWorker] Registered');
+    });
+  }
+</script>
+
+
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-76233259-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+  </body>
+</html>

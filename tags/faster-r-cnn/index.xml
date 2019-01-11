@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Faster R Cnn on Yuthon&#39;s Blog</title>
+    <link>https://www.yuthon.com/tags/faster-r-cnn/</link>
+    <description>Recent content in Faster R Cnn on Yuthon&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.</copyright>
+    <lastBuildDate>Thu, 27 Apr 2017 12:55:33 +0000</lastBuildDate>
+    
+	<atom:link href="https://www.yuthon.com/tags/faster-r-cnn/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Notes: From Faster R-CNN to Mask R-CNN</title>
+      <link>https://www.yuthon.com/post/tutorials/notes-from-faster-r-cnn-to-mask-r-cnn/</link>
+      <pubDate>Thu, 27 Apr 2017 12:55:33 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/tutorials/notes-from-faster-r-cnn-to-mask-r-cnn/</guid>
+      <description>&lt;p&gt;That&amp;rsquo;s my notes for the talk &amp;ldquo;From Faster-RCNN to Mask-RCNN&amp;rdquo; by Shaoqing Ren on April 26th, 2017.&lt;/p&gt;
+
+&lt;h2 id=&#34;yesterday-background-and-pre-works-of-mask-r-cnn&#34;&gt;Yesterday – background and pre-works of Mask R-CNN&lt;/h2&gt;
+
+&lt;h3 id=&#34;key-functions&#34;&gt;Key functions&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Classification&lt;/strong&gt; - What are in the image?&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Localization&lt;/strong&gt; - Where are they?&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Mask (per pixel) classification&lt;/strong&gt; - Where+ ?
+
+&lt;ul&gt;
+&lt;li&gt;More precise to bounding box&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Landmarks localization&lt;/strong&gt; - What+, Where+ ?
+
+&lt;ul&gt;
+&lt;li&gt;Not only per-pixel mask, but also key points in the objects&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
