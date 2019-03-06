@@ -51,7 +51,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.53">
+<meta name="generator" content="Hugo 0.54.0">
 
 
 <link rel="canonical" href="https://www.yuthon.com/post/practices/train-caffe-yolo-on-our-own-dataset/">
@@ -88,6 +88,7 @@
 
 
 <link rel="preload" href="https://www.yuthon.com/styles/main.min.css" as="style">
+
 <link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
 <link rel="preload" href="https://www.yuthon.com/images/avatar.png" as="image">
 <link rel="preload" href="https://www.yuthon.com/images/grey-prism.svg" as="image">
@@ -99,6 +100,7 @@
   }
 </style>
 <link rel="stylesheet" href="https://www.yuthon.com/styles/main.min.css">
+
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
 
 
@@ -374,7 +376,7 @@ CUDA_ARCH := -gencode arch=compute_20,code=sm_20 \
 <span style="color:#f92672">-                -gencode arch=compute_50,code=compute_50
 </span><span style="color:#f92672"></span><span style="color:#a6e22e">+                -gencode arch=compute_50,code=compute_50 \
 </span><span style="color:#a6e22e">+                -gencode arch=compute_61,code=compute_61
-</span><span style="color:#a6e22e"></span></code></pre></div>
+</span></code></pre></div>
 <h3 id="data-preparation">Data preparation</h3>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"> $ cd data/yolo
  $ ln -s /your/path/to/VOCdevkit/ .
@@ -595,7 +597,7 @@ CUDA_ARCH := -gencode arch=compute_20,code=sm_20 \
       </ul>
       
       <p class="post-copyright">
-        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.This post was published <strong>775</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.This post was published <strong>829</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
       </p>
     </footer>
     
