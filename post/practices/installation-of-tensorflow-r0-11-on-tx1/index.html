@@ -261,148 +261,148 @@
 <p>建议全程开HTTP/HTTPS代理, 否则国内下载速度堪忧.</p>
 
 <h3 id="install-java">Install Java</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo add-apt-repository ppa:webupd8team/java
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo add-apt-repository ppa:webupd8team/java
 $ sudo apt-get update
 $ sudo apt-get install oracle-java8-installer</code></pre></div>
 <h3 id="install-dependencens">Install dependencens</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo apt-get install git zip unzip autoconf automake libtool curl zlib1g-dev maven
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo apt-get install git zip unzip autoconf automake libtool curl zlib1g-dev maven
 $ sudo apt-get install python-numpy swig python-dev python-wheel</code></pre></div>
 <h3 id="build-protobuf">Build protobuf</h3>
 
 <p>这里测 Protobuf 要编译两份, 分别给 grpc 和 Bazel 用.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># For grpc-java build</span>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#8f5902;font-style:italic"># For grpc-java build</span>
 $ git clone https://github.com/google/protobuf.git
-$ cd protobuf
+$ <span style="color:#204a87">cd</span> protobuf
 $ git checkout master
 $ ./autogen.sh
 $ git checkout v3.0.0-beta-3
 $ ./autogen.sh
-$ LDFLAGS<span style="color:#f92672">=</span>-static ./configure --prefix<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>pwd<span style="color:#66d9ef">)</span>/../
-$ sed -i -e <span style="color:#e6db74">&#39;s/LDFLAGS = -static/LDFLAGS = -all-static/&#39;</span> ./src/Makefile
-$ make -j <span style="color:#ae81ff">4</span>
+$ <span style="color:#000">LDFLAGS</span><span style="color:#ce5c00;font-weight:bold">=</span>-static ./configure --prefix<span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#204a87;font-weight:bold">$(</span><span style="color:#204a87">pwd</span><span style="color:#204a87;font-weight:bold">)</span>/../
+$ sed -i -e <span style="color:#4e9a06">&#39;s/LDFLAGS = -static/LDFLAGS = -all-static/&#39;</span> ./src/Makefile
+$ make -j <span style="color:#0000cf;font-weight:bold">4</span>
 $ make install
 
-<span style="color:#75715e"># For bazel build</span>
+<span style="color:#8f5902;font-style:italic"># For bazel build</span>
 $ git checkout v3.0.0-beta-2
 $./autogen.sh
-$ LDFLAGS<span style="color:#f92672">=</span>-static ./configure --prefix<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>pwd<span style="color:#66d9ef">)</span>/../
-$ sed -i -e <span style="color:#e6db74">&#39;s/LDFLAGS = -static/LDFLAGS = -all-static/&#39;</span> ./src/Makefile
-$ make -j <span style="color:#ae81ff">4</span>
-$ cd ..</code></pre></div>
+$ <span style="color:#000">LDFLAGS</span><span style="color:#ce5c00;font-weight:bold">=</span>-static ./configure --prefix<span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#204a87;font-weight:bold">$(</span><span style="color:#204a87">pwd</span><span style="color:#204a87;font-weight:bold">)</span>/../
+$ sed -i -e <span style="color:#4e9a06">&#39;s/LDFLAGS = -static/LDFLAGS = -all-static/&#39;</span> ./src/Makefile
+$ make -j <span style="color:#0000cf;font-weight:bold">4</span>
+$ <span style="color:#204a87">cd</span> ..</code></pre></div>
 <blockquote>
 <p>注意: 给 Bazel 用的不用<code>make install</code>, 之后直接<code>cp</code>过去.</p>
 </blockquote>
 
 <h3 id="build-grpc-java-compiler">Build grpc-java compiler</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git clone https://github.com/neo-titans/odroid.git
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git clone https://github.com/neo-titans/odroid.git
 $ git clone https://github.com/grpc/grpc-java.git
-$ cd grpc-java/
+$ <span style="color:#204a87">cd</span> grpc-java/
 $ git checkout v0.15.0
 $ patch -p0 &lt; ../odroid/build_tensorflow/grpc-java.v0.15.0.patch
-$ CXXFLAGS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;-I</span><span style="color:#66d9ef">$(</span>pwd<span style="color:#66d9ef">)</span><span style="color:#e6db74">/../include&#34;</span> LDFLAGS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;-L</span><span style="color:#66d9ef">$(</span>pwd<span style="color:#66d9ef">)</span><span style="color:#e6db74">/../lib&#34;</span> ./gradlew java_pluginExecutable -Pprotoc<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>pwd<span style="color:#66d9ef">)</span>/../bin/protoc
-$ cd ..</code></pre></div>
+$ <span style="color:#000">CXXFLAGS</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#4e9a06">&#34;-I</span><span style="color:#204a87;font-weight:bold">$(</span><span style="color:#204a87">pwd</span><span style="color:#204a87;font-weight:bold">)</span><span style="color:#4e9a06">/../include&#34;</span> <span style="color:#000">LDFLAGS</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#4e9a06">&#34;-L</span><span style="color:#204a87;font-weight:bold">$(</span><span style="color:#204a87">pwd</span><span style="color:#204a87;font-weight:bold">)</span><span style="color:#4e9a06">/../lib&#34;</span> ./gradlew java_pluginExecutable -Pprotoc<span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#204a87;font-weight:bold">$(</span><span style="color:#204a87">pwd</span><span style="color:#204a87;font-weight:bold">)</span>/../bin/protoc
+$ <span style="color:#204a87">cd</span> ..</code></pre></div>
 <h3 id="build-bazel">Build bazel</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git clone https://github.com/bazelbuild/bazel.git
-$ cd bazel
-$ git checkout <span style="color:#ae81ff">0</span>.3.2
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git clone https://github.com/bazelbuild/bazel.git
+$ <span style="color:#204a87">cd</span> bazel
+$ git checkout <span style="color:#0000cf;font-weight:bold">0</span>.3.2
 $ cp ../protobuf/src/protoc third_party/protobuf/protoc-linux-arm32.exe
 $ cp ../grpc-java/compiler/build/exe/java_plugin/protoc-gen-grpc-java third_party/grpc/protoc-gen-grpc-java-0.15.0-linux-arm32.exe</code></pre></div>
 <p>在编译 Bazel 之前, 还需要改一些配置, 使得 Bazel 将 aarch64 认作 arm64, 以便编译成功.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">diff --git a/compile.sh b/compile.sh
-index 53fc412..11035d9 100755
-<span style="color:#f92672">--- a/compile.sh
-</span><span style="color:#f92672"></span><span style="color:#a6e22e">+++ b/compile.sh
-</span><span style="color:#a6e22e"></span><span style="color:#75715e">@@ -27,7 +27,7 @@ cd &#34;$(dirname &#34;$0&#34;)&#34;
-</span><span style="color:#75715e"></span> # Set the default verbose mode in buildenv.sh so that we do not display command
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff"><span style="color:#000080;font-weight:bold">diff --git a/compile.sh b/compile.sh
+</span><span style="color:#000080;font-weight:bold">index 53fc412..11035d9 100755
+</span><span style="color:#000080;font-weight:bold"></span><span style="color:#a40000">--- a/compile.sh
+</span><span style="color:#a40000"></span><span style="color:#00a000">+++ b/compile.sh
+</span><span style="color:#00a000"></span><span style="color:#800080;font-weight:bold">@@ -27,7 +27,7 @@ cd &#34;$(dirname &#34;$0&#34;)&#34;
+</span><span style="color:#800080;font-weight:bold"></span> # Set the default verbose mode in buildenv.sh so that we do not display command
  # output unless there is a failure.  We do this conditionally to offer the user
  # a chance of overriding this in case they want to do so.
-<span style="color:#f92672">-: ${VERBOSE:=no}
-</span><span style="color:#f92672"></span><span style="color:#a6e22e">+: ${VERBOSE:=yes}
-</span><span style="color:#a6e22e"></span>
+<span style="color:#a40000">-: ${VERBOSE:=no}
+</span><span style="color:#a40000"></span><span style="color:#00a000">+: ${VERBOSE:=yes}
+</span><span style="color:#00a000"></span>
  source scripts/bootstrap/buildenv.sh
 
-diff --git a/scripts/bootstrap/compile.sh b/scripts/bootstrap/compile.sh
-index 77372f0..657b254 100755
-<span style="color:#f92672">--- a/scripts/bootstrap/compile.sh
-</span><span style="color:#f92672"></span><span style="color:#a6e22e">+++ b/scripts/bootstrap/compile.sh
-</span><span style="color:#a6e22e"></span><span style="color:#75715e">@@ -48,6 +48,7 @@ linux)
-</span><span style="color:#75715e"></span>   else
+<span style="color:#000080;font-weight:bold">diff --git a/scripts/bootstrap/compile.sh b/scripts/bootstrap/compile.sh
+</span><span style="color:#000080;font-weight:bold">index 77372f0..657b254 100755
+</span><span style="color:#000080;font-weight:bold"></span><span style="color:#a40000">--- a/scripts/bootstrap/compile.sh
+</span><span style="color:#a40000"></span><span style="color:#00a000">+++ b/scripts/bootstrap/compile.sh
+</span><span style="color:#00a000"></span><span style="color:#800080;font-weight:bold">@@ -48,6 +48,7 @@ linux)
+</span><span style="color:#800080;font-weight:bold"></span>   else
      if [ &#34;${MACHINE_IS_ARM}&#34; = &#39;yes&#39; ]; then
        PROTOC=${PROTOC:-third_party/protobuf/protoc-linux-arm32.exe}
-<span style="color:#a6e22e">+      GRPC_JAVA_PLUGIN=${GRPC_JAVA_PLUGIN:-third_party/grpc/protoc-gen-grpc-java-0.15.0-linux-arm32.exe}
-</span><span style="color:#a6e22e"></span>     else
+<span style="color:#00a000">+      GRPC_JAVA_PLUGIN=${GRPC_JAVA_PLUGIN:-third_party/grpc/protoc-gen-grpc-java-0.15.0-linux-arm32.exe}
+</span><span style="color:#00a000"></span>     else
        PROTOC=${PROTOC:-third_party/protobuf/protoc-linux-x86_32.exe}
        GRPC_JAVA_PLUGIN=${GRPC_JAVA_PLUGIN:-third_party/grpc/protoc-gen-grpc-java-0.15.0-linux-x86_32.exe}
-<span style="color:#75715e">@@ -150,7 +151,7 @@ function java_compilation() {
-</span><span style="color:#75715e"></span>
+<span style="color:#800080;font-weight:bold">@@ -150,7 +151,7 @@ function java_compilation() {
+</span><span style="color:#800080;font-weight:bold"></span>
    run &#34;${JAVAC}&#34; -classpath &#34;${classpath}&#34; -sourcepath &#34;${sourcepath}&#34; \
        -d &#34;${output}/classes&#34; -source &#34;$JAVA_VERSION&#34; -target &#34;$JAVA_VERSION&#34; \
-<span style="color:#f92672">-      -encoding UTF-8 &#34;@${paramfile}&#34;
-</span><span style="color:#f92672"></span><span style="color:#a6e22e">+      -encoding UTF-8 &#34;@${paramfile}&#34; -J-Xmx500M
-</span><span style="color:#a6e22e"></span>
+<span style="color:#a40000">-      -encoding UTF-8 &#34;@${paramfile}&#34;
+</span><span style="color:#a40000"></span><span style="color:#00a000">+      -encoding UTF-8 &#34;@${paramfile}&#34; -J-Xmx500M
+</span><span style="color:#00a000"></span>
    log &#34;Extracting helper classes for $name...&#34;
    for f in ${library_jars} ; do
-diff --git a/src/main/java/com/google/devtools/build/lib/util/CPU.java b/src/main/java/com/google/devtools/build/lib/util/CPU.java
-index 41af4b1..4d80610 100644
-<span style="color:#f92672">--- a/src/main/java/com/google/devtools/build/lib/util/CPU.java
-</span><span style="color:#f92672"></span><span style="color:#a6e22e">+++ b/src/main/java/com/google/devtools/build/lib/util/CPU.java
-</span><span style="color:#a6e22e"></span><span style="color:#75715e">@@ -26,7 +26,7 @@ public enum CPU {
-</span><span style="color:#75715e"></span>   X86_32(&#34;x86_32&#34;, ImmutableSet.of(&#34;i386&#34;, &#34;i486&#34;, &#34;i586&#34;, &#34;i686&#34;, &#34;i786&#34;, &#34;x86&#34;)),
+<span style="color:#000080;font-weight:bold">diff --git a/src/main/java/com/google/devtools/build/lib/util/CPU.java b/src/main/java/com/google/devtools/build/lib/util/CPU.java
+</span><span style="color:#000080;font-weight:bold">index 41af4b1..4d80610 100644
+</span><span style="color:#000080;font-weight:bold"></span><span style="color:#a40000">--- a/src/main/java/com/google/devtools/build/lib/util/CPU.java
+</span><span style="color:#a40000"></span><span style="color:#00a000">+++ b/src/main/java/com/google/devtools/build/lib/util/CPU.java
+</span><span style="color:#00a000"></span><span style="color:#800080;font-weight:bold">@@ -26,7 +26,7 @@ public enum CPU {
+</span><span style="color:#800080;font-weight:bold"></span>   X86_32(&#34;x86_32&#34;, ImmutableSet.of(&#34;i386&#34;, &#34;i486&#34;, &#34;i586&#34;, &#34;i686&#34;, &#34;i786&#34;, &#34;x86&#34;)),
    X86_64(&#34;x86_64&#34;, ImmutableSet.of(&#34;amd64&#34;, &#34;x86_64&#34;, &#34;x64&#34;)),
    PPC(&#34;ppc&#34;, ImmutableSet.of(&#34;ppc&#34;, &#34;ppc64&#34;, &#34;ppc64le&#34;)),
-<span style="color:#f92672">-  ARM(&#34;arm&#34;, ImmutableSet.of(&#34;arm&#34;, &#34;armv7l&#34;)),
-</span><span style="color:#f92672"></span><span style="color:#a6e22e">+  ARM(&#34;arm&#34;, ImmutableSet.of(&#34;arm&#34;, &#34;armv7l&#34;, &#34;aarch64&#34;)),
-</span><span style="color:#a6e22e"></span>   UNKNOWN(&#34;unknown&#34;, ImmutableSet.&lt;String&gt;of());
+<span style="color:#a40000">-  ARM(&#34;arm&#34;, ImmutableSet.of(&#34;arm&#34;, &#34;armv7l&#34;)),
+</span><span style="color:#a40000"></span><span style="color:#00a000">+  ARM(&#34;arm&#34;, ImmutableSet.of(&#34;arm&#34;, &#34;armv7l&#34;, &#34;aarch64&#34;)),
+</span><span style="color:#00a000"></span>   UNKNOWN(&#34;unknown&#34;, ImmutableSet.&lt;String&gt;of());
 
    private final String canonicalName;
-diff --git a/third_party/grpc/BUILD b/third_party/grpc/BUILD
-index 2ba07e3..c7925ff 100644
-<span style="color:#f92672">--- a/third_party/grpc/BUILD
-</span><span style="color:#f92672"></span><span style="color:#a6e22e">+++ b/third_party/grpc/BUILD
-</span><span style="color:#a6e22e"></span><span style="color:#75715e">@@ -29,7 +29,7 @@ filegroup(
-</span><span style="color:#75715e"></span>         &#34;//third_party:darwin&#34;: [&#34;protoc-gen-grpc-java-0.15.0-osx-x86_64.exe&#34;],
+<span style="color:#000080;font-weight:bold">diff --git a/third_party/grpc/BUILD b/third_party/grpc/BUILD
+</span><span style="color:#000080;font-weight:bold">index 2ba07e3..c7925ff 100644
+</span><span style="color:#000080;font-weight:bold"></span><span style="color:#a40000">--- a/third_party/grpc/BUILD
+</span><span style="color:#a40000"></span><span style="color:#00a000">+++ b/third_party/grpc/BUILD
+</span><span style="color:#00a000"></span><span style="color:#800080;font-weight:bold">@@ -29,7 +29,7 @@ filegroup(
+</span><span style="color:#800080;font-weight:bold"></span>         &#34;//third_party:darwin&#34;: [&#34;protoc-gen-grpc-java-0.15.0-osx-x86_64.exe&#34;],
          &#34;//third_party:k8&#34;: [&#34;protoc-gen-grpc-java-0.15.0-linux-x86_64.exe&#34;],
          &#34;//third_party:piii&#34;: [&#34;protoc-gen-grpc-java-0.15.0-linux-x86_32.exe&#34;],
-<span style="color:#f92672">-        &#34;//third_party:arm&#34;: [&#34;protoc-gen-grpc-java-0.15.0-linux-x86_32.exe&#34;],
-</span><span style="color:#f92672"></span><span style="color:#a6e22e">+        &#34;//third_party:arm&#34;: [&#34;protoc-gen-grpc-java-0.15.0-linux-arm32.exe&#34;],
-</span><span style="color:#a6e22e"></span>         &#34;//third_party:freebsd&#34;: [&#34;protoc-gen-grpc-java-0.15.0-linux-x86_32.exe&#34;],
+<span style="color:#a40000">-        &#34;//third_party:arm&#34;: [&#34;protoc-gen-grpc-java-0.15.0-linux-x86_32.exe&#34;],
+</span><span style="color:#a40000"></span><span style="color:#00a000">+        &#34;//third_party:arm&#34;: [&#34;protoc-gen-grpc-java-0.15.0-linux-arm32.exe&#34;],
+</span><span style="color:#00a000"></span>         &#34;//third_party:freebsd&#34;: [&#34;protoc-gen-grpc-java-0.15.0-linux-x86_32.exe&#34;],
      }),
  )
-diff --git a/third_party/protobuf/BUILD b/third_party/protobuf/BUILD
-index 203fe51..4c2a316 100644
-<span style="color:#f92672">--- a/third_party/protobuf/BUILD
-</span><span style="color:#f92672"></span><span style="color:#a6e22e">+++ b/third_party/protobuf/BUILD
-</span><span style="color:#a6e22e"></span><span style="color:#75715e">@@ -28,6 +28,7 @@ filegroup(
-</span><span style="color:#75715e"></span>         &#34;//third_party:darwin&#34;: [&#34;protoc-osx-x86_32.exe&#34;],
+<span style="color:#000080;font-weight:bold">diff --git a/third_party/protobuf/BUILD b/third_party/protobuf/BUILD
+</span><span style="color:#000080;font-weight:bold">index 203fe51..4c2a316 100644
+</span><span style="color:#000080;font-weight:bold"></span><span style="color:#a40000">--- a/third_party/protobuf/BUILD
+</span><span style="color:#a40000"></span><span style="color:#00a000">+++ b/third_party/protobuf/BUILD
+</span><span style="color:#00a000"></span><span style="color:#800080;font-weight:bold">@@ -28,6 +28,7 @@ filegroup(
+</span><span style="color:#800080;font-weight:bold"></span>         &#34;//third_party:darwin&#34;: [&#34;protoc-osx-x86_32.exe&#34;],
          &#34;//third_party:k8&#34;: [&#34;protoc-linux-x86_64.exe&#34;],
          &#34;//third_party:piii&#34;: [&#34;protoc-linux-x86_32.exe&#34;],
-<span style="color:#a6e22e">+        &#34;//third_party:arm&#34;: [&#34;protoc-linux-arm32.exe&#34;],
-</span><span style="color:#a6e22e"></span>         &#34;//third_party:freebsd&#34;: [&#34;protoc-linux-x86_32.exe&#34;],
+<span style="color:#00a000">+        &#34;//third_party:arm&#34;: [&#34;protoc-linux-arm32.exe&#34;],
+</span><span style="color:#00a000"></span>         &#34;//third_party:freebsd&#34;: [&#34;protoc-linux-x86_32.exe&#34;],
      }),
  )
-diff --git a/tools/cpp/cc_configure.bzl b/tools/cpp/cc_configure.bzl
-index aeb0715..688835d 100644
-<span style="color:#f92672">--- a/tools/cpp/cc_configure.bzl
-</span><span style="color:#f92672"></span><span style="color:#a6e22e">+++ b/tools/cpp/cc_configure.bzl
-</span><span style="color:#a6e22e"></span><span style="color:#75715e">@@ -150,7 +150,12 @@ def _get_cpu_value(repository_ctx):
-</span><span style="color:#75715e"></span>     return &#34;x64_windows&#34;
+<span style="color:#000080;font-weight:bold">diff --git a/tools/cpp/cc_configure.bzl b/tools/cpp/cc_configure.bzl
+</span><span style="color:#000080;font-weight:bold">index aeb0715..688835d 100644
+</span><span style="color:#000080;font-weight:bold"></span><span style="color:#a40000">--- a/tools/cpp/cc_configure.bzl
+</span><span style="color:#a40000"></span><span style="color:#00a000">+++ b/tools/cpp/cc_configure.bzl
+</span><span style="color:#00a000"></span><span style="color:#800080;font-weight:bold">@@ -150,7 +150,12 @@ def _get_cpu_value(repository_ctx):
+</span><span style="color:#800080;font-weight:bold"></span>     return &#34;x64_windows&#34;
    # Use uname to figure out whether we are on x86_32 or x86_64
    result = repository_ctx.execute([&#34;uname&#34;, &#34;-m&#34;])
-<span style="color:#f92672">-  return &#34;k8&#34; if result.stdout.strip() in [&#34;amd64&#34;, &#34;x86_64&#34;, &#34;x64&#34;] else &#34;piii&#34;
-</span><span style="color:#f92672"></span><span style="color:#a6e22e">+  machine = result.stdout.strip()
-</span><span style="color:#a6e22e">+  if machine in [&#34;arm&#34;, &#34;armv7l&#34;, &#34;aarch64&#34;]:
-</span><span style="color:#a6e22e">+   return &#34;arm&#34;
-</span><span style="color:#a6e22e">+  elif machine in [&#34;amd64&#34;, &#34;x86_64&#34;, &#34;x64&#34;]:
-</span><span style="color:#a6e22e">+   return &#34;k8&#34;
-</span><span style="color:#a6e22e">+  return &#34;piii&#34;
-</span><span style="color:#a6e22e"></span>
+<span style="color:#a40000">-  return &#34;k8&#34; if result.stdout.strip() in [&#34;amd64&#34;, &#34;x86_64&#34;, &#34;x64&#34;] else &#34;piii&#34;
+</span><span style="color:#a40000"></span><span style="color:#00a000">+  machine = result.stdout.strip()
+</span><span style="color:#00a000">+  if machine in [&#34;arm&#34;, &#34;armv7l&#34;, &#34;aarch64&#34;]:
+</span><span style="color:#00a000">+   return &#34;arm&#34;
+</span><span style="color:#00a000">+  elif machine in [&#34;amd64&#34;, &#34;x86_64&#34;, &#34;x64&#34;]:
+</span><span style="color:#00a000">+   return &#34;k8&#34;
+</span><span style="color:#00a000">+  return &#34;piii&#34;
+</span><span style="color:#00a000"></span>
 
  _INC_DIR_MARKER_BEGIN = &#34;#include &lt;...&gt;&#34;
 </code></pre></div>
 <p>之后编译安装:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./compile.sh 
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./compile.sh 
 $ sudo cp output/bazel /usr/local/bin
-$ cd ..</code></pre></div>
+$ <span style="color:#204a87">cd</span> ..</code></pre></div>
 <h3 id="build-tensorflow">Build Tensorflow</h3>
 
 <pre><code>$ git clone https://github.com/tensorflow/tensorflow.git
@@ -410,107 +410,107 @@ $ git checkout r0.11
 </code></pre>
 
 <p>同样地, 修改配置文件:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">diff --git a/tensorflow/core/kernels/BUILD b/tensorflow/core/kernels/BUILD
-index 2e04827..867aaca 100644
-<span style="color:#f92672">--- a/tensorflow/core/kernels/BUILD
-</span><span style="color:#f92672"></span><span style="color:#a6e22e">+++ b/tensorflow/core/kernels/BUILD
-</span><span style="color:#a6e22e"></span><span style="color:#75715e">@@ -1184,7 +1184,7 @@ tf_kernel_libraries(
-</span><span style="color:#75715e"></span>         &#34;segment_reduction_ops&#34;,
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff"><span style="color:#000080;font-weight:bold">diff --git a/tensorflow/core/kernels/BUILD b/tensorflow/core/kernels/BUILD
+</span><span style="color:#000080;font-weight:bold">index 2e04827..867aaca 100644
+</span><span style="color:#000080;font-weight:bold"></span><span style="color:#a40000">--- a/tensorflow/core/kernels/BUILD
+</span><span style="color:#a40000"></span><span style="color:#00a000">+++ b/tensorflow/core/kernels/BUILD
+</span><span style="color:#00a000"></span><span style="color:#800080;font-weight:bold">@@ -1184,7 +1184,7 @@ tf_kernel_libraries(
+</span><span style="color:#800080;font-weight:bold"></span>         &#34;segment_reduction_ops&#34;,
          &#34;scan_ops&#34;,
          &#34;sequence_ops&#34;,
-<span style="color:#f92672">-        &#34;sparse_matmul_op&#34;,
-</span><span style="color:#f92672"></span><span style="color:#a6e22e">+       #DC &#34;sparse_matmul_op&#34;,
-</span><span style="color:#a6e22e"></span>     ],
+<span style="color:#a40000">-        &#34;sparse_matmul_op&#34;,
+</span><span style="color:#a40000"></span><span style="color:#00a000">+       #DC &#34;sparse_matmul_op&#34;,
+</span><span style="color:#00a000"></span>     ],
      deps = [
          &#34;:bounds_check&#34;,
-diff --git a/tensorflow/core/kernels/cwise_op_gpu_select.cu.cc b/tensorflow/core/kernels/cwise_op_gpu_select.cu.cc
-index 02058a8..880252c 100644
-<span style="color:#f92672">--- a/tensorflow/core/kernels/cwise_op_gpu_select.cu.cc
-</span><span style="color:#f92672"></span><span style="color:#a6e22e">+++ b/tensorflow/core/kernels/cwise_op_gpu_select.cu.cc
-</span><span style="color:#a6e22e"></span><span style="color:#75715e">@@ -43,8 +43,14 @@ struct BatchSelectFunctor&lt;GPUDevice, T&gt; {
-</span><span style="color:#75715e"></span>     const int all_but_batch = then_flat_outer_dims.dimension(1);
+<span style="color:#000080;font-weight:bold">diff --git a/tensorflow/core/kernels/cwise_op_gpu_select.cu.cc b/tensorflow/core/kernels/cwise_op_gpu_select.cu.cc
+</span><span style="color:#000080;font-weight:bold">index 02058a8..880252c 100644
+</span><span style="color:#000080;font-weight:bold"></span><span style="color:#a40000">--- a/tensorflow/core/kernels/cwise_op_gpu_select.cu.cc
+</span><span style="color:#a40000"></span><span style="color:#00a000">+++ b/tensorflow/core/kernels/cwise_op_gpu_select.cu.cc
+</span><span style="color:#00a000"></span><span style="color:#800080;font-weight:bold">@@ -43,8 +43,14 @@ struct BatchSelectFunctor&lt;GPUDevice, T&gt; {
+</span><span style="color:#800080;font-weight:bold"></span>     const int all_but_batch = then_flat_outer_dims.dimension(1);
 
  #if !defined(EIGEN_HAS_INDEX_LIST)
-<span style="color:#f92672">-    Eigen::array&lt;int, 2&gt; broadcast_dims{{ 1, all_but_batch }};
-</span><span style="color:#f92672">-    Eigen::Tensor&lt;int, 2&gt;::Dimensions reshape_dims{{ batch, 1 }};
-</span><span style="color:#f92672"></span><span style="color:#a6e22e">+    // Eigen::array&lt;int, 2&gt; broadcast_dims{{ 1, all_but_batch }};
-</span><span style="color:#a6e22e">+    Eigen::array&lt;int, 2&gt; broadcast_dims;
-</span><span style="color:#a6e22e">+    broadcast_dims[0] = 1;
-</span><span style="color:#a6e22e">+    broadcast_dims[1] = all_but_batch;
-</span><span style="color:#a6e22e">+    // Eigen::Tensor&lt;int, 2&gt;::Dimensions reshape_dims{{ batch, 1 }};
-</span><span style="color:#a6e22e">+    Eigen::Tensor&lt;int, 2&gt;::Dimensions reshape_dims;
-</span><span style="color:#a6e22e">+    reshape_dims[0] = batch;
-</span><span style="color:#a6e22e">+    reshape_dims[1] = 1;
-</span><span style="color:#a6e22e"></span> #else
+<span style="color:#a40000">-    Eigen::array&lt;int, 2&gt; broadcast_dims{{ 1, all_but_batch }};
+</span><span style="color:#a40000">-    Eigen::Tensor&lt;int, 2&gt;::Dimensions reshape_dims{{ batch, 1 }};
+</span><span style="color:#a40000"></span><span style="color:#00a000">+    // Eigen::array&lt;int, 2&gt; broadcast_dims{{ 1, all_but_batch }};
+</span><span style="color:#00a000">+    Eigen::array&lt;int, 2&gt; broadcast_dims;
+</span><span style="color:#00a000">+    broadcast_dims[0] = 1;
+</span><span style="color:#00a000">+    broadcast_dims[1] = all_but_batch;
+</span><span style="color:#00a000">+    // Eigen::Tensor&lt;int, 2&gt;::Dimensions reshape_dims{{ batch, 1 }};
+</span><span style="color:#00a000">+    Eigen::Tensor&lt;int, 2&gt;::Dimensions reshape_dims;
+</span><span style="color:#00a000">+    reshape_dims[0] = batch;
+</span><span style="color:#00a000">+    reshape_dims[1] = 1;
+</span><span style="color:#00a000"></span> #else
      Eigen::IndexList&lt;Eigen::type2index&lt;1&gt;, int&gt; broadcast_dims;
      broadcast_dims.set(1, all_but_batch);
-diff --git a/tensorflow/core/kernels/sparse_tensor_dense_matmul_op_gpu.cu.cc b/tensorflow/core/kernels/sparse_tensor_dense_matmul_op_gpu.cu.cc
-index a177696..75b67ba 100644
-<span style="color:#f92672">--- a/tensorflow/core/kernels/sparse_tensor_dense_matmul_op_gpu.cu.cc
-</span><span style="color:#f92672"></span><span style="color:#a6e22e">+++ b/tensorflow/core/kernels/sparse_tensor_dense_matmul_op_gpu.cu.cc
-</span><span style="color:#a6e22e"></span><span style="color:#75715e">@@ -104,9 +104,17 @@ struct SparseTensorDenseMatMulFunctor&lt;GPUDevice, T, ADJ_A, ADJ_B&gt; {
-</span><span style="color:#75715e"></span>     int n = (ADJ_B) ? b.dimension(0) : b.dimension(1);
+<span style="color:#000080;font-weight:bold">diff --git a/tensorflow/core/kernels/sparse_tensor_dense_matmul_op_gpu.cu.cc b/tensorflow/core/kernels/sparse_tensor_dense_matmul_op_gpu.cu.cc
+</span><span style="color:#000080;font-weight:bold">index a177696..75b67ba 100644
+</span><span style="color:#000080;font-weight:bold"></span><span style="color:#a40000">--- a/tensorflow/core/kernels/sparse_tensor_dense_matmul_op_gpu.cu.cc
+</span><span style="color:#a40000"></span><span style="color:#00a000">+++ b/tensorflow/core/kernels/sparse_tensor_dense_matmul_op_gpu.cu.cc
+</span><span style="color:#00a000"></span><span style="color:#800080;font-weight:bold">@@ -104,9 +104,17 @@ struct SparseTensorDenseMatMulFunctor&lt;GPUDevice, T, ADJ_A, ADJ_B&gt; {
+</span><span style="color:#800080;font-weight:bold"></span>     int n = (ADJ_B) ? b.dimension(0) : b.dimension(1);
 
  #if !defined(EIGEN_HAS_INDEX_LIST)
-<span style="color:#f92672">-    Eigen::Tensor&lt;int, 2&gt;::Dimensions matrix_1_by_nnz{{ 1, nnz }};
-</span><span style="color:#f92672">-    Eigen::array&lt;int, 2&gt; n_by_1{{ n, 1 }};
-</span><span style="color:#f92672">-    Eigen::array&lt;int, 1&gt; reduce_on_rows{{ 0 }};
-</span><span style="color:#f92672"></span><span style="color:#a6e22e">+    // Eigen::Tensor&lt;int, 2&gt;::Dimensions matrix_1_by_nnz{{ 1, nnz }};
-</span><span style="color:#a6e22e">+    Eigen::Tensor&lt;int, 2&gt;::Dimensions matrix_1_by_nnz;
-</span><span style="color:#a6e22e">+    matrix_1_by_nnz[0] = 1;
-</span><span style="color:#a6e22e">+    matrix_1_by_nnz[1] = nnz;
-</span><span style="color:#a6e22e">+    // Eigen::array&lt;int, 2&gt; n_by_1{{ n, 1 }};
-</span><span style="color:#a6e22e">+    Eigen::Tensor&lt;int, 2&gt;::Dimensions matrix_1_by_nnz;
-</span><span style="color:#a6e22e">+    matrix_1_by_nnz[0] = 1;
-</span><span style="color:#a6e22e">+    matrix_1_by_nnz[1] = nnz;
-</span><span style="color:#a6e22e">+    // Eigen::array&lt;int, 2&gt; n_by_1{{ n, 1 }};
-</span><span style="color:#a6e22e">+    Eigen::array&lt;int, 2&gt; n_by_1;
-</span><span style="color:#a6e22e">+    n_by_1[0] = n;
-</span><span style="color:#a6e22e">+    n_by_1[1] = 1;
-</span><span style="color:#a6e22e">+    // Eigen::array&lt;int, 1&gt; reduce_on_rows{{ 0 }};
-</span><span style="color:#a6e22e">+    Eigen::array&lt;int, 1&gt; reduce_on_rows;
-</span><span style="color:#a6e22e">+    reduce_on_rows[0]= 0;
-</span><span style="color:#a6e22e"></span> #else
+<span style="color:#a40000">-    Eigen::Tensor&lt;int, 2&gt;::Dimensions matrix_1_by_nnz{{ 1, nnz }};
+</span><span style="color:#a40000">-    Eigen::array&lt;int, 2&gt; n_by_1{{ n, 1 }};
+</span><span style="color:#a40000">-    Eigen::array&lt;int, 1&gt; reduce_on_rows{{ 0 }};
+</span><span style="color:#a40000"></span><span style="color:#00a000">+    // Eigen::Tensor&lt;int, 2&gt;::Dimensions matrix_1_by_nnz{{ 1, nnz }};
+</span><span style="color:#00a000">+    Eigen::Tensor&lt;int, 2&gt;::Dimensions matrix_1_by_nnz;
+</span><span style="color:#00a000">+    matrix_1_by_nnz[0] = 1;
+</span><span style="color:#00a000">+    matrix_1_by_nnz[1] = nnz;
+</span><span style="color:#00a000">+    // Eigen::array&lt;int, 2&gt; n_by_1{{ n, 1 }};
+</span><span style="color:#00a000">+    Eigen::Tensor&lt;int, 2&gt;::Dimensions matrix_1_by_nnz;
+</span><span style="color:#00a000">+    matrix_1_by_nnz[0] = 1;
+</span><span style="color:#00a000">+    matrix_1_by_nnz[1] = nnz;
+</span><span style="color:#00a000">+    // Eigen::array&lt;int, 2&gt; n_by_1{{ n, 1 }};
+</span><span style="color:#00a000">+    Eigen::array&lt;int, 2&gt; n_by_1;
+</span><span style="color:#00a000">+    n_by_1[0] = n;
+</span><span style="color:#00a000">+    n_by_1[1] = 1;
+</span><span style="color:#00a000">+    // Eigen::array&lt;int, 1&gt; reduce_on_rows{{ 0 }};
+</span><span style="color:#00a000">+    Eigen::array&lt;int, 1&gt; reduce_on_rows;
+</span><span style="color:#00a000">+    reduce_on_rows[0]= 0;
+</span><span style="color:#00a000"></span> #else
      Eigen::IndexList&lt;Eigen::type2index&lt;1&gt;, int&gt; matrix_1_by_nnz;
      matrix_1_by_nnz.set(1, nnz);
-diff --git a/tensorflow/stream_executor/cuda/cuda_gpu_executor.cc b/tensorflow/stream_executor/cuda/cuda_gpu_executor.cc
-index 52256a7..1d027b9 100644
-<span style="color:#f92672">--- a/tensorflow/stream_executor/cuda/cuda_gpu_executor.cc
-</span><span style="color:#f92672"></span><span style="color:#a6e22e">+++ b/tensorflow/stream_executor/cuda/cuda_gpu_executor.cc
-</span><span style="color:#a6e22e"></span><span style="color:#75715e">@@ -888,6 +888,9 @@ CudaContext* CUDAExecutor::cuda_context() { return context_; }
-</span><span style="color:#75715e"></span> // For anything more complicated/prod-focused than this, you&#39;ll likely want to
+<span style="color:#000080;font-weight:bold">diff --git a/tensorflow/stream_executor/cuda/cuda_gpu_executor.cc b/tensorflow/stream_executor/cuda/cuda_gpu_executor.cc
+</span><span style="color:#000080;font-weight:bold">index 52256a7..1d027b9 100644
+</span><span style="color:#000080;font-weight:bold"></span><span style="color:#a40000">--- a/tensorflow/stream_executor/cuda/cuda_gpu_executor.cc
+</span><span style="color:#a40000"></span><span style="color:#00a000">+++ b/tensorflow/stream_executor/cuda/cuda_gpu_executor.cc
+</span><span style="color:#00a000"></span><span style="color:#800080;font-weight:bold">@@ -888,6 +888,9 @@ CudaContext* CUDAExecutor::cuda_context() { return context_; }
+</span><span style="color:#800080;font-weight:bold"></span> // For anything more complicated/prod-focused than this, you&#39;ll likely want to
  // turn to gsys&#39; topology modeling.
  static int TryToReadNumaNode(const string &amp;pci_bus_id, int device_ordinal) {
-<span style="color:#a6e22e">+// DC - make this clever later. ARM has no NUMA node, just return 0
-</span><span style="color:#a6e22e">+LOG(INFO) &lt;&lt; &#34;ARM has no NUMA node, hardcoding to return zero&#34;;
-</span><span style="color:#a6e22e">+return 0;
-</span><span style="color:#a6e22e"></span> #if defined(__APPLE__)
+<span style="color:#00a000">+// DC - make this clever later. ARM has no NUMA node, just return 0
+</span><span style="color:#00a000">+LOG(INFO) &lt;&lt; &#34;ARM has no NUMA node, hardcoding to return zero&#34;;
+</span><span style="color:#00a000">+return 0;
+</span><span style="color:#00a000"></span> #if defined(__APPLE__)
    LOG(INFO) &lt;&lt; &#34;OS X does not support NUMA - returning NUMA node zero&#34;;
    return 0;
 </code></pre></div>
 <p>之后即可编译:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./configure
-$ bazel build -c opt --jobs <span style="color:#ae81ff">2</span> --local_resources <span style="color:#ae81ff">1024</span>,4.0,1.0 --config<span style="color:#f92672">=</span>cuda //tensorflow/tools/pip_package:build_pip_package
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./configure
+$ bazel build -c opt --jobs <span style="color:#0000cf;font-weight:bold">2</span> --local_resources <span style="color:#0000cf;font-weight:bold">1024</span>,4.0,1.0 --config<span style="color:#ce5c00;font-weight:bold">=</span>cuda //tensorflow/tools/pip_package:build_pip_package
 $ bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg
-<span style="color:#75715e"># The name of the .whl file will depend on your platform.</span>
+<span style="color:#8f5902;font-style:italic"># The name of the .whl file will depend on your platform.</span>
 $ sudo pip install /tmp/tensorflow_pkg/tensorflow-0.11.0-py2-none-any.whl</code></pre></div>
 <p>这里有我自己编译好的 <a href="https://drive.google.com/open?id=0B0AsKkiz_kZRZG9BbFRxZ1FYWTg">tensorflow_gpu-0.11.0-py2-none-aarch64.whl</a>, 可供使用.</p>
 
 <h3 id="start-using-tensorflow">Start using Tensorflow</h3>
 
 <p>首先还得装一下 OpenCV 的 Python port:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo apt-get install -y libopencv4tegra–python</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo apt-get install -y libopencv4tegra–python</code></pre></div>
 <p>之后即可测试 TensorFlow 是否成功安装:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ python
-Python <span style="color:#ae81ff">2</span>.7.12 <span style="color:#f92672">(</span>default, Nov <span style="color:#ae81ff">19</span> <span style="color:#ae81ff">2016</span>, <span style="color:#ae81ff">06</span>:48:10<span style="color:#f92672">)</span>
-<span style="color:#f92672">[</span>GCC <span style="color:#ae81ff">5</span>.4.0 <span style="color:#ae81ff">20160609</span><span style="color:#f92672">]</span> on linux2
-Type <span style="color:#e6db74">&#34;help&#34;</span>, <span style="color:#e6db74">&#34;copyright&#34;</span>, <span style="color:#e6db74">&#34;credits&#34;</span> or <span style="color:#e6db74">&#34;license&#34;</span> <span style="color:#66d9ef">for</span> more information.
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ python
+Python <span style="color:#0000cf;font-weight:bold">2</span>.7.12 <span style="color:#ce5c00;font-weight:bold">(</span>default, Nov <span style="color:#0000cf;font-weight:bold">19</span> <span style="color:#0000cf;font-weight:bold">2016</span>, <span style="color:#0000cf;font-weight:bold">06</span>:48:10<span style="color:#ce5c00;font-weight:bold">)</span>
+<span style="color:#ce5c00;font-weight:bold">[</span>GCC <span style="color:#0000cf;font-weight:bold">5</span>.4.0 <span style="color:#0000cf;font-weight:bold">20160609</span><span style="color:#ce5c00;font-weight:bold">]</span> on linux2
+Type <span style="color:#4e9a06">&#34;help&#34;</span>, <span style="color:#4e9a06">&#34;copyright&#34;</span>, <span style="color:#4e9a06">&#34;credits&#34;</span> or <span style="color:#4e9a06">&#34;license&#34;</span> <span style="color:#204a87;font-weight:bold">for</span> more information.
 &gt;&gt;&gt; import tensorflow as tf
-I tensorflow/stream_executor/dso_loader.cc:111<span style="color:#f92672">]</span> successfully opened CUDA library libcublas.so locally
-I tensorflow/stream_executor/dso_loader.cc:111<span style="color:#f92672">]</span> successfully opened CUDA library libcudnn.so locally
-I tensorflow/stream_executor/dso_loader.cc:111<span style="color:#f92672">]</span> successfully opened CUDA library libcufft.so locally
-I tensorflow/stream_executor/dso_loader.cc:111<span style="color:#f92672">]</span> successfully opened CUDA library libcuda.so.1 locally
-I tensorflow/stream_executor/dso_loader.cc:111<span style="color:#f92672">]</span> successfully opened CUDA library libcurand.so locally
+I tensorflow/stream_executor/dso_loader.cc:111<span style="color:#ce5c00;font-weight:bold">]</span> successfully opened CUDA library libcublas.so locally
+I tensorflow/stream_executor/dso_loader.cc:111<span style="color:#ce5c00;font-weight:bold">]</span> successfully opened CUDA library libcudnn.so locally
+I tensorflow/stream_executor/dso_loader.cc:111<span style="color:#ce5c00;font-weight:bold">]</span> successfully opened CUDA library libcufft.so locally
+I tensorflow/stream_executor/dso_loader.cc:111<span style="color:#ce5c00;font-weight:bold">]</span> successfully opened CUDA library libcuda.so.1 locally
+I tensorflow/stream_executor/dso_loader.cc:111<span style="color:#ce5c00;font-weight:bold">]</span> successfully opened CUDA library libcurand.so locally
 &gt;&gt;&gt;</code></pre></div>
 <p>不报错即是安装成功.</p>
 
@@ -519,16 +519,16 @@ I tensorflow/stream_executor/dso_loader.cc:111<span style="color:#f92672">]</spa
 <h3 id="swap-memory">Swap Memory</h3>
 
 <p>如果编译失败, 很有可能是内存不足的原因, 因此可以外接U盘或是SSD等, 并且将一部分缓存放在上面.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cd /path/to/your/storage
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#204a87">cd</span> /path/to/your/storage
 $ fallocate -l 8G swapfile
-$ chmod <span style="color:#ae81ff">600</span> swapfile
+$ chmod <span style="color:#0000cf;font-weight:bold">600</span> swapfile
 $ mkswap swapfile
 $ sudo swapon swapfile
 $ swapon -s</code></pre></div>
 <p>8G的 swap 空间应该是够用了, 如果还嫌不够可以再设个大点的.</p>
 
 <p>之后再运行 Bazel 编译:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ bazel build -c opt --local_resources <span style="color:#ae81ff">3072</span>,4.0,1.0 --verbose_failures --config<span style="color:#f92672">=</span>cuda //tensorflow/tools/pip_package:build_pip_package</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ bazel build -c opt --local_resources <span style="color:#0000cf;font-weight:bold">3072</span>,4.0,1.0 --verbose_failures --config<span style="color:#ce5c00;font-weight:bold">=</span>cuda //tensorflow/tools/pip_package:build_pip_package</code></pre></div>
 <h3 id="build-on-external-storage">Build on external storage</h3>
 
 <p>整个安装过程所需的空间大概是3G以上, 而 TX1 装完系统之后只剩下了 4G 的剩余空间. 所以最好将安装时的根目录选在外置的存储上, 以免因为内置存储空间不足而导致失败.</p>
@@ -557,7 +557,8 @@ $ swapon -s</code></pre></div>
       </ul>
       
       <p class="post-copyright">
-        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.This post was published <strong>821</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
+This post was published <strong>823</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
       </p>
     </footer>
     

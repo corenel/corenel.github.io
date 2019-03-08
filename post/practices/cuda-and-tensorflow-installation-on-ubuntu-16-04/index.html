@@ -359,7 +359,7 @@
 <ul>
 <li>首先看看有没有在使用这个开源驱动:</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"> $ lsmod | grep nouveau</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"> $ lsmod <span style="color:#000;font-weight:bold">|</span> grep nouveau</code></pre></div>
 <ul>
 <li>创建<code>/etc/modprobe.d/blacklist-nouveau.conf</code>文件, 并写入以下内容</li>
 </ul>
@@ -371,11 +371,11 @@ options nouveau modeset=0
 <ul>
 <li>重启kernel initramfs</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo update-initramfs -u</code></pre></div></li>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo update-initramfs -u</code></pre></div></li>
 
 <li><p>从ppa源下载最新版的驱动(&gt;364), 或者使用 CUDA-Toolkit 自带的驱动:</p></li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">  $ sudo apt-get purge nvidia-*
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">  $ sudo apt-get purge nvidia-*
   $ sudo add-apt-repository ppa:graphics-drivers/ppa
   $ sudo apt-get update
   $ sudo apt-get install nvidia-370</code></pre></div>
@@ -384,7 +384,7 @@ options nouveau modeset=0
 
 <li><p>安装过程中, 需要<code>Ctrl+Alt+F1</code>切换到 tty 界面, 然后关闭 X server:</p></li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">  $ sudo service lightdm stop</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">  $ sudo service lightdm stop</code></pre></div>
 <p>之后再执行安装过程</p>
 
 <ul>
@@ -392,27 +392,27 @@ options nouveau modeset=0
 
 <li><p>安装完成之后, 设置环境变量:</p></li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">  export LD_LIBRARY_PATH<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$LD_LIBRARY_PATH<span style="color:#e6db74">:/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64&#34;</span>
-  export CUDA_HOME<span style="color:#f92672">=</span>/usr/local/cuda</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">  <span style="color:#204a87">export</span> <span style="color:#000">LD_LIBRARY_PATH</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#4e9a06">&#34;</span><span style="color:#000">$LD_LIBRARY_PATH</span><span style="color:#4e9a06">:/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64&#34;</span>
+  <span style="color:#204a87">export</span> <span style="color:#000">CUDA_HOME</span><span style="color:#ce5c00;font-weight:bold">=</span>/usr/local/cuda</code></pre></div>
 <h2 id="安装-cudnn">安装 cuDNN</h2>
 
 <p>从<a href="https://developer.nvidia.com/cudnn">官网</a>下载之后, 执行以下命令 (目前最新版本5.1):</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">tar xvzf cudnn-8.0-linux-x64-v5.1-ga.tgz
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">tar xvzf cudnn-8.0-linux-x64-v5.1-ga.tgz
 sudo cp cuda/include/cudnn.h /usr/local/cuda/include
 sudo cp cuda/lib64/libcudnn* /usr/local/cuda/lib64
 sudo chmod a+r /usr/local/cuda/include/cudnn.h /usr/local/cuda/lib64/libcudnn*</code></pre></div>
 <h2 id="安装tensorflow">安装Tensorflow</h2>
 
 <p>这是最纠结的一步, 之前按照别人教程说最好从源码编译支持 GPU. 但是由于国内的网络环境, 源码编译需要下一堆的依赖包, 速度超级慢. 因此还是使用官网推荐的 pip 安装方式:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># Get pip</span>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#8f5902;font-style:italic"># Get pip</span>
 $ sudo apt-get install python-pip python-dev
 
-<span style="color:#75715e"># Ubuntu/Linux 64-bit, GPU enabled, Python 2.7</span>
-<span style="color:#75715e"># Requires CUDA toolkit 8.0 and CuDNN v5. For other versions, see &#34;Install from sources&#34; below.</span>
-$ export TF_BINARY_URL<span style="color:#f92672">=</span>https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow-0.11.0rc1-cp27-none-linux_x86_64.whl
+<span style="color:#8f5902;font-style:italic"># Ubuntu/Linux 64-bit, GPU enabled, Python 2.7</span>
+<span style="color:#8f5902;font-style:italic"># Requires CUDA toolkit 8.0 and CuDNN v5. For other versions, see &#34;Install from sources&#34; below.</span>
+$ <span style="color:#204a87">export</span> <span style="color:#000">TF_BINARY_URL</span><span style="color:#ce5c00;font-weight:bold">=</span>https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow-0.11.0rc1-cp27-none-linux_x86_64.whl
 
-<span style="color:#75715e"># Python 2</span>
-$ sudo pip install --upgrade $TF_BINARY_URL</code></pre></div>
+<span style="color:#8f5902;font-style:italic"># Python 2</span>
+$ sudo pip install --upgrade <span style="color:#000">$TF_BINARY_URL</span></code></pre></div>
 <blockquote>
 <ul>
 <li>可以先把<code>tensorflow-0.11.0rc1-cp27-none-linux_x86_64.whl</code>下下来, 本地执行安装命令</li>
@@ -423,17 +423,17 @@ $ sudo pip install --upgrade $TF_BINARY_URL</code></pre></div>
 <h2 id="测试-tensorflow">测试 Tensorflow</h2>
 
 <p>用下面的小例子来测试下 Tensorflow 安装得成不成功:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ python
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ python
 ...
 &gt;&gt;&gt; import tensorflow as tf
-&gt;&gt;&gt; hello <span style="color:#f92672">=</span> tf.constant<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;Hello, TensorFlow!&#39;</span><span style="color:#f92672">)</span>
-&gt;&gt;&gt; sess <span style="color:#f92672">=</span> tf.Session<span style="color:#f92672">()</span>
-&gt;&gt;&gt; print<span style="color:#f92672">(</span>sess.run<span style="color:#f92672">(</span>hello<span style="color:#f92672">))</span>
+&gt;&gt;&gt; <span style="color:#000">hello</span> <span style="color:#ce5c00;font-weight:bold">=</span> tf.constant<span style="color:#ce5c00;font-weight:bold">(</span><span style="color:#4e9a06">&#39;Hello, TensorFlow!&#39;</span><span style="color:#ce5c00;font-weight:bold">)</span>
+&gt;&gt;&gt; <span style="color:#000">sess</span> <span style="color:#ce5c00;font-weight:bold">=</span> tf.Session<span style="color:#ce5c00;font-weight:bold">()</span>
+&gt;&gt;&gt; print<span style="color:#ce5c00;font-weight:bold">(</span>sess.run<span style="color:#ce5c00;font-weight:bold">(</span>hello<span style="color:#ce5c00;font-weight:bold">))</span>
 Hello, TensorFlow!
-&gt;&gt;&gt; a <span style="color:#f92672">=</span> tf.constant<span style="color:#f92672">(</span><span style="color:#ae81ff">10</span><span style="color:#f92672">)</span>
-&gt;&gt;&gt; b <span style="color:#f92672">=</span> tf.constant<span style="color:#f92672">(</span><span style="color:#ae81ff">32</span><span style="color:#f92672">)</span>
-&gt;&gt;&gt; print<span style="color:#f92672">(</span>sess.run<span style="color:#f92672">(</span>a + b<span style="color:#f92672">))</span>
-<span style="color:#ae81ff">42</span>
+&gt;&gt;&gt; <span style="color:#000">a</span> <span style="color:#ce5c00;font-weight:bold">=</span> tf.constant<span style="color:#ce5c00;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">10</span><span style="color:#ce5c00;font-weight:bold">)</span>
+&gt;&gt;&gt; <span style="color:#000">b</span> <span style="color:#ce5c00;font-weight:bold">=</span> tf.constant<span style="color:#ce5c00;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">32</span><span style="color:#ce5c00;font-weight:bold">)</span>
+&gt;&gt;&gt; print<span style="color:#ce5c00;font-weight:bold">(</span>sess.run<span style="color:#ce5c00;font-weight:bold">(</span>a + b<span style="color:#ce5c00;font-weight:bold">))</span>
+<span style="color:#0000cf;font-weight:bold">42</span>
 &gt;&gt;&gt;</code></pre></div>
 <p>在 <code>import</code>的同时, 还会显示 CUDA 方面与 GPU 方面的信息.</p>
 
@@ -462,7 +462,8 @@ Hello, TensorFlow!
       </ul>
       
       <p class="post-copyright">
-        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.This post was published <strong>861</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
+This post was published <strong>863</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
       </p>
     </footer>
     

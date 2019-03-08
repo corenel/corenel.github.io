@@ -246,17 +246,17 @@
 <h2 id="failed-attempts">Failed attempts</h2>
 
 <p>最开始想的是直接用<code>dd</code>来备份整块 eMMC到外置的存储上, 于是尝试了</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo dd <span style="color:#66d9ef">if</span><span style="color:#f92672">=</span>/dev/mmcblk0p1 of<span style="color:#f92672">=</span>/media/ubuntu/backup/backup.img</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo dd <span style="color:#204a87;font-weight:bold">if</span><span style="color:#ce5c00;font-weight:bold">=</span>/dev/mmcblk0p1 <span style="color:#000">of</span><span style="color:#ce5c00;font-weight:bold">=</span>/media/ubuntu/backup/backup.img</code></pre></div>
 <p>后来还发现可以用<code>ssh</code>来远程<code>dd</code></p>
 
 <ul>
 <li><strong>run from remote computer</strong>:</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ dd <span style="color:#66d9ef">if</span><span style="color:#f92672">=</span>/dev/mmcblk0p1 | gzip -1 - | ssh yuthon@mac dd of<span style="color:#f92672">=</span>image.gz</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ dd <span style="color:#204a87;font-weight:bold">if</span><span style="color:#ce5c00;font-weight:bold">=</span>/dev/mmcblk0p1 <span style="color:#000;font-weight:bold">|</span> gzip -1 - <span style="color:#000;font-weight:bold">|</span> ssh yuthon@mac dd <span style="color:#000">of</span><span style="color:#ce5c00;font-weight:bold">=</span>image.gz</code></pre></div>
 <ul>
 <li><strong>run from local computer</strong>:</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ssh ubuntu@tx1 <span style="color:#e6db74">&#34;dd if=/dev/mmcblk0p1 | gzip -1 -&#34;</span> | dd of<span style="color:#f92672">=</span>image.gz</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ssh ubuntu@tx1 <span style="color:#4e9a06">&#34;dd if=/dev/mmcblk0p1 | gzip -1 -&#34;</span> <span style="color:#000;font-weight:bold">|</span> dd <span style="color:#000">of</span><span style="color:#ce5c00;font-weight:bold">=</span>image.gz</code></pre></div>
 <p>之后, 我们发现<code>64_TX1/Linux_for_Tegra_64_tx1/rootfs</code>目录中应该就是之后需要拷到 TX1 的<code>/</code>目录下的内容. 因此我们直接将之前备份好的<code>bakcup.img</code>解压到了此目录下, 并使用 JetPack 重新 Flash OS.</p>
 
 <p>最后的结果是 TX1 在重启后卡在了登录界面, 经典的 login-loop.</p>
@@ -272,15 +272,15 @@
 </blockquote>
 
 <h3 id="backup-an-image">Backup an image</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo ./tegraflash.py --bl cboot.bin --applet nvtboot_recovery.bin --chip 0x21 --cmd <span style="color:#e6db74">&#34;read APP my_backup_image_APP.img&#34;</span></code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo ./tegraflash.py --bl cboot.bin --applet nvtboot_recovery.bin --chip 0x21 --cmd <span style="color:#4e9a06">&#34;read APP my_backup_image_APP.img&#34;</span></code></pre></div>
 <h3 id="restore-an-image">Restore an image</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo ./tegraflash.py --bl cboot.bin --applet nvtboot_recovery.bin --chip 0x21 --cmd <span style="color:#e6db74">&#34;write APP my_backup_image_APP.img&#34;</span></code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo ./tegraflash.py --bl cboot.bin --applet nvtboot_recovery.bin --chip 0x21 --cmd <span style="color:#4e9a06">&#34;write APP my_backup_image_APP.img&#34;</span></code></pre></div>
 <h3 id="one-more-thing">One more thing</h3>
 
 <p>It&rsquo;s recommended in the post to use <code>flash.py</code> front-end instead of <code>tegraflash.py</code> to make sure you use the same L4T release version.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Backup</span>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#8f5902;font-style:italic"># Backup</span>
 $ sudo flash.sh -S 14580MiB jetson-tx1 mmcblk0p1
-<span style="color:#75715e"># Restore</span>
+<span style="color:#8f5902;font-style:italic"># Restore</span>
 $ sudo flash.sh -r -S 14580MiB jetson-tx1 mmcblk0p1</code></pre></div>
 <p>Note that the <code>-r</code>  param re-uses <code>system.img</code> in <code>bootloader</code> directory, and if a clone file is there in place, that installs the clone.
 <strong>I haven&rsquo;t tried this method, maybe you could have a try and report.</strong></p></article>
@@ -301,7 +301,8 @@ $ sudo flash.sh -r -S 14580MiB jetson-tx1 mmcblk0p1</code></pre></div>
       </ul>
       
       <p class="post-copyright">
-        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.This post was published <strong>807</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
+This post was published <strong>810</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
       </p>
     </footer>
     

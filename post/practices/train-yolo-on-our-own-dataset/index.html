@@ -274,38 +274,38 @@
 <h3 id="convert-labels-for-darknet">Convert labels for darknet</h3>
 
 <p>ImageNet 上下下来的 Bounding Box 信息是 Pascal VOC 的 xml 格式:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;annotation&gt;</span>
-	<span style="color:#f92672">&lt;folder&gt;</span>n03820318<span style="color:#f92672">&lt;/folder&gt;</span>
-	<span style="color:#f92672">&lt;filename&gt;</span>n03820318_101<span style="color:#f92672">&lt;/filename&gt;</span>
-	<span style="color:#f92672">&lt;source&gt;</span>
-		<span style="color:#f92672">&lt;database&gt;</span>ImageNet database<span style="color:#f92672">&lt;/database&gt;</span>
-	<span style="color:#f92672">&lt;/source&gt;</span>
-	<span style="color:#f92672">&lt;size&gt;</span>
-		<span style="color:#f92672">&lt;width&gt;</span>500<span style="color:#f92672">&lt;/width&gt;</span>
-		<span style="color:#f92672">&lt;height&gt;</span>333<span style="color:#f92672">&lt;/height&gt;</span>
-		<span style="color:#f92672">&lt;depth&gt;</span>3<span style="color:#f92672">&lt;/depth&gt;</span>
-	<span style="color:#f92672">&lt;/size&gt;</span>
-	<span style="color:#f92672">&lt;segmented&gt;</span>0<span style="color:#f92672">&lt;/segmented&gt;</span>
-	<span style="color:#f92672">&lt;object&gt;</span>
-		<span style="color:#f92672">&lt;name&gt;</span>n03820318<span style="color:#f92672">&lt;/name&gt;</span>
-		<span style="color:#f92672">&lt;pose&gt;</span>Unspecified<span style="color:#f92672">&lt;/pose&gt;</span>
-		<span style="color:#f92672">&lt;truncated&gt;</span>0<span style="color:#f92672">&lt;/truncated&gt;</span>
-		<span style="color:#f92672">&lt;difficult&gt;</span>0<span style="color:#f92672">&lt;/difficult&gt;</span>
-		<span style="color:#f92672">&lt;bndbox&gt;</span>
-			<span style="color:#f92672">&lt;xmin&gt;</span>19<span style="color:#f92672">&lt;/xmin&gt;</span>
-			<span style="color:#f92672">&lt;ymin&gt;</span>43<span style="color:#f92672">&lt;/ymin&gt;</span>
-			<span style="color:#f92672">&lt;xmax&gt;</span>499<span style="color:#f92672">&lt;/xmax&gt;</span>
-			<span style="color:#f92672">&lt;ymax&gt;</span>214<span style="color:#f92672">&lt;/ymax&gt;</span>
-		<span style="color:#f92672">&lt;/bndbox&gt;</span>
-	<span style="color:#f92672">&lt;/object&gt;</span>
-<span style="color:#f92672">&lt;/annotation&gt;</span></code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#204a87;font-weight:bold">&lt;annotation&gt;</span>
+	<span style="color:#204a87;font-weight:bold">&lt;folder&gt;</span>n03820318<span style="color:#204a87;font-weight:bold">&lt;/folder&gt;</span>
+	<span style="color:#204a87;font-weight:bold">&lt;filename&gt;</span>n03820318_101<span style="color:#204a87;font-weight:bold">&lt;/filename&gt;</span>
+	<span style="color:#204a87;font-weight:bold">&lt;source&gt;</span>
+		<span style="color:#204a87;font-weight:bold">&lt;database&gt;</span>ImageNet database<span style="color:#204a87;font-weight:bold">&lt;/database&gt;</span>
+	<span style="color:#204a87;font-weight:bold">&lt;/source&gt;</span>
+	<span style="color:#204a87;font-weight:bold">&lt;size&gt;</span>
+		<span style="color:#204a87;font-weight:bold">&lt;width&gt;</span>500<span style="color:#204a87;font-weight:bold">&lt;/width&gt;</span>
+		<span style="color:#204a87;font-weight:bold">&lt;height&gt;</span>333<span style="color:#204a87;font-weight:bold">&lt;/height&gt;</span>
+		<span style="color:#204a87;font-weight:bold">&lt;depth&gt;</span>3<span style="color:#204a87;font-weight:bold">&lt;/depth&gt;</span>
+	<span style="color:#204a87;font-weight:bold">&lt;/size&gt;</span>
+	<span style="color:#204a87;font-weight:bold">&lt;segmented&gt;</span>0<span style="color:#204a87;font-weight:bold">&lt;/segmented&gt;</span>
+	<span style="color:#204a87;font-weight:bold">&lt;object&gt;</span>
+		<span style="color:#204a87;font-weight:bold">&lt;name&gt;</span>n03820318<span style="color:#204a87;font-weight:bold">&lt;/name&gt;</span>
+		<span style="color:#204a87;font-weight:bold">&lt;pose&gt;</span>Unspecified<span style="color:#204a87;font-weight:bold">&lt;/pose&gt;</span>
+		<span style="color:#204a87;font-weight:bold">&lt;truncated&gt;</span>0<span style="color:#204a87;font-weight:bold">&lt;/truncated&gt;</span>
+		<span style="color:#204a87;font-weight:bold">&lt;difficult&gt;</span>0<span style="color:#204a87;font-weight:bold">&lt;/difficult&gt;</span>
+		<span style="color:#204a87;font-weight:bold">&lt;bndbox&gt;</span>
+			<span style="color:#204a87;font-weight:bold">&lt;xmin&gt;</span>19<span style="color:#204a87;font-weight:bold">&lt;/xmin&gt;</span>
+			<span style="color:#204a87;font-weight:bold">&lt;ymin&gt;</span>43<span style="color:#204a87;font-weight:bold">&lt;/ymin&gt;</span>
+			<span style="color:#204a87;font-weight:bold">&lt;xmax&gt;</span>499<span style="color:#204a87;font-weight:bold">&lt;/xmax&gt;</span>
+			<span style="color:#204a87;font-weight:bold">&lt;ymax&gt;</span>214<span style="color:#204a87;font-weight:bold">&lt;/ymax&gt;</span>
+		<span style="color:#204a87;font-weight:bold">&lt;/bndbox&gt;</span>
+	<span style="color:#204a87;font-weight:bold">&lt;/object&gt;</span>
+<span style="color:#204a87;font-weight:bold">&lt;/annotation&gt;</span></code></pre></div>
 <p>而 darknet 需要的标注文件是 txt 格式:</p>
 
 <pre><code>&lt;object-class&gt; &lt;x&gt; &lt;y&gt; &lt;width&gt; &lt;height&gt;
 </code></pre>
 
 <p>于是就需要对于 labels 进行转换. 我写了<a href="https://github.com/corenel/darknet/blob/yuthon/scripts/imagenet_bb_label.py">一份 Python 脚本</a>, 将其放在数据集的根目录下执行即可:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ python imagenet_bb_label.py</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ python imagenet_bb_label.py</code></pre></div>
 <p>之后得到目录结构如下:</p>
 
 <pre><code>.
@@ -326,20 +326,20 @@
 
 <blockquote>
 <p>ImageNet 的 xml 文件里 object 的名字是类似<code>n03820318</code>这种格式的, 如果需要转成<code>goal</code>这样的话可以再目录下执行以下命令来批量替换:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; $ find . -name <span style="color:#e6db74">&#34;*.xml&#34;</span> -print | xargs sed -i <span style="color:#e6db74">&#39;s/&lt;name&gt;n03820318/&lt;name&gt;goal/g&#39;</span>
-&gt; <span style="color:#e6db74">```</span>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; $ find . -name <span style="color:#4e9a06">&#34;*.xml&#34;</span> -print <span style="color:#000;font-weight:bold">|</span> xargs sed -i <span style="color:#4e9a06">&#39;s/&lt;name&gt;n03820318/&lt;name&gt;goal/g&#39;</span>
+&gt; <span style="color:#4e9a06">```</span>
 
-<span style="color:#75715e">## Modify darknet</span>
+<span style="color:#8f5902;font-style:italic">## Modify darknet</span>
 
 由于 class 的数量和名字都变了, 因此需要修改下 YOLO 的源代码.
 
-首先是从 clone repository. 可以选择 clone <span style="color:#f92672">[</span>官方的<span style="color:#f92672">](</span>https://github.com/pjreddie/darknet<span style="color:#f92672">)</span>, 也可以直接下<span style="color:#f92672">[</span>我修改好的<span style="color:#f92672">](</span>https://github.com/corenel/darknet<span style="color:#f92672">)</span>. 此处里官方 repo 为例.
+首先是从 clone repository. 可以选择 clone <span style="color:#ce5c00;font-weight:bold">[</span>官方的<span style="color:#ce5c00;font-weight:bold">](</span>https://github.com/pjreddie/darknet<span style="color:#ce5c00;font-weight:bold">)</span>, 也可以直接下<span style="color:#ce5c00;font-weight:bold">[</span>我修改好的<span style="color:#ce5c00;font-weight:bold">](</span>https://github.com/corenel/darknet<span style="color:#ce5c00;font-weight:bold">)</span>. 此处里官方 repo 为例.
 
-<span style="color:#e6db74">```</span>bash
+<span style="color:#4e9a06">```</span>bash
 $ git clone https://github.com/pjreddie/darknet.git</code></pre></div></blockquote>
 
 <p>由于最新的 commit 修改了 label image 的显示方法, 并且改变了源文件里类别的定义, 因此需要先切回之前的 commit:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git checkout 73f7aacf35ec9b1d0f9de9ddf38af0889f213e99</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git checkout 73f7aacf35ec9b1d0f9de9ddf38af0889f213e99</code></pre></div>
 <p>首先修改<code>Makefile</code>:</p>
 
 <pre><code>GPU=1
@@ -348,72 +348,72 @@ OPENCV=1
 </code></pre>
 
 <p>之后是<code>src/yolo.c</code>, 主要是类别名称和数量, 以及<code>train.txt</code>与<code>backup</code>的地址.(<code>backup</code>目录用来存放训练得到的weights)</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span><span style="color:#75715e">#define NUM_CLASS 2
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>voc_names[] <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;ball&#34;</span>, <span style="color:#e6db74">&#34;goal&#34;</span>};
-image voc_labels[NUM_CLASS];
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#8f5902;font-style:italic">// ...
+</span><span style="color:#8f5902;font-style:italic"></span><span style="color:#8f5902;font-style:italic">#define NUM_CLASS 2
+</span><span style="color:#8f5902;font-style:italic"></span><span style="color:#204a87;font-weight:bold">char</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">voc_names</span><span style="color:#000;font-weight:bold">[]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#4e9a06">&#34;ball&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;goal&#34;</span><span style="color:#000;font-weight:bold">};</span>
+<span style="color:#000">image</span> <span style="color:#000">voc_labels</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">NUM_CLASS</span><span style="color:#000;font-weight:bold">];</span>
 
-<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">train_yolo</span>(<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>cfgfile, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>weightfile)
-{
-    <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>train_images <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/home/m/workspace/dataset/train.txt&#34;</span>;
-    <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>backup_directory <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/home/m/workspace/backup/&#34;</span>;
-}
-<span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">test_yolo</span>(<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>cfgfile, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>weightfile, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>filename, <span style="color:#66d9ef">float</span> thresh)
-{
-  <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>  draw_detections(im, l.side<span style="color:#f92672">*</span>l.side<span style="color:#f92672">*</span>l.n, thresh, boxes, probs, voc_names, voc_labels, NUM_CLASS);
-  <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>}
-<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run_yolo</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>argv)
-{
-  <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">for</span>(i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> NUM_CLASS; <span style="color:#f92672">++</span>i){
-    <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>  }
-  <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span>(<span style="color:#ae81ff">0</span><span style="color:#f92672">==</span>strcmp(argv[<span style="color:#ae81ff">2</span>], <span style="color:#e6db74">&#34;demo&#34;</span>)) demo(cfg, weights, thresh, cam_index, filename, voc_names, voc_labels, NUM_CLASS, frame_skip);
-}</code></pre></div>
+<span style="color:#204a87;font-weight:bold">void</span> <span style="color:#000">train_yolo</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">char</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">cfgfile</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">char</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">weightfile</span><span style="color:#000;font-weight:bold">)</span>
+<span style="color:#000;font-weight:bold">{</span>
+    <span style="color:#204a87;font-weight:bold">char</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">train_images</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#4e9a06">&#34;/home/m/workspace/dataset/train.txt&#34;</span><span style="color:#000;font-weight:bold">;</span>
+    <span style="color:#204a87;font-weight:bold">char</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">backup_directory</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#4e9a06">&#34;/home/m/workspace/backup/&#34;</span><span style="color:#000;font-weight:bold">;</span>
+<span style="color:#000;font-weight:bold">}</span>
+<span style="color:#8f5902;font-style:italic">// ...
+</span><span style="color:#8f5902;font-style:italic"></span><span style="color:#204a87;font-weight:bold">void</span> <span style="color:#000">test_yolo</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">char</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">cfgfile</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">char</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">weightfile</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">char</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">filename</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">float</span> <span style="color:#000">thresh</span><span style="color:#000;font-weight:bold">)</span>
+<span style="color:#000;font-weight:bold">{</span>
+  <span style="color:#8f5902;font-style:italic">// ...
+</span><span style="color:#8f5902;font-style:italic"></span>  <span style="color:#000">draw_detections</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">im</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">l</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">side</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">l</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">side</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">l</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">n</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">thresh</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">boxes</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">probs</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">voc_names</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">voc_labels</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">NUM_CLASS</span><span style="color:#000;font-weight:bold">);</span>
+  <span style="color:#8f5902;font-style:italic">// ...
+</span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000;font-weight:bold">}</span>
+<span style="color:#204a87;font-weight:bold">void</span> <span style="color:#000">run_yolo</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">argc</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">char</span> <span style="color:#ce5c00;font-weight:bold">**</span><span style="color:#000">argv</span><span style="color:#000;font-weight:bold">)</span>
+<span style="color:#000;font-weight:bold">{</span>
+  <span style="color:#8f5902;font-style:italic">// ...
+</span><span style="color:#8f5902;font-style:italic"></span>  <span style="color:#204a87;font-weight:bold">for</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">NUM_CLASS</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#ce5c00;font-weight:bold">++</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">){</span>
+    <span style="color:#8f5902;font-style:italic">// ...
+</span><span style="color:#8f5902;font-style:italic"></span>  <span style="color:#000;font-weight:bold">}</span>
+  <span style="color:#8f5902;font-style:italic">// ...
+</span><span style="color:#8f5902;font-style:italic"></span>  <span style="color:#204a87;font-weight:bold">else</span> <span style="color:#204a87;font-weight:bold">if</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">0</span><span style="color:#ce5c00;font-weight:bold">==</span><span style="color:#000">strcmp</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">argv</span><span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#4e9a06">&#34;demo&#34;</span><span style="color:#000;font-weight:bold">))</span> <span style="color:#000">demo</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">cfg</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">weights</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">thresh</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">cam_index</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">filename</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">voc_names</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">voc_labels</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">NUM_CLASS</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">frame_skip</span><span style="color:#000;font-weight:bold">);</span>
+<span style="color:#000;font-weight:bold">}</span></code></pre></div>
 <p>接着是<code>yolo_kernels.cu</code>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span><span style="color:#75715e">#define NUM_CLASS 2
-</span><span style="color:#75715e"></span><span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">detect_in_thread</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>ptr)
-{
-  <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>  draw_detections(det, l.side<span style="color:#f92672">*</span>l.side<span style="color:#f92672">*</span>l.n, demo_thresh, boxes, probs, voc_names, voc_labels, NUM_CLASS);
-  <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>}
-<span style="color:#f92672">//</span> ...</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#8f5902;font-style:italic">// ...
+</span><span style="color:#8f5902;font-style:italic"></span><span style="color:#8f5902;font-style:italic">#define NUM_CLASS 2
+</span><span style="color:#8f5902;font-style:italic"></span><span style="color:#8f5902;font-style:italic">// ...
+</span><span style="color:#8f5902;font-style:italic"></span><span style="color:#204a87;font-weight:bold">void</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">detect_in_thread</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">void</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">ptr</span><span style="color:#000;font-weight:bold">)</span>
+<span style="color:#000;font-weight:bold">{</span>
+  <span style="color:#8f5902;font-style:italic">// ...
+</span><span style="color:#8f5902;font-style:italic"></span>  <span style="color:#000">draw_detections</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">det</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">l</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">side</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">l</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">side</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">l</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">n</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">demo_thresh</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">boxes</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">probs</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">voc_names</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">voc_labels</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">NUM_CLASS</span><span style="color:#000;font-weight:bold">);</span>
+  <span style="color:#8f5902;font-style:italic">// ...
+</span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000;font-weight:bold">}</span>
+<span style="color:#ce5c00;font-weight:bold">//</span> <span style="color:#000;font-weight:bold">...</span></code></pre></div>
 <p>然后是<code>cfg</code>(建议新建一个, 我的<a href="https://github.com/corenel/darknet/blob/yuthon/cfg/tiny-yolo.train.cfg">配置</a>可作为参考):</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#75715e"># ...</span>
-<span style="color:#66d9ef">[connected]</span>
-<span style="color:#75715e"># output = Side x Side x (2x5 + class_num)</span>
-<span style="color:#a6e22e">output</span><span style="color:#f92672">=</span> <span style="color:#e6db74">588</span>
-<span style="color:#a6e22e">activation</span><span style="color:#f92672">=</span><span style="color:#e6db74">linear</span>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#8f5902;font-style:italic"># ...</span>
+<span style="color:#204a87;font-weight:bold">[connected]</span>
+<span style="color:#8f5902;font-style:italic"># output = Side x Side x (2x5 + class_num)</span>
+<span style="color:#c4a000">output</span><span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#4e9a06">588</span>
+<span style="color:#c4a000">activation</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#4e9a06">linear</span>
 
-<span style="color:#66d9ef">[detection]</span>
-<span style="color:#75715e"># modify the class num</span>
-<span style="color:#a6e22e">classes</span><span style="color:#f92672">=</span><span style="color:#e6db74">2</span>
-<span style="color:#a6e22e">coords</span><span style="color:#f92672">=</span><span style="color:#e6db74">4</span>
-<span style="color:#a6e22e">rescore</span><span style="color:#f92672">=</span><span style="color:#e6db74">1</span>
-<span style="color:#a6e22e">side</span><span style="color:#f92672">=</span><span style="color:#e6db74">7</span>
-<span style="color:#a6e22e">num</span><span style="color:#f92672">=</span><span style="color:#e6db74">2</span>
-<span style="color:#a6e22e">softmax</span><span style="color:#f92672">=</span><span style="color:#e6db74">0</span>
-<span style="color:#a6e22e">sqrt</span><span style="color:#f92672">=</span><span style="color:#e6db74">1</span>
-<span style="color:#a6e22e">jitter</span><span style="color:#f92672">=</span><span style="color:#e6db74">.2</span>
+<span style="color:#204a87;font-weight:bold">[detection]</span>
+<span style="color:#8f5902;font-style:italic"># modify the class num</span>
+<span style="color:#c4a000">classes</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#4e9a06">2</span>
+<span style="color:#c4a000">coords</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#4e9a06">4</span>
+<span style="color:#c4a000">rescore</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#4e9a06">1</span>
+<span style="color:#c4a000">side</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#4e9a06">7</span>
+<span style="color:#c4a000">num</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#4e9a06">2</span>
+<span style="color:#c4a000">softmax</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#4e9a06">0</span>
+<span style="color:#c4a000">sqrt</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#4e9a06">1</span>
+<span style="color:#c4a000">jitter</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#4e9a06">.2</span>
 
-<span style="color:#a6e22e">object_scale</span><span style="color:#f92672">=</span><span style="color:#e6db74">1</span>
-<span style="color:#a6e22e">noobject_scale</span><span style="color:#f92672">=</span><span style="color:#e6db74">.5</span>
-<span style="color:#a6e22e">class_scale</span><span style="color:#f92672">=</span><span style="color:#e6db74">1</span>
-<span style="color:#a6e22e">coord_scale</span><span style="color:#f92672">=</span><span style="color:#e6db74">5</span></code></pre></div>
+<span style="color:#c4a000">object_scale</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#4e9a06">1</span>
+<span style="color:#c4a000">noobject_scale</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#4e9a06">.5</span>
+<span style="color:#c4a000">class_scale</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#4e9a06">1</span>
+<span style="color:#c4a000">coord_scale</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#4e9a06">5</span></code></pre></div>
 <p>最后, 如果使用了新的 class 的话, 需要在<code>data/labels</code>里修改<code>make_labels.py</code>并执行来生成新的 label image:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> os
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#204a87;font-weight:bold">import</span> <span style="color:#000">os</span>
 
-l <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;ball&#34;</span>, <span style="color:#e6db74">&#34;goal&#34;</span>]
+<span style="color:#000">l</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#4e9a06">&#34;ball&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;goal&#34;</span><span style="color:#000;font-weight:bold">]</span>
 
-<span style="color:#66d9ef">for</span> word <span style="color:#f92672">in</span> l:
-    os<span style="color:#f92672">.</span>system(<span style="color:#e6db74">&#34;convert -fill black -background white -bordercolor white -border 4 -font ubuntu-mono -pointsize 18 label:</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">%s</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74"> </span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">.png</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">%</span>(word, word))</code></pre></div>
+<span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">word</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#000">l</span><span style="color:#000;font-weight:bold">:</span>
+    <span style="color:#000">os</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">system</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;convert -fill black -background white -bordercolor white -border 4 -font ubuntu-mono -pointsize 18 label:</span><span style="color:#4e9a06">\&#34;</span><span style="color:#4e9a06">%s</span><span style="color:#4e9a06">\&#34;</span><span style="color:#4e9a06"> </span><span style="color:#4e9a06">\&#34;</span><span style="color:#4e9a06">%s</span><span style="color:#4e9a06">.png</span><span style="color:#4e9a06">\&#34;</span><span style="color:#4e9a06">&#34;</span><span style="color:#ce5c00;font-weight:bold">%</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">word</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">word</span><span style="color:#000;font-weight:bold">))</span></code></pre></div>
 <p>至此前期准备完成, 可以开始训练了.</p>
 
 <h2 id="training">Training</h2>
@@ -426,15 +426,15 @@ l <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;ball&#3
 </ul>
 
 <p>之后就是慢慢训练之路了:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cd darknet
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#204a87">cd</span> darknet
 $ make -j8
 $ ./darknet yolo train cfg/tiny-yolo.train.cfg darknet.conv.weights</code></pre></div>
 <p>我用上述的 dataset 训练 tiny-YOLO, 从 22:43 一直到 05:12, 总计 6 个小时左右, 最终得到<code>tiny-yolo_final.weights</code>文件.</p>
 
 <p>之后就可以拿来 test 或者 demo 了:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./darknet yolo test cfg/tiny-yolo.train.cfg tiny-yolo_final.weights</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./darknet yolo <span style="color:#204a87">test</span> cfg/tiny-yolo.train.cfg tiny-yolo_final.weights</code></pre></div>
 <p>or</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./darknet yolo demo cfg/tiny-yolo.train.cfg tiny-yolo_final.weights</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./darknet yolo demo cfg/tiny-yolo.train.cfg tiny-yolo_final.weights</code></pre></div>
 <h2 id="results">Results</h2>
 
 <p><img src="https://www.yuthon.com/images/TinyYOLO_on_TX1_ball.jpg" alt="yolo-tiny_on_TX1_ball" /></p>
@@ -462,7 +462,8 @@ $ ./darknet yolo train cfg/tiny-yolo.train.cfg darknet.conv.weights</code></pre>
       </ul>
       
       <p class="post-copyright">
-        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.This post was published <strong>844</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
+This post was published <strong>846</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
       </p>
     </footer>
     

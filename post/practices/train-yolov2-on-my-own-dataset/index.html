@@ -360,57 +360,57 @@
 <p>下面讲讲使用 YOLOv2 在我自己做的数据集 ROBdevkit 上的训练过程.</p>
 
 <h3 id="make">Make</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git clone https://github.com/pjreddie/darknet
-$ cd darknet
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git clone https://github.com/pjreddie/darknet
+$ <span style="color:#204a87">cd</span> darknet
 $ make -j8</code></pre></div>
 <p>在<code>make</code>之前, 为了最大发挥机器的性能, 还需要修改<code>Makefile</code>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">diff --git a/Makefile b/Makefile
-index 3d3d5e4..dd7a33d 100644
-<span style="color:#f92672">--- a/Makefile
-</span><span style="color:#f92672"></span><span style="color:#a6e22e">+++ b/Makefile
-</span><span style="color:#a6e22e"></span><span style="color:#75715e">@@ -1,6 +1,6 @@
-</span><span style="color:#75715e"></span><span style="color:#f92672">-GPU=0
-</span><span style="color:#f92672">-CUDNN=0
-</span><span style="color:#f92672">-OPENCV=0
-</span><span style="color:#f92672"></span><span style="color:#a6e22e">+GPU=1
-</span><span style="color:#a6e22e">+CUDNN=1
-</span><span style="color:#a6e22e">+OPENCV=1
-</span><span style="color:#a6e22e"></span> DEBUG=0
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff"><span style="color:#000080;font-weight:bold">diff --git a/Makefile b/Makefile
+</span><span style="color:#000080;font-weight:bold">index 3d3d5e4..dd7a33d 100644
+</span><span style="color:#000080;font-weight:bold"></span><span style="color:#a40000">--- a/Makefile
+</span><span style="color:#a40000"></span><span style="color:#00a000">+++ b/Makefile
+</span><span style="color:#00a000"></span><span style="color:#800080;font-weight:bold">@@ -1,6 +1,6 @@
+</span><span style="color:#800080;font-weight:bold"></span><span style="color:#a40000">-GPU=0
+</span><span style="color:#a40000">-CUDNN=0
+</span><span style="color:#a40000">-OPENCV=0
+</span><span style="color:#a40000"></span><span style="color:#00a000">+GPU=1
+</span><span style="color:#00a000">+CUDNN=1
+</span><span style="color:#00a000">+OPENCV=1
+</span><span style="color:#00a000"></span> DEBUG=0
 
  ARCH= -gencode arch=compute_20,code=[sm_20,sm_21] \
-<span style="color:#75715e">@@ -10,47 +10,47 @@ ARCH= -gencode arch=compute_20,code=[sm_20,sm_21] \
-</span><span style="color:#75715e"></span>       -gencode arch=compute_52,code=[sm_52,compute_52]
+<span style="color:#800080;font-weight:bold">@@ -10,47 +10,47 @@ ARCH= -gencode arch=compute_20,code=[sm_20,sm_21] \
+</span><span style="color:#800080;font-weight:bold"></span>       -gencode arch=compute_52,code=[sm_52,compute_52]
 
  # This is what I use, uncomment if you know your arch and want to specify
-<span style="color:#f92672">-# ARCH=  -gencode arch=compute_52,code=compute_52
-</span><span style="color:#f92672"></span><span style="color:#a6e22e">+ARCH=  -gencode arch=compute_61,code=compute_61
+<span style="color:#a40000">-# ARCH=  -gencode arch=compute_52,code=compute_52
+</span><span style="color:#a40000"></span><span style="color:#00a000">+ARCH=  -gencode arch=compute_61,code=compute_61
 </span></code></pre></div>
 <h3 id="prepare">Prepare</h3>
 
 <p>YOLOv2这次不用改<code>yolo.c</code>源文件了, 只需要修改一些配置文件即可, 大大方便了我们用自己的数据集训练.</p>
 
 <p>首先修改<code>data/voc.names</code>, 另存为<code>data/rob.names</code>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#a6e22e">ball</span>
-<span style="color:#a6e22e">goal</span>
-<span style="color:#a6e22e">robot</span></code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#c4a000">ball</span>
+<span style="color:#c4a000">goal</span>
+<span style="color:#c4a000">robot</span></code></pre></div>
 <p>修改<code>cfg/voc.data</code>, 另存为<code>cfg/rob.names</code>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Ini" data-lang="Ini"><span style="color:#a6e22e">classes</span><span style="color:#f92672">=</span> <span style="color:#e6db74">3</span>
-<span style="color:#a6e22e">train</span>  <span style="color:#f92672">=</span> <span style="color:#e6db74">/home/m/data/ROBdevkit/train.txt</span>
-<span style="color:#a6e22e">valid</span>  <span style="color:#f92672">=</span> <span style="color:#e6db74">/home/m/data/ROBdevkit/2017_test.txt</span>
-<span style="color:#a6e22e">names</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">data/rob.names</span>
-<span style="color:#a6e22e">backup</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">/home/m/workspace/backup/</span></code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Ini" data-lang="Ini"><span style="color:#c4a000">classes</span><span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#4e9a06">3</span>
+<span style="color:#c4a000">train</span>  <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#4e9a06">/home/m/data/ROBdevkit/train.txt</span>
+<span style="color:#c4a000">valid</span>  <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#4e9a06">/home/m/data/ROBdevkit/2017_test.txt</span>
+<span style="color:#c4a000">names</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#4e9a06">data/rob.names</span>
+<span style="color:#c4a000">backup</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#4e9a06">/home/m/workspace/backup/</span></code></pre></div>
 <p>其次修改<code>script/voc_label.py</code>, 另存为<code>script/rob_label.py</code>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> xml.etree.ElementTree <span style="color:#f92672">as</span> ET
-<span style="color:#f92672">import</span> pickle
-<span style="color:#f92672">import</span> os
-<span style="color:#f92672">from</span> os <span style="color:#f92672">import</span> listdir, getcwd
-<span style="color:#f92672">from</span> os.path <span style="color:#f92672">import</span> join
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#204a87;font-weight:bold">import</span> <span style="color:#000">xml.etree.ElementTree</span> <span style="color:#204a87;font-weight:bold">as</span> <span style="color:#000">ET</span>
+<span style="color:#204a87;font-weight:bold">import</span> <span style="color:#000">pickle</span>
+<span style="color:#204a87;font-weight:bold">import</span> <span style="color:#000">os</span>
+<span style="color:#204a87;font-weight:bold">from</span> <span style="color:#000">os</span> <span style="color:#204a87;font-weight:bold">import</span> <span style="color:#000">listdir</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">getcwd</span>
+<span style="color:#204a87;font-weight:bold">from</span> <span style="color:#000">os.path</span> <span style="color:#204a87;font-weight:bold">import</span> <span style="color:#000">join</span>
 
-sets <span style="color:#f92672">=</span> [(<span style="color:#e6db74">&#39;2017&#39;</span>, <span style="color:#e6db74">&#39;train&#39;</span>), (<span style="color:#e6db74">&#39;2017&#39;</span>, <span style="color:#e6db74">&#39;val&#39;</span>), (<span style="color:#e6db74">&#39;2017&#39;</span>, <span style="color:#e6db74">&#39;test&#39;</span>)]
+<span style="color:#000">sets</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">[(</span><span style="color:#4e9a06">&#39;2017&#39;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#39;train&#39;</span><span style="color:#000;font-weight:bold">),</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#39;2017&#39;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#39;val&#39;</span><span style="color:#000;font-weight:bold">),</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#39;2017&#39;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#39;test&#39;</span><span style="color:#000;font-weight:bold">)]</span>
 
-classes <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;ball&#39;</span>, <span style="color:#e6db74">&#39;goal&#39;</span>, <span style="color:#e6db74">&#39;robot&#39;</span>]
+<span style="color:#000">classes</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#4e9a06">&#39;ball&#39;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#39;goal&#39;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#39;robot&#39;</span><span style="color:#000;font-weight:bold">]</span>
 
-<span style="color:#f92672">...</span></code></pre></div>
+<span style="color:#ce5c00;font-weight:bold">...</span></code></pre></div>
 <p>然后在<code>ROBdevkit</code>的根目录下执行<code>python rob_label.py</code>来生成 label 文件, 并用<code>cat 2017_* &gt; train.txt</code>生成<code>train.txt</code>. 最终目录结构为:</p>
 
 <pre><code>.
@@ -427,23 +427,23 @@ classes <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;b
 </code></pre>
 
 <p>最后, 修改<code>cfg/voc.data</code>, 另存为<code>cfg/rob.names</code>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">diff --git a/cfg/tiny-yolo-voc.cfg b/cfg/tiny-yolo-rob.cfg
-<span style="color:#f92672">-- a/cfg/tiny-yolo-voc.cfg
-</span><span style="color:#f92672"></span><span style="color:#a6e22e">++ b/cfg/tiny-yolo-rob.cfg
-</span><span style="color:#a6e22e"></span>[convolutional]
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff"><span style="color:#000080;font-weight:bold">diff --git a/cfg/tiny-yolo-voc.cfg b/cfg/tiny-yolo-rob.cfg
+</span><span style="color:#000080;font-weight:bold"></span><span style="color:#a40000">-- a/cfg/tiny-yolo-voc.cfg
+</span><span style="color:#a40000"></span><span style="color:#00a000">++ b/cfg/tiny-yolo-rob.cfg
+</span><span style="color:#00a000"></span>[convolutional]
 size=1
 stride=1
 pad=1
-<span style="color:#f92672">-filters=250
-</span><span style="color:#f92672"></span><span style="color:#a6e22e">+filters=40
-</span><span style="color:#a6e22e"></span>activation=linear
+<span style="color:#a40000">-filters=250
+</span><span style="color:#a40000"></span><span style="color:#00a000">+filters=40
+</span><span style="color:#00a000"></span>activation=linear
 
 [region]
 anchors = 1.08,1.19,  3.42,4.41,  6.63,11.38,  9.42,5.11,  16.62,10.52
 bias_match=1
-<span style="color:#f92672">-classes=20
-</span><span style="color:#f92672"></span><span style="color:#a6e22e">+classes=3
-</span><span style="color:#a6e22e"></span>coords=4
+<span style="color:#a40000">-classes=20
+</span><span style="color:#a40000"></span><span style="color:#00a000">+classes=3
+</span><span style="color:#00a000"></span>coords=4
 num=5
 softmax=1
 jitter=.2
@@ -463,7 +463,7 @@ random=1
 </blockquote>
 
 <h3 id="train">Train</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./darknet detector train cfg/rob.data cfg/tiny-yolo-rob.cfg darknet.conv.weights</code></pre></div></article>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./darknet detector train cfg/rob.data cfg/tiny-yolo-rob.cfg darknet.conv.weights</code></pre></div></article>
     <footer class="post-footer">
       
       <ul class="post-tags">
@@ -479,7 +479,8 @@ random=1
       </ul>
       
       <p class="post-copyright">
-        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.This post was published <strong>823</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
+This post was published <strong>825</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
       </p>
     </footer>
     

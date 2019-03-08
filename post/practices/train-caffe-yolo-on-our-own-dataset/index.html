@@ -334,35 +334,35 @@
 <h2 id="train-yolo-on-caffe">Train YOLO on Caffe</h2>
 
 <h3 id="clone-make">Clone &amp; Make</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git clone https://github.com/yeahkun/caffe-yolo.git
-$ cd caffe-yolo
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git clone https://github.com/yeahkun/caffe-yolo.git
+$ <span style="color:#204a87">cd</span> caffe-yolo
 $ cp Makefile.config.example Makefile.config
 $ make -j8</code></pre></div>
 <p>若是出现<code>src/caffe/net.cpp:8:18: fatal error: hdf5.h: No such file or directory</code>这一错误, 可以照下文修改<code>Makefile.config</code>文件:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">diff --git a/Makefile.config b/Makefile.config
-index a873502..88828cc 100644
-<span style="color:#f92672">--- a/Makefile.config.example
-</span><span style="color:#f92672"></span><span style="color:#a6e22e">+++ b/Makefile.config.example
-</span><span style="color:#a6e22e"></span><span style="color:#75715e">@@ -69,8 +69,8 @@ PYTHON_LIB := /usr/lib
-</span><span style="color:#75715e"></span> # WITH_PYTHON_LAYER := 1
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff"><span style="color:#000080;font-weight:bold">diff --git a/Makefile.config b/Makefile.config
+</span><span style="color:#000080;font-weight:bold">index a873502..88828cc 100644
+</span><span style="color:#000080;font-weight:bold"></span><span style="color:#a40000">--- a/Makefile.config.example
+</span><span style="color:#a40000"></span><span style="color:#00a000">+++ b/Makefile.config.example
+</span><span style="color:#00a000"></span><span style="color:#800080;font-weight:bold">@@ -69,8 +69,8 @@ PYTHON_LIB := /usr/lib
+</span><span style="color:#800080;font-weight:bold"></span> # WITH_PYTHON_LAYER := 1
 
  # Whatever else you find you need goes here.
-<span style="color:#f92672">-INCLUDE_DIRS := $(PYTHON_INCLUDE) /usr/local/include
-</span><span style="color:#f92672">-LIBRARY_DIRS := $(PYTHON_LIB) /usr/local/lib /usr/lib
-</span><span style="color:#f92672"></span><span style="color:#a6e22e">+INCLUDE_DIRS := $(PYTHON_INCLUDE) /usr/local/include /usr/include/hdf5/serial/
-</span><span style="color:#a6e22e">+LIBRARY_DIRS := $(PYTHON_LIB) /usr/local/lib /usr/lib /usr/lib/x86_64-linux-gnu/hdf5/serial/
-</span><span style="color:#a6e22e"></span>
+<span style="color:#a40000">-INCLUDE_DIRS := $(PYTHON_INCLUDE) /usr/local/include
+</span><span style="color:#a40000">-LIBRARY_DIRS := $(PYTHON_LIB) /usr/local/lib /usr/lib
+</span><span style="color:#a40000"></span><span style="color:#00a000">+INCLUDE_DIRS := $(PYTHON_INCLUDE) /usr/local/include /usr/include/hdf5/serial/
+</span><span style="color:#00a000">+LIBRARY_DIRS := $(PYTHON_LIB) /usr/local/lib /usr/lib /usr/lib/x86_64-linux-gnu/hdf5/serial/
+</span><span style="color:#00a000"></span>
  # If Homebrew is installed at a non standard location (for example your home directory) and you use it for general dependencies
  # INCLUDE_DIRS += $(shell brew --prefix)/include
 </code></pre></div>
 <p>同时还可以开启 cuDNN 以及修改 compute, 充分发挥 GTX1080 的性能:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">## Refer to http://caffe.berkeleyvision.org/installation.html
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">## Refer to http://caffe.berkeleyvision.org/installation.html
 # Contributions simplifying and improving our build system are welcome!
 
 # cuDNN acceleration switch (uncomment to build with cuDNN).
-<span style="color:#f92672">-# USE_CUDNN := 1
-</span><span style="color:#f92672"></span><span style="color:#a6e22e">+USE_CUDNN := 1
-</span><span style="color:#a6e22e"></span>
+<span style="color:#a40000">-# USE_CUDNN := 1
+</span><span style="color:#a40000"></span><span style="color:#00a000">+USE_CUDNN := 1
+</span><span style="color:#00a000"></span>
 # CPU-only switch (uncomment to build without GPU support).
 # CPU_ONLY := 1
 ...
@@ -373,15 +373,15 @@ CUDA_ARCH := -gencode arch=compute_20,code=sm_20 \
                 -gencode arch=compute_30,code=sm_30 \
                 -gencode arch=compute_35,code=sm_35 \
                 -gencode arch=compute_50,code=sm_50 \
-<span style="color:#f92672">-                -gencode arch=compute_50,code=compute_50
-</span><span style="color:#f92672"></span><span style="color:#a6e22e">+                -gencode arch=compute_50,code=compute_50 \
-</span><span style="color:#a6e22e">+                -gencode arch=compute_61,code=compute_61
+<span style="color:#a40000">-                -gencode arch=compute_50,code=compute_50
+</span><span style="color:#a40000"></span><span style="color:#00a000">+                -gencode arch=compute_50,code=compute_50 \
+</span><span style="color:#00a000">+                -gencode arch=compute_61,code=compute_61
 </span></code></pre></div>
 <h3 id="data-preparation">Data preparation</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"> $ cd data/yolo
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"> $ <span style="color:#204a87">cd</span> data/yolo
  $ ln -s /your/path/to/VOCdevkit/ .
  $ python ./get_list.py
- <span style="color:#75715e"># change related path in script convert.sh</span>
+ <span style="color:#8f5902;font-style:italic"># change related path in script convert.sh</span>
  $ sudo rm -r lmdb
  $ mkdir lmdb
  $ ./convert.sh </code></pre></div>
@@ -392,7 +392,7 @@ CUDA_ARCH := -gencode arch=compute_20,code=sm_20 \
 
 <li><p>修改<code>./get_list.py</code>:</p></li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">  diff --git a/data/yolo/get_list.py b/data/yolo/get_list.py
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">  diff --git a/data/yolo/get_list.py b/data/yolo/get_list.py
   index f519f1a..73b9858 100755
   --- a/data/yolo/get_list.py
   +++ b/data/yolo/get_list.py
@@ -464,7 +464,7 @@ CUDA_ARCH := -gencode arch=compute_20,code=sm_20 \
 <ul>
 <li>修改<code>convert.sh</code></li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">  diff --git a/data/yolo/convert.sh b/data/yolo/convert.sh
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">  diff --git a/data/yolo/convert.sh b/data/yolo/convert.sh
   index 8a52525..a06eb69 100755
   --- a/data/yolo/convert.sh
   +++ b/data/yolo/convert.sh
@@ -496,7 +496,7 @@ CUDA_ARCH := -gencode arch=compute_20,code=sm_20 \
 <ul>
 <li>修改<code>label_map.txt</code>:</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">  diff --git a/data/yolo/label_map.txt b/data/yolo/label_map.txt
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">  diff --git a/data/yolo/label_map.txt b/data/yolo/label_map.txt
   index 1fe873a..bee8f82 100644
   --- a/data/yolo/label_map.txt
   +++ b/data/yolo/label_map.txt
@@ -538,7 +538,7 @@ CUDA_ARCH := -gencode arch=compute_20,code=sm_20 \
 <ul>
 <li>修改<code>gnet_train.prototxt</code>:</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">  diff --git a/examples/yolo/gnet_train.prototxt b/examples/yolo/gnet_train.prototxt
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">  diff --git a/examples/yolo/gnet_train.prototxt b/examples/yolo/gnet_train.prototxt
   index 8483a32..da01daf 100644
   --- a/examples/yolo/gnet_train.prototxt
   +++ b/examples/yolo/gnet_train.prototxt
@@ -555,7 +555,7 @@ CUDA_ARCH := -gencode arch=compute_20,code=sm_20 \
 <ul>
 <li>修改<code>train.sh</code>:</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">  diff --git a/examples/yolo/train.sh b/examples/yolo/train.sh
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">  diff --git a/examples/yolo/train.sh b/examples/yolo/train.sh
   index 416e2b0..ecd0872 100755
   --- a/examples/yolo/train.sh
   +++ b/examples/yolo/train.sh
@@ -597,7 +597,8 @@ CUDA_ARCH := -gencode arch=compute_20,code=sm_20 \
       </ul>
       
       <p class="post-copyright">
-        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.This post was published <strong>829</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
+This post was published <strong>832</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
       </p>
     </footer>
     

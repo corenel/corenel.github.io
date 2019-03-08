@@ -359,27 +359,27 @@
 </ol>
 
 <p>伪代码如下：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C++" data-lang="C++"><span style="color:#75715e">/* Initialization */</span>
-Initialize cluster centers C_k <span style="color:#f92672">=</span> [l_k, a_k, b_k, x_k, y_k] by sampling pixels at regular grid steps S.
-Move cluster centers to the lowest gradient position in a <span style="color:#ae81ff">3</span>x3 neighborhood.
-Set label l(i) <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">for</span> each pixel i.
-Set distance d(i) <span style="color:#f92672">=</span> <span style="color:#960050;background-color:#1e0010">\</span>infty <span style="color:#66d9ef">for</span> each pixel i
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C++" data-lang="C++"><span style="color:#8f5902;font-style:italic">/* Initialization */</span>
+<span style="color:#000">Initialize</span> <span style="color:#000">cluster</span> <span style="color:#000">centers</span> <span style="color:#000">C_k</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#000">l_k</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">a_k</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">b_k</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">x_k</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">y_k</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#000">by</span> <span style="color:#000">sampling</span> <span style="color:#000">pixels</span> <span style="color:#000">at</span> <span style="color:#000">regular</span> <span style="color:#000">grid</span> <span style="color:#000">steps</span> <span style="color:#000">S</span><span style="color:#000;font-weight:bold">.</span>
+<span style="color:#000">Move</span> <span style="color:#000">cluster</span> <span style="color:#000">centers</span> <span style="color:#000">to</span> <span style="color:#000">the</span> <span style="color:#000">lowest</span> <span style="color:#000">gradient</span> <span style="color:#000">position</span> <span style="color:#000">in</span> <span style="color:#000">a</span> <span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000">x3</span> <span style="color:#000">neighborhood</span><span style="color:#000;font-weight:bold">.</span>
+<span style="color:#000">Set</span> <span style="color:#000">label</span> <span style="color:#000">l</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#0000cf;font-weight:bold">1</span> <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">each</span> <span style="color:#000">pixel</span> <span style="color:#000">i</span><span style="color:#000;font-weight:bold">.</span>
+<span style="color:#000">Set</span> <span style="color:#000">distance</span> <span style="color:#000">d</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#a40000">\</span><span style="color:#000">infty</span> <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">each</span> <span style="color:#000">pixel</span> <span style="color:#000">i</span>
 
-repeat
-  <span style="color:#75715e">/* Assignment */</span>
-  <span style="color:#66d9ef">for</span> each cluster center C_k <span style="color:#66d9ef">do</span>
-    <span style="color:#66d9ef">for</span> each pixel i in a <span style="color:#ae81ff">2</span>Sx2S region around C_k <span style="color:#66d9ef">do</span>
-      Compare the distance between C_k and i.
-      <span style="color:#66d9ef">if</span> D <span style="color:#f92672">&lt;</span> d_i then
-        set d(i) <span style="color:#f92672">=</span> D
-        set l(i) <span style="color:#f92672">=</span> k
-      end <span style="color:#66d9ef">if</span>
-    end <span style="color:#66d9ef">for</span>
-  end <span style="color:#66d9ef">for</span>
-  <span style="color:#75715e">/* Update */</span>
-  Compute <span style="color:#66d9ef">new</span> cluster centers.
-  Compute residual error E
-until E <span style="color:#f92672">&lt;=</span> threshold
+<span style="color:#000">repeat</span>
+  <span style="color:#8f5902;font-style:italic">/* Assignment */</span>
+  <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">each</span> <span style="color:#000">cluster</span> <span style="color:#000">center</span> <span style="color:#000">C_k</span> <span style="color:#204a87;font-weight:bold">do</span>
+    <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">each</span> <span style="color:#000">pixel</span> <span style="color:#000">i</span> <span style="color:#000">in</span> <span style="color:#000">a</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000">Sx2S</span> <span style="color:#000">region</span> <span style="color:#000">around</span> <span style="color:#000">C_k</span> <span style="color:#204a87;font-weight:bold">do</span>
+      <span style="color:#000">Compare</span> <span style="color:#000">the</span> <span style="color:#000">distance</span> <span style="color:#000">between</span> <span style="color:#000">C_k</span> <span style="color:#000">and</span> <span style="color:#000">i</span><span style="color:#000;font-weight:bold">.</span>
+      <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">D</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">d_i</span> <span style="color:#000">then</span>
+        <span style="color:#000">set</span> <span style="color:#000">d</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">D</span>
+        <span style="color:#000">set</span> <span style="color:#000">l</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">k</span>
+      <span style="color:#000">end</span> <span style="color:#204a87;font-weight:bold">if</span>
+    <span style="color:#000">end</span> <span style="color:#204a87;font-weight:bold">for</span>
+  <span style="color:#000">end</span> <span style="color:#204a87;font-weight:bold">for</span>
+  <span style="color:#8f5902;font-style:italic">/* Update */</span>
+  <span style="color:#000">Compute</span> <span style="color:#204a87;font-weight:bold">new</span> <span style="color:#000">cluster</span> <span style="color:#000">centers</span><span style="color:#000;font-weight:bold">.</span>
+  <span style="color:#000">Compute</span> <span style="color:#000">residual</span> <span style="color:#000">error</span> <span style="color:#000">E</span>
+<span style="color:#000">until</span> <span style="color:#000">E</span> <span style="color:#ce5c00;font-weight:bold">&lt;=</span> <span style="color:#000">threshold</span>
 </code></pre></div>
 <h3 id="distance-measure">Distance Measure</h3>
 
@@ -425,7 +425,8 @@ until E <span style="color:#f92672">&lt;=</span> threshold
       </ul>
       
       <p class="post-copyright">
-        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.This post was published <strong>854</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
+This post was published <strong>857</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
       </p>
     </footer>
     

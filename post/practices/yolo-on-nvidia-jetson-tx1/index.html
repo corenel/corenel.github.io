@@ -343,21 +343,21 @@
 <h2 id="darknet">Darknet</h2>
 
 <p>为了用 Webcam demo, 所以需要 Compiling with CUDA and OpenCV:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git clone https://github.com/pjreddie/darknet.git
-$ cd darknet
-$ sed <span style="color:#e6db74">&#39;s/GPU=0/GPU=1/g&#39;</span> Makefile
-$ sed <span style="color:#e6db74">&#39;s/CUDNN=0/CUDNN=1/g&#39;</span> Makefile
-$ sed <span style="color:#e6db74">&#39;s/OPENCV=0/OPENCV=1/g&#39;</span> Makefile
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git clone https://github.com/pjreddie/darknet.git
+$ <span style="color:#204a87">cd</span> darknet
+$ sed <span style="color:#4e9a06">&#39;s/GPU=0/GPU=1/g&#39;</span> Makefile
+$ sed <span style="color:#4e9a06">&#39;s/CUDNN=0/CUDNN=1/g&#39;</span> Makefile
+$ sed <span style="color:#4e9a06">&#39;s/OPENCV=0/OPENCV=1/g&#39;</span> Makefile
 $ make -j4</code></pre></div>
 <p>上面编译完了之后输入以下指令, 与输出结果相对应, 那就说明成功了</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./darknet
-$ usage: ./darknet &lt;<span style="color:#66d9ef">function</span>&gt;</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./darknet
+$ usage: ./darknet &lt;<span style="color:#204a87;font-weight:bold">function</span>&gt;</code></pre></div>
 <h2 id="yolo">YOLO</h2>
 
 <p>先去下训练好的<a href="http://pjreddie.com/darknet/yolo/#models">权重</a>, 建议选 yolo-tiny 的, 吃内存少. (毕竟 TX1 只有 4GB 内存, 还是 CPU 和 GPU 共用的)</p>
 
 <p>之后运行一下命令即可测试 Real-Time Detection on a Webcam:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./darknet yolo demo cfg/tiny-yolo.cfg tiny-yolo.weights</code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./darknet yolo demo cfg/tiny-yolo.cfg tiny-yolo.weights</code></pre></div>
 <p>实际效果如下:</p>
 
 <p><img src="https://www.yuthon.com/images/TinyYOLO_on_TX1.jpg" alt="yolo-tiny_on_TX1" /></p>
@@ -395,7 +395,8 @@ $ usage: ./darknet &lt;<span style="color:#66d9ef">function</span>&gt;</code></p
       </ul>
       
       <p class="post-copyright">
-        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.This post was published <strong>845</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
+This post was published <strong>847</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
       </p>
     </footer>
     

@@ -272,18 +272,18 @@ Update: 做了一些非常ugly的改动之后编译成功了。
 <p>Before installation, you need to add swap space for TX1 since this device only has 4G memory and 16GB eMMC Storage. I use an external HDD via USB. Maybe you could use SSD for higher speed.</p>
 
 <p>Thanks to <a href="https://github.com/jetsonhacks">jetsonhacks</a>, we can simply deal this with a script:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git clone https://github.com/jetsonhacks/postFlashTX1.git
-$ sudo ./createSwapfile.sh -d /path/to/swap/ -s <span style="color:#ae81ff">8</span></code></pre></div>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git clone https://github.com/jetsonhacks/postFlashTX1.git
+$ sudo ./createSwapfile.sh -d /path/to/swap/ -s <span style="color:#0000cf;font-weight:bold">8</span></code></pre></div>
 <p>8G swap is enough for compilation, and ensure you have <strong>&gt;5.5GB</strong> free space on TX1.</p>
 
 <h2 id="install-deps">Install Deps</h2>
 
 <p>Thanks to <a href="https://github.com/jetsonhacks">jetsonhacks</a>, we can deal with deps more convinently. I forked this repo and modify something to fit TF r1.0. You can just clone mine.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git clone https://github.com/corenel/installTensorFlowTX1.git
-$ cd installTensorFlowTX1
-<span style="color:#75715e"># tell the dynamic linker to use /usr/local/lib</span>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git clone https://github.com/corenel/installTensorFlowTX1.git
+$ <span style="color:#204a87">cd</span> installTensorFlowTX1
+<span style="color:#8f5902;font-style:italic"># tell the dynamic linker to use /usr/local/lib</span>
 $ ./setLocalLib.sh
-<span style="color:#75715e"># install prerequisties</span>
+<span style="color:#8f5902;font-style:italic"># install prerequisties</span>
 $ ./installPrerequisites.sh</code></pre></div>
 <blockquote>
 <p>If you meet an error that bazel can&rsquo;t find <code>cudnn.h</code> in <code>/usr/lib/aarch64-linux-gnu/</code>, just download cuDNN from NVIDIA Developers website and place it into that path.</p>
@@ -292,25 +292,25 @@ $ ./installPrerequisites.sh</code></pre></div>
 </blockquote>
 
 <h2 id="build-tensorflow">Build TensorFlow</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># clone tensorflow r1.0</span>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#8f5902;font-style:italic"># clone tensorflow r1.0</span>
 $ ./cloneTensorFlow.sh
-<span style="color:#75715e"># set environment variables for tensorflow</span>
+<span style="color:#8f5902;font-style:italic"># set environment variables for tensorflow</span>
 $ ./setTensorFlowEV.sh
-<span style="color:#75715e"># build tensorflow</span>
+<span style="color:#8f5902;font-style:italic"># build tensorflow</span>
 $ ./buildTensorFlow.sh
-<span style="color:#75715e"># package builds into a wheel file</span>
+<span style="color:#8f5902;font-style:italic"># package builds into a wheel file</span>
 $ ./packageTensorFlow.sh</code></pre></div>
 <p>Then you&rsquo;ll find your wheel file in your home folder.</p>
 
 <h2 id="install-and-test">Install and Test</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># install tensorflow</span>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#8f5902;font-style:italic"># install tensorflow</span>
 $ pip install ~/tensorflow-1.0.0-py2-none-any.whl
-<span style="color:#75715e"># test tensorflow</span>
-$ python -c <span style="color:#e6db74">&#39;import tensorflow as tf; print(tf.__version__)&#39;</span></code></pre></div>
+<span style="color:#8f5902;font-style:italic"># test tensorflow</span>
+$ python -c <span style="color:#4e9a06">&#39;import tensorflow as tf; print(tf.__version__)&#39;</span></code></pre></div>
 <h2 id="problems">Problems</h2>
 
 <p>Until now, I still can&rsquo;t build tensorflow successfully. An error occured:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ERROR: /home/ubuntu/tensorflow/tensorflow/core/kernels/BUILD:2498:1: output <span style="color:#e6db74">&#39;tensorflow/core/kernels/_objs/softmax_op_gpu/tensorflow/core/kernels/softmax_op_gpu.cu.pic.o&#39;</span> was not created.
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ERROR: /home/ubuntu/tensorflow/tensorflow/core/kernels/BUILD:2498:1: output <span style="color:#4e9a06">&#39;tensorflow/core/kernels/_objs/softmax_op_gpu/tensorflow/core/kernels/softmax_op_gpu.cu.pic.o&#39;</span> was not created.
 ERROR: /home/ubuntu/tensorflow/tensorflow/core/kernels/BUILD:2498:1: not all outputs were created or valid.
 Target //tensorflow/tools/pip_package:build_pip_package failed to build</code></pre></div>
 <p>According to <a href="https://devtalk.nvidia.com/default/topic/987306/?comment=5059105">this post</a>, this may due to a bug of <code>nvcc</code>. An expert in NVIDIA says they solved it with their internal nvcc compiler, which is not yet available in JetPack. Maybe next release of JetPack (3.0 on March 14) will solve it. So I&rsquo;ll update this post then.</p>
@@ -356,7 +356,8 @@ Target //tensorflow/tools/pip_package:build_pip_package failed to build</code></
       </ul>
       
       <p class="post-copyright">
-        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you wish to quote or reproduce.This post was published <strong>725</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
+This post was published <strong>728</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
       </p>
     </footer>
     
