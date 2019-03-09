@@ -239,7 +239,7 @@
   <section class="main post-detail">
     <header class="post-header">
       <h1 class="post-title">From ProGAN to StyleGAN</h1>
-      <p class="post-meta">@Yusu Pan · Feb 26, 2018 · 6 min read</p>
+      <p class="post-meta">@Yusu Pan · Feb 26, 2018 · 7 min read</p>
     </header>
     <article class="post-content"><p>In this post, we are looking into two high-resolution image generation models: ProGAN and StyleGAN. They generates the artificial image gradually, starting from a very low resolution and continuing to a high resolution (finally $1024\times 1024​$).</p>
 
@@ -264,17 +264,28 @@
 </tbody>
 </table>
 
-<p>{{.TableOfContents}}</p>
-
 <h2 id="progan">ProGAN</h2>
 
 <p>NVIDIA在2017年底推出的ProGAN解决了GANs生成高质量高分辨率图像的难题。其核心思想在于渐进式的训练方法（Progressive training）。网络从一个非常低的分辨率（如$4\times 4$）开始，逐步训练并增大图像分辨率，直到生成器能够生成的图像分辨率达到目标的高分辨率（如$1024\times 1024$）。</p>
 
-<p>这么做的好处在于，能够让网络在前期训练阶段内，先学习到一些在低分辨率的图像中也能体现的特征；而后在更高分辨率的训练阶段，则让网络学习更为细节性的特征。在低分辨率阶段的训练不止提升了训练速度，对于高分辨率阶段也有一定的帮助。</p>
-
 <figure class="zoomable">
     <img src="https://www.yuthon.com/images/ProGAN_demo.gif"/> <figcaption>
             <h4>ProGAN从低分辨率到高分辨率的渐进式训练示意图 (Source: Sarah Wolf’s blog post on ProGAN)</h4>
+        </figcaption>
+</figure>
+
+
+<p>使用渐进式生长训练方式的优势在于：</p>
+
+<ul>
+<li>将高分辨率图像生成这样一个复杂的任务，分解为一系列相对简单的任务。这种增量式的学习过程能够很大程度上稳定GANs的训练，并且减少mode collapse现象。</li>
+<li>从低分辨率到高分辨率的训练，能够使网络先着眼于在低分辨率图像中也能体现的高层级的图像结构与特征，然后再向其中填充细节。这保证了网络不会在高层级的图像结构中犯大错误，从而提升了生成图像的质量。</li>
+<li>此外，渐进生长方式在计算上也比从一开始就训练整个网络的传统方法更为有效。开始时，训练图像分辨率低，网络的层数少，参数量也少，因此网络能够快速收敛。在达到目标分辨率之前，网络都是只有一部分在训练，因此在效率上是有提升的。ProGAN原文中指出，随着目标分辨率的不同，ProGAN的训练速度比传统方法快2至6倍。</li>
+</ul>
+
+<figure>
+    <img src="https://www.yuthon.com/images/ProGAN_training_time.jpg"/> <figcaption>
+            <h4>ProGAN训练时间 (Source: original paper)</h4>
         </figcaption>
 </figure>
 
@@ -289,7 +300,7 @@
 
 
 <ol>
-<li><strong>构建整个ProGAN网络。</strong>ProGAN的网络架构时多尺度的。Generator的每一组都将空间尺寸扩大到原先的两倍，通道数则减少为原先的一半。直到特征的空间尺寸达到目标尺寸，通道数则减少到$3$，及RGB三个通道。Discriminator的网络结构则基本上是Generator的镜像，每一组都减半空间尺寸，倍增通道数。同时，为了保证总参数量不至于过高，倍增得到的通道数的上限设为$512$。</li>
+<li><strong>构建整个ProGAN网络。</strong>ProGAN的网络架构是多尺度的。Generator的每一组都将空间尺寸扩大到原先的两倍，通道数则减少为原先的一半。直到特征的空间尺寸达到目标尺寸，通道数则减少到$3$，及RGB三个通道。Discriminator的网络结构则基本上是Generator的镜像，每一组都减半空间尺寸，倍增通道数。同时，为了保证总参数量不至于过高，倍增得到的通道数的上限设为$512$。</li>
 <li><strong>按照分辨率从低到高逐步训练ProGAN网络。</strong>从$4\times 4​$的网络开始训练，稳定后增长分辨率，Generator与Discriminator同时增加一组卷积层，首先进入Fade-in模式，之后进入Stabilize模式。<u>当增加新的卷积层后，原有层内的参数仍然保持可训练的状态。</u>稳定后，继续增大分辨率，如上述进行训练。如此反复，直到达到目标分辨率。</li>
 </ol>
 
@@ -356,6 +367,20 @@
                           <span style="color:#000">EqualConv2d</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">512</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">),</span>
                           <span style="color:#000">EqualConv2d</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">512</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">),</span>
                           <span style="color:#000">EqualConv2d</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">512</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">)])</span></code></pre></div>
+<h4 id="loss-function">Loss function</h4>
+
+<p>ProGAN使用的是<a href="https://arxiv.org/abs/1704.00028">WGAN-GP</a>，介绍可参见<a href="https://www.yuthon.com/post/tutorials/something-about-gans/#wgan-gp-1">之前的文章</a>。其损失函数形式为：</p>
+
+<p>$$
+\begin{aligned}
+\mathcal{L}_G &amp;= -D(x&rsquo;) <br />
+\mathcal{L}_D &amp;= -D(x) + D(x&rsquo;) + \lambda \times GP <br />
+GP &amp;= \left(||\nabla D (\alpha x&rsquo; + (1 - \alpha)x ))||_2 - 1 \right)^2 <br />
+\end{aligned}
+$$</p>
+
+<p>其中，$D$为Discriminator，$x$、$x&rsquo;$分别为真实样本与生成样本。$\lambda=10$为权重项，$GP$为用于稳定训练的梯度惩罚项，$\alpha \in (0,1)$为均匀采样的随机数，用以表示$x$与$x&rsquo;$的加权平均（即其连线上的任意一点）。</p>
+
 <h3 id="tricks">Tricks</h3>
 
 <h4 id="upscale-2x">Upscale 2x</h4>
@@ -462,7 +487,7 @@ $$
       
       <p class="post-copyright">
         © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
-This post was published <strong>375</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
+This post was published <strong>373</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
       </p>
     </footer>
     
