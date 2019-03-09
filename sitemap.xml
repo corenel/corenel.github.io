@@ -1,329 +1,416 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<?xml-stylesheet type="text/xsl" href="https://www.yuthon.com/sitemap.xsl"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
     <loc>https://www.yuthon.com/about/</loc>
     <lastmod>2019-01-11T19:34:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/resume/</loc>
     <lastmod>2019-01-11T19:38:29+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/post/tutorials/from-progan-to-stylegan/</loc>
-    <lastmod>2018-02-28T19:42:13+08:00</lastmod>
+    <lastmod>2018-12-31T19:42:13+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/post/papers/notes-for-adversarial-discriminative-domain-adaptation/</loc>
     <lastmod>2017-08-15T20:19:46+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/post/tutorials/something-about-gans/</loc>
     <lastmod>2017-08-12T19:24:14+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/post/tutorials/let-s-talk-about-zero-shot-learning/</loc>
     <lastmod>2017-06-14T14:20:01+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/post/papers/notes-for-amortized-inference-and-learning-in-latent-crf/</loc>
     <lastmod>2017-05-10T22:05:31+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/post/papers/notes-for-sec/</loc>
     <lastmod>2017-04-28T09:13:33+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/post/tutorials/notes-from-faster-r-cnn-to-mask-r-cnn/</loc>
     <lastmod>2017-04-27T12:55:33+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/post/practices/tensorflow-r1-0-on-tx1/</loc>
     <lastmod>2017-03-10T18:12:18+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/post/practices/backup-system-partition-on-tx1/</loc>
     <lastmod>2016-12-18T18:18:59+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/post/practices/installation-of-tensorflow-r0-11-on-tx1/</loc>
     <lastmod>2016-12-04T20:53:55+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/post/practices/train-yolov2-on-my-own-dataset/</loc>
     <lastmod>2016-12-03T11:29:04+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/post/practices/train-caffe-yolo-on-our-own-dataset/</loc>
     <lastmod>2016-11-26T18:11:14+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/post/papers/notes-for-scribblesup/</loc>
     <lastmod>2016-11-20T18:26:24+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/post/papers/notes-for-yolo/</loc>
     <lastmod>2016-11-18T22:43:26+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/post/practices/train-yolo-on-our-own-dataset/</loc>
     <lastmod>2016-11-12T11:20:22+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/post/practices/yolo-on-nvidia-jetson-tx1/</loc>
     <lastmod>2016-11-10T20:36:34+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/post/papers/notes-for-slic/</loc>
     <lastmod>2016-11-01T18:21:04+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/post/projects/traffic-prediction-using-lstm/</loc>
     <lastmod>2016-10-30T13:53:32+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/post/practices/cuda-and-tensorflow-installation-on-ubuntu-16-04/</loc>
     <lastmod>2016-10-25T20:53:50+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/post/practices/os-x-10-11-4-on-xps-15-9550/</loc>
     <lastmod>2016-05-16T20:20:08+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/categories/</loc>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/tags/cuda/</loc>
     <lastmod>2016-10-25T20:53:50+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/tags/darknet/</loc>
     <lastmod>2016-12-03T11:29:04+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/tags/dcgan/</loc>
     <lastmod>2017-08-12T19:24:14+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/tags/deep-learning/</loc>
     <lastmod>2017-08-15T20:19:46+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/tags/domain-adaptation/</loc>
     <lastmod>2017-08-15T20:19:46+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/tags/faster-r-cnn/</loc>
     <lastmod>2017-04-27T12:55:33+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/tags/gans/</loc>
-    <lastmod>2018-02-28T19:42:13+08:00</lastmod>
+    <lastmod>2018-12-31T19:42:13+08:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/tags/generative-adversarial-networks/</loc>
     <lastmod>2017-08-12T19:24:14+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.yuthon.com/tags/image-generation/</loc>
+    <lastmod>2018-12-31T19:42:13+08:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/tags/jetson-tx1/</loc>
     <lastmod>2017-03-10T18:12:18+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/tags/lstm/</loc>
     <lastmod>2016-10-30T13:53:32+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/tags/mask-r-cnn/</loc>
     <lastmod>2017-04-27T12:55:33+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/categories/notes/</loc>
-    <lastmod>2018-02-28T19:42:13+08:00</lastmod>
+    <lastmod>2018-12-31T19:42:13+08:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/tags/nvidia/</loc>
     <lastmod>2017-03-10T18:12:18+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/tags/nvidia-jetson-tx1/</loc>
     <lastmod>2016-11-10T20:36:34+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/tags/object-detection/</loc>
     <lastmod>2017-04-27T12:55:33+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/tags/os-x/</loc>
     <lastmod>2016-05-16T20:20:08+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/post/</loc>
-    <lastmod>2018-02-28T19:42:13+08:00</lastmod>
+    <lastmod>2018-12-31T19:42:13+08:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/categories/practices/</loc>
     <lastmod>2017-03-10T18:12:18+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/categories/projects/</loc>
     <lastmod>2016-10-30T13:53:32+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/tags/rnn/</loc>
     <lastmod>2016-10-30T13:53:32+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/tags/scene-segmentation/</loc>
     <lastmod>2016-11-20T18:26:24+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/tags/scribblesup/</loc>
     <lastmod>2016-11-20T18:26:24+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/tags/semantic-segmentation/</loc>
     <lastmod>2017-06-14T14:20:01+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/tags/slic/</loc>
     <lastmod>2016-11-01T18:21:04+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/tags/superpixel/</loc>
     <lastmod>2016-11-01T18:21:04+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/tags/</loc>
     <lastmod>2016-10-25T20:53:50+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/tags/tensorflow/</loc>
     <lastmod>2017-03-10T18:12:18+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/tags/traffic-prediction/</loc>
     <lastmod>2016-10-30T13:53:32+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/categories/tutorials/</loc>
-    <lastmod>2018-02-28T19:42:13+08:00</lastmod>
+    <lastmod>2018-12-31T19:42:13+08:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/tags/ubuntu/</loc>
     <lastmod>2017-03-10T18:12:18+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/tags/wgan/</loc>
     <lastmod>2017-08-12T19:24:14+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/tags/wgan-gp/</loc>
     <lastmod>2017-08-12T19:24:14+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/tags/xps/</loc>
     <lastmod>2016-05-16T20:20:08+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/tags/yolo/</loc>
     <lastmod>2016-12-03T11:29:04+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yuthon.com/</loc>
     <lastmod>2019-01-11T19:34:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   

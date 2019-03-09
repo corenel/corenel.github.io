@@ -1,244 +1,211 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="en">
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Notes for Adversarial Discriminative Domain Adaptation - Yuthon&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-  <meta charset="utf-8" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
-  
-  <title>Notes for Adversarial Discriminative Domain Adaptation</title>
-
-  
-  
-  <link href="//cdn.jsdelivr.net" rel="dns-prefetch">
-  <link href="//cdnjs.cloudflare.com" rel="dns-prefetch">
-  <link href="//at.alicdn.com" rel="dns-prefetch">
-  <link href="//fonts.googleapis.com" rel="dns-prefetch">
-  <link href="//fonts.gstatic.com" rel="dns-prefetch">
-  <link href="///disqus.com" rel="dns-prefetch">
-  <link href="//c.disquscdn.com" rel="dns-prefetch">
-  
-  <link href="//www.google-analytics.com" rel="dns-prefetch">
-  
-
-  
-
-  
-  
-  <meta name="description" content="About this paper  Title: Adversarial Discriminative Domain Adaptation Authors: Eric Tzeng, Judy Hoffman, Kate Saenko, Trevor Darrell Topic: Domain Adaptation From: arXiv:1702.05464, appearing in CVPR 2017  Contributions  将之前的论文里提到的一些方法，例如weight sharing、base models、adversarial loss等，归入了统一的框架之中，并进行了测试； 提出了一种新的框架ADDA，主要思想是不做分类器的自适应，而是设法将目标域的数据映射到域源域差不多的特征空间上，这样就能够复用源域的分类器。 ">
-
-  
-  
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:site" content="@corenel">
-    <meta name="twitter:title" content="Notes for Adversarial Discriminative Domain Adaptation">
-    <meta name="twitter:description" content="About this paper  Title: Adversarial Discriminative Domain Adaptation Authors: Eric Tzeng, Judy Hoffman, Kate Saenko, Trevor Darrell Topic: Domain Adaptation From: arXiv:1702.05464, appearing in CVPR 2017  Contributions  将之前的论文里提到的一些方法，例如weight sharing、base models、adversarial loss等，归入了统一的框架之中，并进行了测试； 提出了一种新的框架ADDA，主要思想是不做分类器的自适应，而是设法将目标域的数据映射到域源域差不多的特征空间上，这样就能够复用源域的分类器。 ">
-    <meta name="twitter:image" content="/images/avatar.png">
-  
-
-  
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="Notes for Adversarial Discriminative Domain Adaptation">
-  <meta property="og:description" content="About this paper  Title: Adversarial Discriminative Domain Adaptation Authors: Eric Tzeng, Judy Hoffman, Kate Saenko, Trevor Darrell Topic: Domain Adaptation From: arXiv:1702.05464, appearing in CVPR 2017  Contributions  将之前的论文里提到的一些方法，例如weight sharing、base models、adversarial loss等，归入了统一的框架之中，并进行了测试； 提出了一种新的框架ADDA，主要思想是不做分类器的自适应，而是设法将目标域的数据映射到域源域差不多的特征空间上，这样就能够复用源域的分类器。 ">
-  <meta property="og:url" content="https://www.yuthon.com/post/papers/notes-for-adversarial-discriminative-domain-adaptation/">
-  <meta property="og:image" content="/images/avatar.png">
-
-
-
-
-<meta name="generator" content="Hugo 0.54.0">
-
-
-<link rel="canonical" href="https://www.yuthon.com/post/papers/notes-for-adversarial-discriminative-domain-adaptation/">
-
-<meta name="renderer" content="webkit">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="format-detection" content="telephone=no,email=no,adress=no">
-<meta http-equiv="Cache-Control" content="no-transform">
-
-
-<meta name="robots" content="index,follow">
-<meta name="referrer" content="origin-when-cross-origin">
-
-
-
-
-
-
-
-<meta name="theme-color" content="#02b875">
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="apple-mobile-web-app-title" content="Yuthon&#39;s Blog">
-<meta name="msapplication-tooltip" content="Yuthon&#39;s Blog">
-<meta name='msapplication-navbutton-color' content="#02b875">
-<meta name="msapplication-TileColor" content="#02b875">
-<meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
-<link rel="icon" href="https://www.yuthon.com/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://www.yuthon.com/icons/icon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://www.yuthon.com/icons/icon-32x32.png">
-<link rel="icon" sizes="192x192" href="https://www.yuthon.com/icons/icon-192x192.png">
-<link rel="apple-touch-icon" href="https://www.yuthon.com/icons/icon-152x152.png">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yusu Pan" /><meta name="description" content="About this paper  Title: Adversarial Discriminative Domain Adaptation Authors: Eric Tzeng, Judy Hoffman, Kate Saenko, Trevor Darrell Topic: Domain Adaptation From: arXiv:1702.05464, appearing in CVPR 2017  Contributions  将之前的论文里提到的一些方法，例如weight sharing、base models、adversarial loss等，归入了统一的框架之中，并进行了测试； 提出了一种新的框架ADDA，主要思想是不做分类器的自适应，而是设法将目标域的数据映射到域源域差不多的特征空间上，这样就能够复用源域的分类器。 " /><meta name="keywords" content="yuthon, yusu-pan, blog, deep-learning, computer-vision" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://www.yuthon.com/post/papers/notes-for-adversarial-discriminative-domain-adaptation/" />
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.yuthon.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.yuthon.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.yuthon.com/favicon-16x16.png">
 <link rel="manifest" href="https://www.yuthon.com/manifest.json">
+<link rel="mask-icon" href="https://www.yuthon.com/safari-pinned-tab.svg" color="#5bbad5">
 
 
-<link rel="preload" href="https://www.yuthon.com/styles/main.min.css" as="style">
-
-<link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
-<link rel="preload" href="https://www.yuthon.com/images/avatar.png" as="image">
-<link rel="preload" href="https://www.yuthon.com/images/grey-prism.svg" as="image">
+<link href="https://www.yuthon.com/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<style>
-  body {
-    background: rgb(244, 243, 241) url('/images/grey-prism.svg') repeat fixed;
-  }
-</style>
-<link rel="stylesheet" href="https://www.yuthon.com/styles/main.min.css">
-
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
+<meta property="og:title" content="Notes for Adversarial Discriminative Domain Adaptation" />
+<meta property="og:description" content="About this paper
 
 
-
-<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.2/dist/medium-zoom.min.js"></script>
-
-
-
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video-js.min.css">
+Title: Adversarial Discriminative Domain Adaptation
+Authors: Eric Tzeng, Judy Hoffman, Kate Saenko, Trevor Darrell
+Topic: Domain Adaptation
+From: arXiv:1702.05464, appearing in CVPR 2017
 
 
+Contributions
 
-  
-  
-<!--[if lte IE 8]>
-  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/videojs-ie8@1.1.2/dist/videojs-ie8.min.js"></script>
-<![endif]-->
+
+将之前的论文里提到的一些方法，例如weight sharing、base models、adversarial loss等，归入了统一的框架之中，并进行了测试；
+提出了一种新的框架ADDA，主要思想是不做分类器的自适应，而是设法将目标域的数据映射到域源域差不多的特征空间上，这样就能够复用源域的分类器。
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.yuthon.com/post/papers/notes-for-adversarial-discriminative-domain-adaptation/" />
+<meta property="article:published_time" content="2017-08-15T20:19:46&#43;00:00"/>
+<meta property="article:modified_time" content="2017-08-15T20:19:46&#43;00:00"/>
+
+<meta itemprop="name" content="Notes for Adversarial Discriminative Domain Adaptation">
+<meta itemprop="description" content="About this paper
+
+
+Title: Adversarial Discriminative Domain Adaptation
+Authors: Eric Tzeng, Judy Hoffman, Kate Saenko, Trevor Darrell
+Topic: Domain Adaptation
+From: arXiv:1702.05464, appearing in CVPR 2017
+
+
+Contributions
+
+
+将之前的论文里提到的一些方法，例如weight sharing、base models、adversarial loss等，归入了统一的框架之中，并进行了测试；
+提出了一种新的框架ADDA，主要思想是不做分类器的自适应，而是设法将目标域的数据映射到域源域差不多的特征空间上，这样就能够复用源域的分类器。
+">
+
+
+<meta itemprop="datePublished" content="2017-08-15T20:19:46&#43;00:00" />
+<meta itemprop="dateModified" content="2017-08-15T20:19:46&#43;00:00" />
+<meta itemprop="wordCount" content="1421">
+
+
+
+<meta itemprop="keywords" content="Domain Adaptation,GANs,Deep Learning," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Notes for Adversarial Discriminative Domain Adaptation"/>
+<meta name="twitter:description" content="About this paper
+
+
+Title: Adversarial Discriminative Domain Adaptation
+Authors: Eric Tzeng, Judy Hoffman, Kate Saenko, Trevor Darrell
+Topic: Domain Adaptation
+From: arXiv:1702.05464, appearing in CVPR 2017
+
+
+Contributions
+
+
+将之前的论文里提到的一些方法，例如weight sharing、base models、adversarial loss等，归入了统一的框架之中，并进行了测试；
+提出了一种新的框架ADDA，主要思想是不做分类器的自适应，而是设法将目标域的数据映射到域源域差不多的特征空间上，这样就能够复用源域的分类器。
+"/>
 
 <!--[if lte IE 9]>
-  <script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20180112/classList.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
 <![endif]-->
 
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
 
 </head>
-  <body>
-    
-    <div class="suspension">
-      <a role="button" aria-label="Go to top" title="Go to top" class="to-top is-hide"><span class="icon icon-up" aria-hidden="true"></span></a>
-      
-        
-        <a role="button" aria-label="Go to comments" title="Go to comments" class="to-comment" href="#disqus_thread"><span class="icon icon-comment" aria-hidden="true"></span></a>
-        
-      
-    </div>
-    
-    
-  <header class="site-header">
-  <img class="avatar" src="https://www.yuthon.com/images/avatar.png" alt="Avatar">
-  
-  <h2 class="title">Yuthon&#39;s Blog</h2>
-  
-  <p class="subtitle"></p>
-  <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
-    <span class="icon icon-menu" aria-hidden="true"></span>
-  </button>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="https://www.yuthon.com/" class="logo">Yuthon&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="https://www.yuthon.com/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="https://www.yuthon.com/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="https://www.yuthon.com/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="https://www.yuthon.com/about/">
+        <li class="mobile-menu-item">About</li>
+      </a><a href="https://www.yuthon.com/resume/">
+        <li class="mobile-menu-item">Resume</li>
+      </a><a href="https://github.com/corenel">
+        <li class="mobile-menu-item">Works</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="https://www.yuthon.com/" class="logo">Yuthon&#39;s Blog</a>
+</div>
 
-  <nav class="site-menu collapsed">
-    <h2 class="offscreen">Main Menu</h2>
-    <ul class="menu-list">
-      
-      
-      
-      
-        <li class="menu-item
-          
-          
-           is-active">
-          <a href="https://www.yuthon.com/">Home</a>
-        </li>
-      
-        <li class="menu-item
-          
-          
-          ">
-          <a href="https://www.yuthon.com/categories/">Categories</a>
-        </li>
-      
-        <li class="menu-item
-          
-          
-          ">
-          <a href="https://www.yuthon.com/tags/">Tags</a>
-        </li>
-      
-        <li class="menu-item
-          
-          
-          ">
-          <a href="https://www.yuthon.com/about/">About</a>
-        </li>
-      
-        <li class="menu-item
-          
-          
-          ">
-          <a href="https://www.yuthon.com/resume/">Resume</a>
-        </li>
-      
-        <li class="menu-item
-          
-          
-          ">
-          <a href="https://github.com/corenel">Works</a>
-        </li>
-      
-    </ul>
-  </nav>
-  <nav class="social-menu collapsed">
-    <h2 class="offscreen">Social Networks</h2>
-    <ul class="social-list"><li class="social-item">
-          <a href="mailto:xxdsox@gmail.com" title="Email" aria-label="Email">
-            <span class="icon icon-email" aria-hidden="true"></span>
-          </a>
-        </li><li class="social-item">
-          <a href="//github.com/corenel" title="GitHub" aria-label="GitHub">
-            <span class="icon icon-github" aria-hidden="true"></span>
-          </a>
-        </li><li class="social-item">
-          <a href="//twitter.com/corenel" title="Twitter" aria-label="Twitter">
-            <span class="icon icon-twitter" aria-hidden="true"></span>
-          </a>
-        </li><li class="social-item">
-          <a href="//www.facebook.com/xxdsox" title="Facebook" aria-label="Facebook">
-            <span class="icon icon-facebook" aria-hidden="true"></span>
-          </a>
-        </li><li class="social-item">
-          <a href="//www.reddit.com/user/xxdsox" title="Reddit" aria-label="Reddit">
-            <span class="icon icon-reddit" aria-hidden="true"></span>
-          </a>
-        </li><li class="social-item">
-          <a href="//www.quora.com/profile/Yusu-Pan" title="Quora" aria-label="Quora">
-            <span class="icon icon-quora" aria-hidden="true"></span>
-          </a>
-        </li><li class="social-item">
-          <a href="//stackoverflow.com/users/5682817" title="stackOverflow"  aria-label="stackOverflow">
-            <span class="icon icon-stackoverflow" aria-hidden="true"></span>
-          </a>
-        </li><li class="social-item">
-          <a href="//www.zhihu.com/people/pan-yu-su" title="Zhihu" aria-label="Zhihu">
-            <span class="icon icon-zhihu" aria-hidden="true"></span>
-          </a>
-        </li></ul>
-  </nav>
-</header>
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/about/">About</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/resume/">Resume</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://github.com/corenel">Works</a>
+      </li>
+  </ul>
+</nav>
+    </header>
 
-  <section class="main post-detail">
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
     <header class="post-header">
       <h1 class="post-title">Notes for Adversarial Discriminative Domain Adaptation</h1>
-      <p class="post-meta">@Yusu Pan · Aug 15, 2017 · 3 min read</p>
+
+      <div class="post-meta">
+        <span class="post-time"> 2017-08-15 </span>
+        <div class="post-category">
+            <a href="https://www.yuthon.com/categories/notes/"> Notes </a>
+            </div>
+          <span class="more-meta"> 1421 words </span>
+          <span class="more-meta"> 3 mins read </span>
+        
+      </div>
     </header>
-    <article class="post-content"><h2 id="about-this-paper">About this paper</h2>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#about-this-paper">About this paper</a></li>
+<li><a href="#contributions">Contributions</a></li>
+<li><a href="#methods">Methods</a>
+<ul>
+<li><a href="#generalized-architecture-for-adversarial-domain-adaptation">Generalized architecture for adversarial domain adaptation</a></li>
+<li><a href="#adda-architecture">ADDA architecture</a></li>
+</ul></li>
+<li><a href="#code">Code</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="about-this-paper">About this paper</h2>
 
 <ul>
 <li><strong>Title</strong>: Adversarial Discriminative Domain Adaptation</li>
@@ -318,101 +285,120 @@ $$</p></li>
 <ul>
 <li><a href="https://github.com/erictzeng/adda">code from authors (TensorFlow)</a></li>
 <li><a href="https://github.com/corenel/pytorch-adda">my implementation (PyTorch)</a></li>
-</ul></article>
-    <footer class="post-footer">
-      
-      <ul class="post-tags">
+</ul>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Yusu Pan</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2017-08-15
         
-          <li><a href="https://www.yuthon.com/tags/domain-adaptation"><span class="tag">Domain Adaptation</span></a></li>
-        
-          <li><a href="https://www.yuthon.com/tags/gans"><span class="tag">GANs</span></a></li>
-        
-          <li><a href="https://www.yuthon.com/tags/deep-learning"><span class="tag">Deep Learning</span></a></li>
-        
-      </ul>
-      
-      <p class="post-copyright">
-        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
-This post was published <strong>570</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
-      </p>
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">License</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="https://www.yuthon.com/tags/domain-adaptation/">Domain Adaptation</a>
+          <a href="https://www.yuthon.com/tags/gans/">GANs</a>
+          <a href="https://www.yuthon.com/tags/deep-learning/">Deep Learning</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="https://www.yuthon.com/post/tutorials/from-progan-to-stylegan/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">From ProGAN to StyleGAN</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="https://www.yuthon.com/post/tutorials/something-about-gans/">
+            <span class="next-text nav-default">Something about GAN</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
     </footer>
-    
-      <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
     (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "yuthons-blog" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
       
-    
-  </section>
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'yuthons-blog';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xxdsox@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/5682817" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://twitter.com/corenel" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://www.facebook.com/xxdsox" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://github.com/corenel" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/pan-yu-su" class="iconfont icon-zhihu" title="zhihu"></a>
+  <a href="https://www.yuthon.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
   
-<footer class="site-footer">
-  <p>© 2017-2019 Yuthon&#39;s Blog</p>
-  <p>Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank" rel="noopener">Nuo</a>.</p>
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
+</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
   
-</footer>
-
-
-<script src="https://cdn.jsdelivr.net/npm/smooth-scroll@15.0.0/dist/smooth-scroll.min.js"></script>
-
-
-
-<script async src="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video.min.js"></script>
-
-
-
-
-<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [['$','$'], ['\\(','\\)']],
-      displayMath: [['$$','$$'], ['\\[','\\]']],
-      processEscapes: true,
-      processEnvironments: true,
-      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
-      TeX: { equationNumbers: { autoNumber: "AMS" },
-      extensions: ["AMSmath.js", "AMSsymbols.js"] }
-    },
-  });
-</script>
-<script type="text/x-mathjax-config">
-  // Fix <code> tags after MathJax finishes running. This is a
-  // hack to overcome a shortcoming of Markdown. Discussion at
-  // https://github.com/mojombo/jekyll/issues/199
-  MathJax.Hub.Queue(() => {
-    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
-  });
-</script>
-
-
-
-<script src="https://www.yuthon.com/scripts/index.min.js"></script>
-
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('\/service-worker.js').then(function() {
-      console.log('[ServiceWorker] Registered');
-    });
-  }
-</script>
-
-
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://www.yuthon.com/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      TeX: {equationNumbers: {autoNumber: "AMS"}},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 
 
 <script type="application/javascript">
@@ -420,7 +406,7 @@ var doNotTrack = false;
 if (!doNotTrack) {
 	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
 	ga('create', 'UA-76233259-1', 'auto');
-	
+	ga('set', 'anonymizeIp', true);
 	ga('send', 'pageview');
 }
 </script>
@@ -432,5 +418,5 @@ if (!doNotTrack) {
 
 
 
-  </body>
+</body>
 </html>

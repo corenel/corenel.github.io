@@ -1,247 +1,168 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="en">
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>YOLO on NVIDIA Jetson TX1 - Yuthon&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-  <meta charset="utf-8" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
-  
-  <title>YOLO on NVIDIA Jetson TX1</title>
-
-  
-  
-  <link href="//cdn.jsdelivr.net" rel="dns-prefetch">
-  <link href="//cdnjs.cloudflare.com" rel="dns-prefetch">
-  <link href="//at.alicdn.com" rel="dns-prefetch">
-  <link href="//fonts.googleapis.com" rel="dns-prefetch">
-  <link href="//fonts.gstatic.com" rel="dns-prefetch">
-  <link href="///disqus.com" rel="dns-prefetch">
-  <link href="//c.disquscdn.com" rel="dns-prefetch">
-  
-  <link href="//www.google-analytics.com" rel="dns-prefetch">
-  
-
-  
-
-  
-  
-  <meta name="description" content="实验室昨天到了 NVIDIA 的 Jetson TX1, 可以说是移动端比较好的带GPU的开发板子了, 于是可以试试在移动端上用YOLO (You Look Only Once) 来做目标识别.
-">
-
-  
-  
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:site" content="@corenel">
-    <meta name="twitter:title" content="YOLO on NVIDIA Jetson TX1">
-    <meta name="twitter:description" content="实验室昨天到了 NVIDIA 的 Jetson TX1, 可以说是移动端比较好的带GPU的开发板子了, 于是可以试试在移动端上用YOLO (You Look Only Once) 来做目标识别.
-">
-    <meta name="twitter:image" content="/images/avatar.png">
-  
-
-  
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="YOLO on NVIDIA Jetson TX1">
-  <meta property="og:description" content="实验室昨天到了 NVIDIA 的 Jetson TX1, 可以说是移动端比较好的带GPU的开发板子了, 于是可以试试在移动端上用YOLO (You Look Only Once) 来做目标识别.
-">
-  <meta property="og:url" content="https://www.yuthon.com/post/practices/yolo-on-nvidia-jetson-tx1/">
-  <meta property="og:image" content="/images/avatar.png">
-
-
-
-
-<meta name="generator" content="Hugo 0.54.0">
-
-
-<link rel="canonical" href="https://www.yuthon.com/post/practices/yolo-on-nvidia-jetson-tx1/">
-
-<meta name="renderer" content="webkit">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="format-detection" content="telephone=no,email=no,adress=no">
-<meta http-equiv="Cache-Control" content="no-transform">
-
-
-<meta name="robots" content="index,follow">
-<meta name="referrer" content="origin-when-cross-origin">
-
-
-
-
-
-
-
-<meta name="theme-color" content="#02b875">
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="apple-mobile-web-app-title" content="Yuthon&#39;s Blog">
-<meta name="msapplication-tooltip" content="Yuthon&#39;s Blog">
-<meta name='msapplication-navbutton-color' content="#02b875">
-<meta name="msapplication-TileColor" content="#02b875">
-<meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
-<link rel="icon" href="https://www.yuthon.com/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://www.yuthon.com/icons/icon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://www.yuthon.com/icons/icon-32x32.png">
-<link rel="icon" sizes="192x192" href="https://www.yuthon.com/icons/icon-192x192.png">
-<link rel="apple-touch-icon" href="https://www.yuthon.com/icons/icon-152x152.png">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yusu Pan" /><meta name="description" content="实验室昨天到了 NVIDIA 的 Jetson TX1, 可以说是移动端比较好的带GPU的开发板子了, 于是可以试试在移动端上用YOLO (You Look Only Once) 来做目标识别.
+" /><meta name="keywords" content="yuthon, yusu-pan, blog, deep-learning, computer-vision" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://www.yuthon.com/post/practices/yolo-on-nvidia-jetson-tx1/" />
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.yuthon.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.yuthon.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.yuthon.com/favicon-16x16.png">
 <link rel="manifest" href="https://www.yuthon.com/manifest.json">
+<link rel="mask-icon" href="https://www.yuthon.com/safari-pinned-tab.svg" color="#5bbad5">
 
 
-<link rel="preload" href="https://www.yuthon.com/styles/main.min.css" as="style">
-
-<link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
-<link rel="preload" href="https://www.yuthon.com/images/avatar.png" as="image">
-<link rel="preload" href="https://www.yuthon.com/images/grey-prism.svg" as="image">
+<link href="https://www.yuthon.com/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<style>
-  body {
-    background: rgb(244, 243, 241) url('/images/grey-prism.svg') repeat fixed;
-  }
-</style>
-<link rel="stylesheet" href="https://www.yuthon.com/styles/main.min.css">
+<meta property="og:title" content="YOLO on NVIDIA Jetson TX1" />
+<meta property="og:description" content="实验室昨天到了 NVIDIA 的 Jetson TX1, 可以说是移动端比较好的带GPU的开发板子了, 于是可以试试在移动端上用YOLO (You Look Only Once) 来做目标识别." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.yuthon.com/post/practices/yolo-on-nvidia-jetson-tx1/" />
+<meta property="article:published_time" content="2016-11-10T20:36:34&#43;00:00"/>
+<meta property="article:modified_time" content="2016-11-10T20:36:34&#43;00:00"/>
 
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.2/dist/medium-zoom.min.js"></script>
+<meta itemprop="name" content="YOLO on NVIDIA Jetson TX1">
+<meta itemprop="description" content="实验室昨天到了 NVIDIA 的 Jetson TX1, 可以说是移动端比较好的带GPU的开发板子了, 于是可以试试在移动端上用YOLO (You Look Only Once) 来做目标识别.">
 
 
-
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video-js.min.css">
+<meta itemprop="datePublished" content="2016-11-10T20:36:34&#43;00:00" />
+<meta itemprop="dateModified" content="2016-11-10T20:36:34&#43;00:00" />
+<meta itemprop="wordCount" content="676">
 
 
 
-  
-  
-<!--[if lte IE 8]>
-  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/videojs-ie8@1.1.2/dist/videojs-ie8.min.js"></script>
-<![endif]-->
+<meta itemprop="keywords" content="NVIDIA Jetson TX1,YOLO,Deep Learning,Object detection,Darknet," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="YOLO on NVIDIA Jetson TX1"/>
+<meta name="twitter:description" content="实验室昨天到了 NVIDIA 的 Jetson TX1, 可以说是移动端比较好的带GPU的开发板子了, 于是可以试试在移动端上用YOLO (You Look Only Once) 来做目标识别."/>
 
 <!--[if lte IE 9]>
-  <script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20180112/classList.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
 <![endif]-->
 
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
 
 </head>
-  <body>
-    
-    <div class="suspension">
-      <a role="button" aria-label="Go to top" title="Go to top" class="to-top is-hide"><span class="icon icon-up" aria-hidden="true"></span></a>
-      
-        
-        <a role="button" aria-label="Go to comments" title="Go to comments" class="to-comment" href="#disqus_thread"><span class="icon icon-comment" aria-hidden="true"></span></a>
-        
-      
-    </div>
-    
-    
-  <header class="site-header">
-  <img class="avatar" src="https://www.yuthon.com/images/avatar.png" alt="Avatar">
-  
-  <h2 class="title">Yuthon&#39;s Blog</h2>
-  
-  <p class="subtitle"></p>
-  <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
-    <span class="icon icon-menu" aria-hidden="true"></span>
-  </button>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="https://www.yuthon.com/" class="logo">Yuthon&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="https://www.yuthon.com/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="https://www.yuthon.com/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="https://www.yuthon.com/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="https://www.yuthon.com/about/">
+        <li class="mobile-menu-item">About</li>
+      </a><a href="https://www.yuthon.com/resume/">
+        <li class="mobile-menu-item">Resume</li>
+      </a><a href="https://github.com/corenel">
+        <li class="mobile-menu-item">Works</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="https://www.yuthon.com/" class="logo">Yuthon&#39;s Blog</a>
+</div>
 
-  <nav class="site-menu collapsed">
-    <h2 class="offscreen">Main Menu</h2>
-    <ul class="menu-list">
-      
-      
-      
-      
-        <li class="menu-item
-          
-          
-           is-active">
-          <a href="https://www.yuthon.com/">Home</a>
-        </li>
-      
-        <li class="menu-item
-          
-          
-          ">
-          <a href="https://www.yuthon.com/categories/">Categories</a>
-        </li>
-      
-        <li class="menu-item
-          
-          
-          ">
-          <a href="https://www.yuthon.com/tags/">Tags</a>
-        </li>
-      
-        <li class="menu-item
-          
-          
-          ">
-          <a href="https://www.yuthon.com/about/">About</a>
-        </li>
-      
-        <li class="menu-item
-          
-          
-          ">
-          <a href="https://www.yuthon.com/resume/">Resume</a>
-        </li>
-      
-        <li class="menu-item
-          
-          
-          ">
-          <a href="https://github.com/corenel">Works</a>
-        </li>
-      
-    </ul>
-  </nav>
-  <nav class="social-menu collapsed">
-    <h2 class="offscreen">Social Networks</h2>
-    <ul class="social-list"><li class="social-item">
-          <a href="mailto:xxdsox@gmail.com" title="Email" aria-label="Email">
-            <span class="icon icon-email" aria-hidden="true"></span>
-          </a>
-        </li><li class="social-item">
-          <a href="//github.com/corenel" title="GitHub" aria-label="GitHub">
-            <span class="icon icon-github" aria-hidden="true"></span>
-          </a>
-        </li><li class="social-item">
-          <a href="//twitter.com/corenel" title="Twitter" aria-label="Twitter">
-            <span class="icon icon-twitter" aria-hidden="true"></span>
-          </a>
-        </li><li class="social-item">
-          <a href="//www.facebook.com/xxdsox" title="Facebook" aria-label="Facebook">
-            <span class="icon icon-facebook" aria-hidden="true"></span>
-          </a>
-        </li><li class="social-item">
-          <a href="//www.reddit.com/user/xxdsox" title="Reddit" aria-label="Reddit">
-            <span class="icon icon-reddit" aria-hidden="true"></span>
-          </a>
-        </li><li class="social-item">
-          <a href="//www.quora.com/profile/Yusu-Pan" title="Quora" aria-label="Quora">
-            <span class="icon icon-quora" aria-hidden="true"></span>
-          </a>
-        </li><li class="social-item">
-          <a href="//stackoverflow.com/users/5682817" title="stackOverflow"  aria-label="stackOverflow">
-            <span class="icon icon-stackoverflow" aria-hidden="true"></span>
-          </a>
-        </li><li class="social-item">
-          <a href="//www.zhihu.com/people/pan-yu-su" title="Zhihu" aria-label="Zhihu">
-            <span class="icon icon-zhihu" aria-hidden="true"></span>
-          </a>
-        </li></ul>
-  </nav>
-</header>
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/about/">About</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/resume/">Resume</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://github.com/corenel">Works</a>
+      </li>
+  </ul>
+</nav>
+    </header>
 
-  <section class="main post-detail">
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
     <header class="post-header">
       <h1 class="post-title">YOLO on NVIDIA Jetson TX1</h1>
-      <p class="post-meta">@Yusu Pan · Nov 10, 2016 · 2 min read</p>
+
+      <div class="post-meta">
+        <span class="post-time"> 2016-11-10 </span>
+        <div class="post-category">
+            <a href="https://www.yuthon.com/categories/practices/"> Practices </a>
+            </div>
+          <span class="more-meta"> 676 words </span>
+          <span class="more-meta"> 2 mins read </span>
+        
+      </div>
     </header>
-    <article class="post-content"><p>实验室昨天到了 NVIDIA 的 <a href="http://www.nvidia.com/object/jetson-tx1-module.html">Jetson TX1</a>, 可以说是移动端比较好的带GPU的开发板子了, 于是可以试试在移动端上用YOLO (You Look Only Once) 来做目标识别.</p>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#specifications">Specifications</a></li>
+<li><a href="#environment">Environment</a></li>
+<li><a href="#darknet">Darknet</a></li>
+<li><a href="#yolo">YOLO</a></li>
+<li><a href="#re-train">Re-train</a></li>
+<li><a href="#reference">Reference</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>实验室昨天到了 NVIDIA 的 <a href="http://www.nvidia.com/object/jetson-tx1-module.html">Jetson TX1</a>, 可以说是移动端比较好的带GPU的开发板子了, 于是可以试试在移动端上用YOLO (You Look Only Once) 来做目标识别.</p>
 
 <h2 id="specifications">Specifications</h2>
 
@@ -324,8 +245,20 @@
 
 <li><p>JetPack 刷完系统后会要求按 reset 键重启进 GUI, 之后就是不断地安装包安装依赖的过程, 因此在国内的话可以趁此机会修改<code>/etc/apt/source.list</code>:</p></li>
 </ul>
-
-<pre><code>  deb http://mirrors.ustc.edu.cn/ubuntu-ports/ xenial-updates main restricted universe multiverse
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">  deb http://mirrors.ustc.edu.cn/ubuntu-ports/ xenial-updates main restricted universe multiverse
   deb-src http://mirrors.ustc.edu.cn/ubuntu-ports/ xenial-updates main restricted universe multiverse
   deb http://mirrors.ustc.edu.cn/ubuntu-ports/ xenial-security main restricted universe multiverse
   deb-src http://mirrors.ustc.edu.cn/ubuntu-ports/ xenial-security main restricted universe multiverse
@@ -333,9 +266,9 @@
   deb-src http://mirrors.ustc.edu.cn/ubuntu-ports/ xenial-backports main restricted universe multiverse
   deb http://mirrors.ustc.edu.cn/ubuntu-ports/ xenial main universe restricted
   deb-src http://mirrors.ustc.edu.cn/ubuntu-ports/ xenial main universe restricted
-  deb http://mirrors.ustc.edu.cn/ubuntu-ports/ xenial universe
-</code></pre>
-
+  deb http://mirrors.ustc.edu.cn/ubuntu-ports/ xenial universe</pre></td></tr></table>
+</div>
+</div>
 <blockquote>
 <p>注意arm64的源与普通的x86-64的源是不一样的.</p>
 </blockquote>
@@ -343,21 +276,48 @@
 <h2 id="darknet">Darknet</h2>
 
 <p>为了用 Webcam demo, 所以需要 Compiling with CUDA and OpenCV:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git clone https://github.com/pjreddie/darknet.git
-$ <span style="color:#204a87">cd</span> darknet
-$ sed <span style="color:#4e9a06">&#39;s/GPU=0/GPU=1/g&#39;</span> Makefile
-$ sed <span style="color:#4e9a06">&#39;s/CUDNN=0/CUDNN=1/g&#39;</span> Makefile
-$ sed <span style="color:#4e9a06">&#39;s/OPENCV=0/OPENCV=1/g&#39;</span> Makefile
-$ make -j4</code></pre></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">$ git clone https://github.com/pjreddie/darknet.git
+$ <span class="nb">cd</span> darknet
+$ sed <span class="s1">&#39;s/GPU=0/GPU=1/g&#39;</span> Makefile
+$ sed <span class="s1">&#39;s/CUDNN=0/CUDNN=1/g&#39;</span> Makefile
+$ sed <span class="s1">&#39;s/OPENCV=0/OPENCV=1/g&#39;</span> Makefile
+$ make -j4</code></pre></td></tr></table>
+</div>
+</div>
 <p>上面编译完了之后输入以下指令, 与输出结果相对应, 那就说明成功了</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./darknet
-$ usage: ./darknet &lt;<span style="color:#204a87;font-weight:bold">function</span>&gt;</code></pre></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">$ ./darknet
+$ usage: ./darknet &lt;<span class="k">function</span>&gt;</code></pre></td></tr></table>
+</div>
+</div>
 <h2 id="yolo">YOLO</h2>
 
 <p>先去下训练好的<a href="http://pjreddie.com/darknet/yolo/#models">权重</a>, 建议选 yolo-tiny 的, 吃内存少. (毕竟 TX1 只有 4GB 内存, 还是 CPU 和 GPU 共用的)</p>
 
 <p>之后运行一下命令即可测试 Real-Time Detection on a Webcam:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./darknet yolo demo cfg/tiny-yolo.cfg tiny-yolo.weights</code></pre></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">$ ./darknet yolo demo cfg/tiny-yolo.cfg tiny-yolo.weights</code></pre></td></tr></table>
+</div>
+</div>
 <p>实际效果如下:</p>
 
 <p><img src="https://www.yuthon.com/images/TinyYOLO_on_TX1.jpg" alt="yolo-tiny_on_TX1" /></p>
@@ -377,105 +337,122 @@ $ usage: ./darknet &lt;<span style="color:#204a87;font-weight:bold">function</sp
 <ul>
 <li><a href="http://pjreddie.com/darknet/yolo/">YOLO: Real-Time Object Detection</a></li>
 <li><a href="http://guanghan.info/blog/en/my-works/train-yolo/">Start Training YOLO with Our Own Data</a></li>
-</ul></article>
-    <footer class="post-footer">
-      
-      <ul class="post-tags">
+</ul>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Yusu Pan</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2016-11-10
         
-          <li><a href="https://www.yuthon.com/tags/nvidia-jetson-tx1"><span class="tag">NVIDIA Jetson TX1</span></a></li>
-        
-          <li><a href="https://www.yuthon.com/tags/yolo"><span class="tag">YOLO</span></a></li>
-        
-          <li><a href="https://www.yuthon.com/tags/deep-learning"><span class="tag">Deep Learning</span></a></li>
-        
-          <li><a href="https://www.yuthon.com/tags/object-detection"><span class="tag">Object Detection</span></a></li>
-        
-          <li><a href="https://www.yuthon.com/tags/darknet"><span class="tag">Darknet</span></a></li>
-        
-      </ul>
-      
-      <p class="post-copyright">
-        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
-This post was published <strong>848</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
-      </p>
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">License</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="https://www.yuthon.com/tags/nvidia-jetson-tx1/">NVIDIA Jetson TX1</a>
+          <a href="https://www.yuthon.com/tags/yolo/">YOLO</a>
+          <a href="https://www.yuthon.com/tags/deep-learning/">Deep Learning</a>
+          <a href="https://www.yuthon.com/tags/object-detection/">Object detection</a>
+          <a href="https://www.yuthon.com/tags/darknet/">Darknet</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="https://www.yuthon.com/post/practices/train-yolo-on-our-own-dataset/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Train YOLO on our own dataset</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="https://www.yuthon.com/post/papers/notes-for-slic/">
+            <span class="next-text nav-default">Notes for SLIC</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
     </footer>
-    
-      <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
     (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "yuthons-blog" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
       
-    
-  </section>
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'yuthons-blog';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xxdsox@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/5682817" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://twitter.com/corenel" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://www.facebook.com/xxdsox" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://github.com/corenel" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/pan-yu-su" class="iconfont icon-zhihu" title="zhihu"></a>
+  <a href="https://www.yuthon.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
   
-<footer class="site-footer">
-  <p>© 2017-2019 Yuthon&#39;s Blog</p>
-  <p>Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank" rel="noopener">Nuo</a>.</p>
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
+</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
   
-</footer>
-
-
-<script src="https://cdn.jsdelivr.net/npm/smooth-scroll@15.0.0/dist/smooth-scroll.min.js"></script>
-
-
-
-<script async src="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video.min.js"></script>
-
-
-
-
-<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [['$','$'], ['\\(','\\)']],
-      displayMath: [['$$','$$'], ['\\[','\\]']],
-      processEscapes: true,
-      processEnvironments: true,
-      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
-      TeX: { equationNumbers: { autoNumber: "AMS" },
-      extensions: ["AMSmath.js", "AMSsymbols.js"] }
-    },
-  });
-</script>
-<script type="text/x-mathjax-config">
-  // Fix <code> tags after MathJax finishes running. This is a
-  // hack to overcome a shortcoming of Markdown. Discussion at
-  // https://github.com/mojombo/jekyll/issues/199
-  MathJax.Hub.Queue(() => {
-    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
-  });
-</script>
-
-
-
-<script src="https://www.yuthon.com/scripts/index.min.js"></script>
-
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('\/service-worker.js').then(function() {
-      console.log('[ServiceWorker] Registered');
-    });
-  }
-</script>
-
-
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://www.yuthon.com/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      TeX: {equationNumbers: {autoNumber: "AMS"}},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 
 
 <script type="application/javascript">
@@ -483,7 +460,7 @@ var doNotTrack = false;
 if (!doNotTrack) {
 	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
 	ga('create', 'UA-76233259-1', 'auto');
-	
+	ga('set', 'anonymizeIp', true);
 	ga('send', 'pageview');
 }
 </script>
@@ -495,5 +472,5 @@ if (!doNotTrack) {
 
 
 
-  </body>
+</body>
 </html>

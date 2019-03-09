@@ -1,423 +1,281 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="en">
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Deep Learning · Yuthon&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-  <meta charset="utf-8" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
-  
-  <title>
-  Tag → deep-learning
-  
-   | Yuthon&#39;s Blog
-</title>
-
-  
-  
-  <link href="//cdn.jsdelivr.net" rel="dns-prefetch">
-  <link href="//cdnjs.cloudflare.com" rel="dns-prefetch">
-  <link href="//at.alicdn.com" rel="dns-prefetch">
-  <link href="//fonts.googleapis.com" rel="dns-prefetch">
-  <link href="//fonts.gstatic.com" rel="dns-prefetch">
-  <link href="///disqus.com" rel="dns-prefetch">
-  <link href="//c.disquscdn.com" rel="dns-prefetch">
-  
-  <link href="//www.google-analytics.com" rel="dns-prefetch">
-  
-
-  
-
-  
-  <meta name="author" content="Yusu Pan">
-  <meta name="description" content="We&#39;ve been gaining one good thing through losing another.">
-
-  
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:site" content="@corenel">
-  <meta name="twitter:title" content="Yuthon&#39;s Blog">
-  <meta name="twitter:description" content="We&#39;ve been gaining one good thing through losing another.">
-  <meta name="twitter:image" content="/images/avatar.png">
-
-  
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Yuthon&#39;s Blog">
-  <meta property="og:description" content="We&#39;ve been gaining one good thing through losing another.">
-  <meta property="og:url" content="https://www.yuthon.com/tags/deep-learning/">
-  <meta property="og:image" content="/images/avatar.png">
-
-
-
-
-<meta name="generator" content="Hugo 0.54.0">
-
-
-<link rel="canonical" href="https://www.yuthon.com/tags/deep-learning/">
-<link rel="alternate" type="application/rss+xml" href="https://www.yuthon.com/tags/deep-learning/index.xml" title="Yuthon's Blog">
-
-<meta name="renderer" content="webkit">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="format-detection" content="telephone=no,email=no,adress=no">
-<meta http-equiv="Cache-Control" content="no-transform">
-
-
-<meta name="robots" content="index,follow">
-<meta name="referrer" content="origin-when-cross-origin">
-
-
-
-
-
-
-
-<meta name="theme-color" content="#02b875">
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="apple-mobile-web-app-title" content="Yuthon&#39;s Blog">
-<meta name="msapplication-tooltip" content="Yuthon&#39;s Blog">
-<meta name='msapplication-navbutton-color' content="#02b875">
-<meta name="msapplication-TileColor" content="#02b875">
-<meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
-<link rel="icon" href="https://www.yuthon.com/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://www.yuthon.com/icons/icon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://www.yuthon.com/icons/icon-32x32.png">
-<link rel="icon" sizes="192x192" href="https://www.yuthon.com/icons/icon-192x192.png">
-<link rel="apple-touch-icon" href="https://www.yuthon.com/icons/icon-152x152.png">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yusu Pan" /><meta name="description" content="We&#39;ve been gaining one good thing through losing another." /><meta name="keywords" content="yuthon, yusu-pan, blog, deep-learning, computer-vision" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://www.yuthon.com/tags/deep-learning/" />
+  <link href="https://www.yuthon.com/tags/deep-learning/index.xml" rel="alternate" type="application/rss+xml" title="Yuthon&#39;s Blog" />
+  <link href="https://www.yuthon.com/tags/deep-learning/index.xml" rel="feed" type="application/rss+xml" title="Yuthon&#39;s Blog" />
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.yuthon.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.yuthon.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.yuthon.com/favicon-16x16.png">
 <link rel="manifest" href="https://www.yuthon.com/manifest.json">
+<link rel="mask-icon" href="https://www.yuthon.com/safari-pinned-tab.svg" color="#5bbad5">
 
 
-<link rel="preload" href="https://www.yuthon.com/styles/main.min.css" as="style">
-
-<link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
-<link rel="preload" href="https://www.yuthon.com/images/avatar.png" as="image">
-<link rel="preload" href="https://www.yuthon.com/images/grey-prism.svg" as="image">
+<link href="https://www.yuthon.com/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<style>
-  body {
-    background: rgb(244, 243, 241) url('/images/grey-prism.svg') repeat fixed;
-  }
-</style>
-<link rel="stylesheet" href="https://www.yuthon.com/styles/main.min.css">
+<meta property="og:title" content="Deep Learning" />
+<meta property="og:description" content="We&#39;ve been gaining one good thing through losing another." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://www.yuthon.com/tags/deep-learning/" />
 
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
+<meta property="og:updated_time" content="2017-08-15T20:19:46&#43;00:00"/>
 
+<meta itemprop="name" content="Deep Learning">
+<meta itemprop="description" content="We&#39;ve been gaining one good thing through losing another.">
 
-
-
-
-
-
-
-  
-  
-<!--[if lte IE 8]>
-  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/videojs-ie8@1.1.2/dist/videojs-ie8.min.js"></script>
-<![endif]-->
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Deep Learning"/>
+<meta name="twitter:description" content="We&#39;ve been gaining one good thing through losing another."/>
 
 <!--[if lte IE 9]>
-  <script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20180112/classList.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
 <![endif]-->
 
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
 
 </head>
-  <body>
-    
-    <div class="suspension">
-      <a role="button" aria-label="Go to top" title="Go to top" class="to-top is-hide"><span class="icon icon-up" aria-hidden="true"></span></a>
-      
-    </div>
-    
-    
-  <header class="site-header">
-  <img class="avatar" src="https://www.yuthon.com/images/avatar.png" alt="Avatar">
-  
-  <h2 class="title">Yuthon&#39;s Blog</h2>
-  
-  <p class="subtitle"></p>
-  <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
-    <span class="icon icon-menu" aria-hidden="true"></span>
-  </button>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="https://www.yuthon.com/" class="logo">Yuthon&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="https://www.yuthon.com/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="https://www.yuthon.com/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="https://www.yuthon.com/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="https://www.yuthon.com/about/">
+        <li class="mobile-menu-item">About</li>
+      </a><a href="https://www.yuthon.com/resume/">
+        <li class="mobile-menu-item">Resume</li>
+      </a><a href="https://github.com/corenel">
+        <li class="mobile-menu-item">Works</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="https://www.yuthon.com/" class="logo">Yuthon&#39;s Blog</a>
+</div>
 
-  <nav class="site-menu collapsed">
-    <h2 class="offscreen">Main Menu</h2>
-    <ul class="menu-list">
-      
-      
-      
-      
-        <li class="menu-item
-          
-          
-          ">
-          <a href="https://www.yuthon.com/">Home</a>
-        </li>
-      
-        <li class="menu-item
-          
-          
-          ">
-          <a href="https://www.yuthon.com/categories/">Categories</a>
-        </li>
-      
-        <li class="menu-item
-          
-           is-active
-          ">
-          <a href="https://www.yuthon.com/tags/">Tags</a>
-        </li>
-      
-        <li class="menu-item
-          
-          
-          ">
-          <a href="https://www.yuthon.com/about/">About</a>
-        </li>
-      
-        <li class="menu-item
-          
-          
-          ">
-          <a href="https://www.yuthon.com/resume/">Resume</a>
-        </li>
-      
-        <li class="menu-item
-          
-          
-          ">
-          <a href="https://github.com/corenel">Works</a>
-        </li>
-      
-    </ul>
-  </nav>
-  <nav class="social-menu collapsed">
-    <h2 class="offscreen">Social Networks</h2>
-    <ul class="social-list"><li class="social-item">
-          <a href="mailto:xxdsox@gmail.com" title="Email" aria-label="Email">
-            <span class="icon icon-email" aria-hidden="true"></span>
-          </a>
-        </li><li class="social-item">
-          <a href="//github.com/corenel" title="GitHub" aria-label="GitHub">
-            <span class="icon icon-github" aria-hidden="true"></span>
-          </a>
-        </li><li class="social-item">
-          <a href="//twitter.com/corenel" title="Twitter" aria-label="Twitter">
-            <span class="icon icon-twitter" aria-hidden="true"></span>
-          </a>
-        </li><li class="social-item">
-          <a href="//www.facebook.com/xxdsox" title="Facebook" aria-label="Facebook">
-            <span class="icon icon-facebook" aria-hidden="true"></span>
-          </a>
-        </li><li class="social-item">
-          <a href="//www.reddit.com/user/xxdsox" title="Reddit" aria-label="Reddit">
-            <span class="icon icon-reddit" aria-hidden="true"></span>
-          </a>
-        </li><li class="social-item">
-          <a href="//www.quora.com/profile/Yusu-Pan" title="Quora" aria-label="Quora">
-            <span class="icon icon-quora" aria-hidden="true"></span>
-          </a>
-        </li><li class="social-item">
-          <a href="//stackoverflow.com/users/5682817" title="stackOverflow"  aria-label="stackOverflow">
-            <span class="icon icon-stackoverflow" aria-hidden="true"></span>
-          </a>
-        </li><li class="social-item">
-          <a href="//www.zhihu.com/people/pan-yu-su" title="Zhihu" aria-label="Zhihu">
-            <span class="icon icon-zhihu" aria-hidden="true"></span>
-          </a>
-        </li></ul>
-  </nav>
-</header>
-
-  <section class="main post-list">
-    <header class="list-header offscreen">
-      <h2 class="list-label">Posts List</h2>
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/about/">About</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/resume/">Resume</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://github.com/corenel">Works</a>
+      </li>
+  </ul>
+</nav>
     </header>
-    
-    
-      
-        <article class="post-entry">
-  <header class="post-header">
-    <h3 class="post-title"><a href="https://www.yuthon.com/post/papers/notes-for-adversarial-discriminative-domain-adaptation/" class="post-link">Notes for Adversarial Discriminative Domain Adaptation</a></h3>
-    <p class="post-meta">@Yusu Pan · Aug 15, 2017 · 3 min read</p>
-  </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <section id="archive" class="archive">
+  <div class="archive-title tag">
+        <h2 class="archive-name">Deep Learning</h2>
+      </div>
+
+  <div class="archive-post">
+      <span class="archive-post-time">
+        2017-08-15
+      </span>
+      <span class="archive-post-title">
+        <a href="https://www.yuthon.com/post/papers/notes-for-adversarial-discriminative-domain-adaptation/" class="archive-post-link">
+          Notes for Adversarial Discriminative Domain Adaptation
+        </a>
+      </span>
+    </div><div class="archive-post">
+      <span class="archive-post-time">
+        2017-08-12
+      </span>
+      <span class="archive-post-title">
+        <a href="https://www.yuthon.com/post/tutorials/something-about-gans/" class="archive-post-link">
+          Something about GAN
+        </a>
+      </span>
+    </div><div class="archive-post">
+      <span class="archive-post-time">
+        2017-06-14
+      </span>
+      <span class="archive-post-title">
+        <a href="https://www.yuthon.com/post/tutorials/let-s-talk-about-zero-shot-learning/" class="archive-post-link">
+          Let&#39;s talk about Zero-Shot Learning.
+        </a>
+      </span>
+    </div><div class="archive-post">
+      <span class="archive-post-time">
+        2017-05-10
+      </span>
+      <span class="archive-post-title">
+        <a href="https://www.yuthon.com/post/papers/notes-for-amortized-inference-and-learning-in-latent-crf/" class="archive-post-link">
+          Notes for Amortized Inference and Learning in Latent CRF
+        </a>
+      </span>
+    </div><div class="archive-post">
+      <span class="archive-post-time">
+        2017-04-28
+      </span>
+      <span class="archive-post-title">
+        <a href="https://www.yuthon.com/post/papers/notes-for-sec/" class="archive-post-link">
+          Notes for SEC
+        </a>
+      </span>
+    </div><div class="archive-post">
+      <span class="archive-post-time">
+        2017-03-10
+      </span>
+      <span class="archive-post-title">
+        <a href="https://www.yuthon.com/post/practices/tensorflow-r1-0-on-tx1/" class="archive-post-link">
+          TensorFlow r1.0 on TX1 (now successful)
+        </a>
+      </span>
+    </div><div class="archive-post">
+      <span class="archive-post-time">
+        2016-12-18
+      </span>
+      <span class="archive-post-title">
+        <a href="https://www.yuthon.com/post/practices/backup-system-partition-on-tx1/" class="archive-post-link">
+          Backup system partition on TX1
+        </a>
+      </span>
+    </div><div class="archive-post">
+      <span class="archive-post-time">
+        2016-12-04
+      </span>
+      <span class="archive-post-title">
+        <a href="https://www.yuthon.com/post/practices/installation-of-tensorflow-r0-11-on-tx1/" class="archive-post-link">
+          Installation of TensorFlow r0.11 on TX1
+        </a>
+      </span>
+    </div><div class="archive-post">
+      <span class="archive-post-time">
+        2016-12-03
+      </span>
+      <span class="archive-post-title">
+        <a href="https://www.yuthon.com/post/practices/train-yolov2-on-my-own-dataset/" class="archive-post-link">
+          Train YOLOv2 on my own dataset
+        </a>
+      </span>
+    </div><div class="archive-post">
+      <span class="archive-post-time">
+        2016-11-26
+      </span>
+      <span class="archive-post-title">
+        <a href="https://www.yuthon.com/post/practices/train-caffe-yolo-on-our-own-dataset/" class="archive-post-link">
+          Train Caffe-YOLO on our own dataset
+        </a>
+      </span>
+    </div>
+</section>
+
+<nav class="pagination">
   
-  <p class="post-summary">About this paper  Title: Adversarial Discriminative Domain Adaptation Authors: Eric Tzeng, Judy Hoffman, Kate Saenko, Trevor Darrell Topic: Domain Adaptation From: arXiv:1702.05464, appearing in CVPR 2017  Contributions  将之前的论文里提到的一些方法，例如weight sharing、base models、adversarial loss等，归入了统一的框架之中，并进行了测试； 提出了一种新的框架ADDA，主要思想是不做分类器的自适应，而是设法将目标域的数据映射到域源域差不多的特征空间上，这样就能够复用源域的分类器。 </p>
-  <footer class="post-footer">
-    <a class="read-more" href="https://www.yuthon.com/post/papers/notes-for-adversarial-discriminative-domain-adaptation/">Read More →</a>
-  </footer>
-</article>
+  <a class="next" href="https://www.yuthon.com/tags/deep-learning/page/2/">
+      <span class="next-text">Next</span>
+      <i class="iconfont icon-right"></i>
+    </a>
+</nav>
+        </div>
+        
 
-      
-        <article class="post-entry">
-  <header class="post-header">
-    <h3 class="post-title"><a href="https://www.yuthon.com/post/tutorials/something-about-gans/" class="post-link">Something about GAN</a></h3>
-    <p class="post-meta">@Yusu Pan · Aug 12, 2017 · 28 min read</p>
-  </header>
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xxdsox@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/5682817" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://twitter.com/corenel" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://www.facebook.com/xxdsox" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://github.com/corenel" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/pan-yu-su" class="iconfont icon-zhihu" title="zhihu"></a>
+  <a href="https://www.yuthon.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
   
-  <p class="post-summary">最近在看关于GANs的论文，并且自己动手用PyTorch写了一些经典文章的实现，想要稍微总结一下，故有此文。在最后我总结了我自己看过的有关GANs的一些比较好的资源，希望对读者有所帮助。
-</p>
-  <footer class="post-footer">
-    <a class="read-more" href="https://www.yuthon.com/post/tutorials/something-about-gans/">Read More →</a>
-  </footer>
-</article>
 
-      
-        <article class="post-entry">
-  <header class="post-header">
-    <h3 class="post-title"><a href="https://www.yuthon.com/post/tutorials/let-s-talk-about-zero-shot-learning/" class="post-link">Let&#39;s talk about Zero-Shot Learning.</a></h3>
-    <p class="post-meta">@Yusu Pan · Jun 14, 2017 · 1 min read</p>
-  </header>
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
+</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
   
-  <p class="post-summary">最近在看Zero-Shot learning方面的文章，有些想要记录备忘的东西，就写在这儿吧。
-</p>
-  <footer class="post-footer">
-    <a class="read-more" href="https://www.yuthon.com/post/tutorials/let-s-talk-about-zero-shot-learning/">Read More →</a>
-  </footer>
-</article>
-
-      
-        <article class="post-entry">
-  <header class="post-header">
-    <h3 class="post-title"><a href="https://www.yuthon.com/post/papers/notes-for-amortized-inference-and-learning-in-latent-crf/" class="post-link">Notes for Amortized Inference and Learning in Latent CRF</a></h3>
-    <p class="post-meta">@Yusu Pan · May 10, 2017 · 5 min read</p>
-  </header>
-  
-  <p class="post-summary">This is my notes for Amortized Inference and Learning in Latent Conditional Random Fields for Weakly-Supervised Semantic Image Segmentation.
- arXiv:1705.01262 Poster &amp; Slides </p>
-  <footer class="post-footer">
-    <a class="read-more" href="https://www.yuthon.com/post/papers/notes-for-amortized-inference-and-learning-in-latent-crf/">Read More →</a>
-  </footer>
-</article>
-
-      
-        <article class="post-entry">
-  <header class="post-header">
-    <h3 class="post-title"><a href="https://www.yuthon.com/post/papers/notes-for-sec/" class="post-link">Notes for SEC</a></h3>
-    <p class="post-meta">@Yusu Pan · Apr 28, 2017 · 8 min read</p>
-  </header>
-  
-  <p class="post-summary">This is my notes for Seed, Expand and Constrain: Three Principles for Weakly-Supervised Image Segmentation.
- arxiv: https://arxiv.org/abs/1603.06098 github: https://github.com/kolesman/SEC </p>
-  <footer class="post-footer">
-    <a class="read-more" href="https://www.yuthon.com/post/papers/notes-for-sec/">Read More →</a>
-  </footer>
-</article>
-
-      
-        <article class="post-entry">
-  <header class="post-header">
-    <h3 class="post-title"><a href="https://www.yuthon.com/post/practices/tensorflow-r1-0-on-tx1/" class="post-link">TensorFlow r1.0 on TX1 (now successful)</a></h3>
-    <p class="post-meta">@Yusu Pan · Mar 10, 2017 · 2 min read</p>
-  </header>
-  
-  <p class="post-summary">TensorFlow r1.0已经发布了不少时间，事实证明1.0版本在内存使用上改善了不少，以前一些在r0.11上内存满报错的程序在r1.0上能够正常运行了。同时，r1.0相较于r0.11在API上做了很大的改动，也有很多新的东西（比如Keras）将要集成进TF。
-总而言之，r1.0是未来的方向，所以说我希望将原先在TX1上装的r0.11换成r1.0。不过网上最新的教程还是只有r0.11的。rwightman这位仁兄编译成功了r1.0alpha版本，并且放出了whl文件，不过没有编译正式版。本文将阐述如何在TX1上安装TensorFlow r1.0的正式版本，不过目前由于nvcc的一个bug，还没有编译成功。
-Update: 做了一些非常ugly的改动之后编译成功了。
-</p>
-  <footer class="post-footer">
-    <a class="read-more" href="https://www.yuthon.com/post/practices/tensorflow-r1-0-on-tx1/">Read More →</a>
-  </footer>
-</article>
-
-      
-        <article class="post-entry">
-  <header class="post-header">
-    <h3 class="post-title"><a href="https://www.yuthon.com/post/practices/backup-system-partition-on-tx1/" class="post-link">Backup system partition on TX1</a></h3>
-    <p class="post-meta">@Yusu Pan · Dec 18, 2016 · 1 min read</p>
-  </header>
-  
-  <p class="post-summary">由于实验室只有要用到多块 TX1 开发板, 然而一个个都用 JetPack 刷机, 再用自动化脚本装软件和依赖实在是太麻烦了, 因此我和梅老板就开始研究怎么直接备份 TX1 上的 Ubuntu 系统.
-</p>
-  <footer class="post-footer">
-    <a class="read-more" href="https://www.yuthon.com/post/practices/backup-system-partition-on-tx1/">Read More →</a>
-  </footer>
-</article>
-
-      
-        <article class="post-entry">
-  <header class="post-header">
-    <h3 class="post-title"><a href="https://www.yuthon.com/post/practices/installation-of-tensorflow-r0-11-on-tx1/" class="post-link">Installation of TensorFlow r0.11 on TX1</a></h3>
-    <p class="post-meta">@Yusu Pan · Dec 4, 2016 · 3 min read</p>
-  </header>
-  
-  <p class="post-summary">今天折腾了一个下午, 特此记录一下其中遇到的坑, 主要还是因为 TX1 的 aarch64 架构, 以及小得可怜的内存与存储容量.
-</p>
-  <footer class="post-footer">
-    <a class="read-more" href="https://www.yuthon.com/post/practices/installation-of-tensorflow-r0-11-on-tx1/">Read More →</a>
-  </footer>
-</article>
-
-      
-        <article class="post-entry">
-  <header class="post-header">
-    <h3 class="post-title"><a href="https://www.yuthon.com/post/practices/train-yolov2-on-my-own-dataset/" class="post-link">Train YOLOv2 on my own dataset</a></h3>
-    <p class="post-meta">@Yusu Pan · Dec 3, 2016 · 3 min read</p>
-  </header>
-  
-  <p class="post-summary">最近在看 Darkflow 的时候, 发现连 YOLOv2 都出了, 据称 mAP 和速度都提升了不少, 立马 clone 下来试了一番.
-</p>
-  <footer class="post-footer">
-    <a class="read-more" href="https://www.yuthon.com/post/practices/train-yolov2-on-my-own-dataset/">Read More →</a>
-  </footer>
-</article>
-
-      
-        <article class="post-entry">
-  <header class="post-header">
-    <h3 class="post-title"><a href="https://www.yuthon.com/post/practices/train-caffe-yolo-on-our-own-dataset/" class="post-link">Train Caffe-YOLO on our own dataset</a></h3>
-    <p class="post-meta">@Yusu Pan · Nov 26, 2016 · 4 min read</p>
-  </header>
-  
-  <p class="post-summary">经过这几天不断地测试, YOLO 在 TX1 上跑得还是挺不错的, 符合我们实验室的要求. 但是 YOLO 依赖的 Darknet 框架还是太原始了, 不如 TensorFlow 或者 Caffe 用着顺手. 另外, 我负责的目标检测这一块还需要和梅老板写的新框架相结合, 所以更加需要把 YOLO 移植到一个成熟的框架上去.
-很幸运的是, YOLO 在各个框架上的移植都有前人做过了, 比如 darktf 和 caffe-yolo. 今天以 caffe-yolo 为例, 谈一下在其上使用自己的数据集来训练.
-</p>
-  <footer class="post-footer">
-    <a class="read-more" href="https://www.yuthon.com/post/practices/train-caffe-yolo-on-our-own-dataset/">Read More →</a>
-  </footer>
-</article>
-
-      
-    
-    
-      <footer class="list-footer">
-        <nav class="pagination">
-          <h3 class="offscreen">Pagination</h3>
-          
-          
-            <a class="pagination-next" href="https://www.yuthon.com/tags/deep-learning/page/2/">Older Posts →</a>
-          
-        </nav>
-      </footer>
-    
-  </section>
-  
-<footer class="site-footer">
-  <p>© 2017-2019 Yuthon&#39;s Blog</p>
-  <p>Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank" rel="noopener">Nuo</a>.</p>
-  
-</footer>
-
-
-<script src="https://cdn.jsdelivr.net/npm/smooth-scroll@15.0.0/dist/smooth-scroll.min.js"></script>
-
-
-
-
-
-
-
-
-<script src="https://www.yuthon.com/scripts/index.min.js"></script>
-
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('\/service-worker.js').then(function() {
-      console.log('[ServiceWorker] Registered');
-    });
-  }
-</script>
-
-
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://www.yuthon.com/dist/even.26188efa.min.js"></script>
 
 
 <script type="application/javascript">
@@ -425,7 +283,7 @@ var doNotTrack = false;
 if (!doNotTrack) {
 	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
 	ga('create', 'UA-76233259-1', 'auto');
-	
+	ga('set', 'anonymizeIp', true);
 	ga('send', 'pageview');
 }
 </script>
@@ -437,5 +295,5 @@ if (!doNotTrack) {
 
 
 
-  </body>
+</body>
 </html>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Yuthon&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yusu Pan" /><meta name="description" content="We&#39;ve been gaining one good thing through losing another." /><meta name="keywords" content="yuthon, yusu-pan, blog, deep-learning, computer-vision" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://www.yuthon.com/" />
+  <link href="https://www.yuthon.com/index.xml" rel="alternate" type="application/rss+xml" title="Yuthon&#39;s Blog" />
+  <link href="https://www.yuthon.com/index.xml" rel="feed" type="application/rss+xml" title="Yuthon&#39;s Blog" />
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.yuthon.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.yuthon.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.yuthon.com/favicon-16x16.png">
+<link rel="manifest" href="https://www.yuthon.com/manifest.json">
+<link rel="mask-icon" href="https://www.yuthon.com/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="https://www.yuthon.com/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Yuthon&#39;s Blog" />
+<meta property="og:description" content="We&#39;ve been gaining one good thing through losing another." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://www.yuthon.com/" />
+
+<meta property="og:updated_time" content="2016-11-10T20:36:34&#43;00:00"/>
+
+<meta itemprop="name" content="Yuthon&#39;s Blog">
+<meta itemprop="description" content="We&#39;ve been gaining one good thing through losing another.">
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Yuthon&#39;s Blog"/>
+<meta name="twitter:description" content="We&#39;ve been gaining one good thing through losing another."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="https://www.yuthon.com/" class="logo">Yuthon&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="https://www.yuthon.com/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="https://www.yuthon.com/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="https://www.yuthon.com/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="https://www.yuthon.com/about/">
+        <li class="mobile-menu-item">About</li>
+      </a><a href="https://www.yuthon.com/resume/">
+        <li class="mobile-menu-item">Resume</li>
+      </a><a href="https://github.com/corenel">
+        <li class="mobile-menu-item">Works</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="https://www.yuthon.com/" class="logo">Yuthon&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/about/">About</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/resume/">Resume</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://github.com/corenel">Works</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="https://www.yuthon.com/post/practices/yolo-on-nvidia-jetson-tx1/">YOLO on NVIDIA Jetson TX1</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2016-11-10 </span>
+      <div class="post-category">
+          <a href="https://www.yuthon.com/categories/practices/"> Practices </a>
+          </div>
+        <span class="more-meta"> 676 words </span>
+        <span class="more-meta"> 2 mins read </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>实验室昨天到了 NVIDIA 的 <a href="http://www.nvidia.com/object/jetson-tx1-module.html">Jetson TX1</a>, 可以说是移动端比较好的带GPU的开发板子了, 于是可以试试在移动端上用YOLO (You Look Only Once) 来做目标识别.</p>
+    </div>
+    <div class="read-more">
+      <a href="https://www.yuthon.com/post/practices/yolo-on-nvidia-jetson-tx1/" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="https://www.yuthon.com/post/papers/notes-for-slic/">Notes for SLIC</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2016-11-01 </span>
+      <div class="post-category">
+          <a href="https://www.yuthon.com/categories/notes/"> Notes </a>
+          </div>
+        <span class="more-meta"> 2698 words </span>
+        <span class="more-meta"> 6 mins read </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>文章介绍了当前 State-of-the-Art 的5种<strong>超像素 (Superpixel)</strong> 的算法, 并主要从其对于图像边缘信息的拟合程度 (their ability to adhere to image boundaries), 速度, 内存利用效率, 以及它们对于图像分割性能的影响 (their impact on segmentation performance) 来综合评价.</p>
+
+<p>同时, 本文还提出了一种 <strong>SLIC (simple linear iterative clustering)</strong> 的算法, 用的是 k-means clustering 的方法.</p>
+    </div>
+    <div class="read-more">
+      <a href="https://www.yuthon.com/post/papers/notes-for-slic/" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="https://www.yuthon.com/post/projects/traffic-prediction-using-lstm/">Traffic Prediction Using LSTM</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2016-10-30 </span>
+      <div class="post-category">
+          <a href="https://www.yuthon.com/categories/projects/"> Projects </a>
+          </div>
+        <span class="more-meta"> 802 words </span>
+        <span class="more-meta"> 2 mins read </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>最近上的一门课 &ldquo;无线传感器网络&rdquo; 快要结束了, 于是所谓的大作业的 DDL 也压上来了. TAT</p>
+
+<p>不过这门课虽然说是讲无线传感器网络的, 但是大作业的要求却额外的宽松, 只要是和数据分析有关的就好了. 老师还给了些数据集, 比如说公共自行车的出借与归入记录啊, 出租车在各个路段的行驶速度啊, 或者是顺丰快递途径各个城市需要的时间啊这类的. 当然也可以自己选题.</p>
+
+<p>我当然是想自己选题的, 然而想了一圈没想到什么好的方案, 于是只好回到了老师给的题目上面来, 选了道路速度预测这样的题目. 刚好之前在 CS231n 上看了 RNN 和 LSTM, 心想这总比传统方法好点吧, 于是就开始干了. (于是就有了之前的那篇装 CUDA 和 TF)</p>
+
+<p>I wanna traffic prediction, I learn LSTM.</p>
+
+<p>ugh, Traffic prediction using LSTM!</p>
+
+<p>(此处应有 PPAP)</p>
+    </div>
+    <div class="read-more">
+      <a href="https://www.yuthon.com/post/projects/traffic-prediction-using-lstm/" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="https://www.yuthon.com/post/practices/cuda-and-tensorflow-installation-on-ubuntu-16-04/">CUDA and Tensorflow Installation on Ubuntu 16.04</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2016-10-25 </span>
+      <div class="post-category">
+          <a href="https://www.yuthon.com/categories/practices/"> Practices </a>
+          </div>
+        <span class="more-meta"> 1116 words </span>
+        <span class="more-meta"> 3 mins read </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>昨天折腾了一个下午开发环境的配置，记录一下其中遇到的坑。</p>
+    </div>
+    <div class="read-more">
+      <a href="https://www.yuthon.com/post/practices/cuda-and-tensorflow-installation-on-ubuntu-16-04/" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="https://www.yuthon.com/post/practices/os-x-10-11-4-on-xps-15-9550/">OS X 10.11.4 on XPS 15 9550</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2016-05-16 </span>
+      <div class="post-category">
+          <a href="https://www.yuthon.com/categories/practices/"> Practices </a>
+          </div>
+        <span class="more-meta"> 58 words </span>
+        <span class="more-meta"> 1 min read </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>Thanks to the <a href="http://www.tonymacx86.com/threads/guide-wip-dell-xps-15-9550-skylake-gtx960m-ssd-via-clover-uefi.192598/">guide</a> and its participants, I successfully installed OS X 10.11.4 on my XPS 15 9550.</p>
+    </div>
+    <div class="read-more">
+      <a href="https://www.yuthon.com/post/practices/os-x-10-11-4-on-xps-15-9550/" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    </section>
+  
+  <nav class="pagination">
+    <a class="prev" href="https://www.yuthon.com/page/3/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text">Prev</span>
+      </a>
+    
+  </nav>
+        </div>
+        
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xxdsox@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/5682817" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://twitter.com/corenel" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://www.facebook.com/xxdsox" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://github.com/corenel" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/pan-yu-su" class="iconfont icon-zhihu" title="zhihu"></a>
+  <a href="https://www.yuthon.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
+</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://www.yuthon.com/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      TeX: {equationNumbers: {autoNumber: "AMS"}},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-76233259-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

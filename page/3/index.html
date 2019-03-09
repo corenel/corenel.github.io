@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Yuthon&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yusu Pan" /><meta name="description" content="We&#39;ve been gaining one good thing through losing another." /><meta name="keywords" content="yuthon, yusu-pan, blog, deep-learning, computer-vision" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://www.yuthon.com/" />
+  <link href="https://www.yuthon.com/index.xml" rel="alternate" type="application/rss+xml" title="Yuthon&#39;s Blog" />
+  <link href="https://www.yuthon.com/index.xml" rel="feed" type="application/rss+xml" title="Yuthon&#39;s Blog" />
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.yuthon.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.yuthon.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.yuthon.com/favicon-16x16.png">
+<link rel="manifest" href="https://www.yuthon.com/manifest.json">
+<link rel="mask-icon" href="https://www.yuthon.com/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="https://www.yuthon.com/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Yuthon&#39;s Blog" />
+<meta property="og:description" content="We&#39;ve been gaining one good thing through losing another." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://www.yuthon.com/" />
+
+<meta property="og:updated_time" content="2016-12-03T11:29:04&#43;00:00"/>
+
+<meta itemprop="name" content="Yuthon&#39;s Blog">
+<meta itemprop="description" content="We&#39;ve been gaining one good thing through losing another.">
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Yuthon&#39;s Blog"/>
+<meta name="twitter:description" content="We&#39;ve been gaining one good thing through losing another."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="https://www.yuthon.com/" class="logo">Yuthon&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="https://www.yuthon.com/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="https://www.yuthon.com/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="https://www.yuthon.com/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="https://www.yuthon.com/about/">
+        <li class="mobile-menu-item">About</li>
+      </a><a href="https://www.yuthon.com/resume/">
+        <li class="mobile-menu-item">Resume</li>
+      </a><a href="https://github.com/corenel">
+        <li class="mobile-menu-item">Works</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="https://www.yuthon.com/" class="logo">Yuthon&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/about/">About</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/resume/">Resume</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://github.com/corenel">Works</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="https://www.yuthon.com/post/practices/train-yolov2-on-my-own-dataset/">Train YOLOv2 on my own dataset</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2016-12-03 </span>
+      <div class="post-category">
+          <a href="https://www.yuthon.com/categories/practices/"> Practices </a>
+          </div>
+        <span class="more-meta"> 1158 words </span>
+        <span class="more-meta"> 3 mins read </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>最近在看 Darkflow 的时候, 发现连 YOLOv2 都出了, 据称 mAP 和速度都提升了不少, 立马 clone 下来试了一番.</p>
+    </div>
+    <div class="read-more">
+      <a href="https://www.yuthon.com/post/practices/train-yolov2-on-my-own-dataset/" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="https://www.yuthon.com/post/practices/train-caffe-yolo-on-our-own-dataset/">Train Caffe-YOLO on our own dataset</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2016-11-26 </span>
+      <div class="post-category">
+          <a href="https://www.yuthon.com/categories/practices/"> Practices </a>
+          </div>
+        <span class="more-meta"> 2107 words </span>
+        <span class="more-meta"> 5 mins read </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>经过这几天不断地测试, YOLO 在 TX1 上跑得还是挺不错的, 符合我们实验室的要求. 但是 YOLO 依赖的 Darknet 框架还是太原始了, 不如 TensorFlow 或者 Caffe 用着顺手. 另外, 我负责的目标检测这一块还需要和梅老板写的新框架相结合, 所以更加需要把 YOLO 移植到一个成熟的框架上去.</p>
+
+<p>很幸运的是, YOLO 在各个框架上的移植都有前人做过了, 比如 <a href="https://github.com/thtrieu/darktf">darktf</a> 和 <a href="https://github.com/yeahkun/caffe-yolo">caffe-yolo</a>. 今天以 caffe-yolo 为例, 谈一下在其上使用自己的数据集来训练.</p>
+    </div>
+    <div class="read-more">
+      <a href="https://www.yuthon.com/post/practices/train-caffe-yolo-on-our-own-dataset/" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="https://www.yuthon.com/post/papers/notes-for-scribblesup/">Notes for ScribbleSup</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2016-11-20 </span>
+      <div class="post-category">
+          <a href="https://www.yuthon.com/categories/notes/"> Notes </a>
+          </div>
+        <span class="more-meta"> 3054 words </span>
+        <span class="more-meta"> 7 mins read </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>毕设需要写一个图像标注的软件, 来给场景分割的数据集做标注. 经学长推荐, 看了今年的这篇文章, 作者中竟然还有 Kaiming He 大神, 给微软膜一秒.</p>
+
+<p>这篇文章讲了一个弱监督的场景分割的算法 ScribbleSup, 主要是先通过 Graph Cut 将输入的 scribble 信息广播到没有标注的像素, 然后用 FCN 来做像素级别的预测. 令人遗憾的是 Github 上并没有人实现 (不能偷懒了TAT).</p>
+    </div>
+    <div class="read-more">
+      <a href="https://www.yuthon.com/post/papers/notes-for-scribblesup/" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="https://www.yuthon.com/post/papers/notes-for-yolo/">Notes for YOLO</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2016-11-18 </span>
+      <div class="post-category">
+          <a href="https://www.yuthon.com/categories/notes/"> Notes </a>
+          </div>
+        <span class="more-meta"> 1518 words </span>
+        <span class="more-meta"> 4 mins read </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>前几天发烧流鼻涕, 睡不了觉, 因此就熬夜读完了 YOLO 的论文. 可以说, YOLO 的实现方式相较于之前 R-CNN 一系的 Region Proposal 的方法来说, 很有新意. YOLO 将 Classification 和 Bounding Box Regression 合起来放进了 CNN 的输出层里面, 从而大大加快了速度.</p>
+    </div>
+    <div class="read-more">
+      <a href="https://www.yuthon.com/post/papers/notes-for-yolo/" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="https://www.yuthon.com/post/practices/train-yolo-on-our-own-dataset/">Train YOLO on our own dataset</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2016-11-12 </span>
+      <div class="post-category">
+          <a href="https://www.yuthon.com/categories/practices/"> Practices </a>
+          </div>
+        <span class="more-meta"> 1579 words </span>
+        <span class="more-meta"> 4 mins read </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>之前到手 TX1 之后试了一下 YOLO 的 Demo, 感觉很是不错, 帧数勉强达到实时要求, 因此就萌生了使用自己的数据集来训练看看效果的想法.</p>
+    </div>
+    <div class="read-more">
+      <a href="https://www.yuthon.com/post/practices/train-yolo-on-our-own-dataset/" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    </section>
+  
+  <nav class="pagination">
+    <a class="prev" href="https://www.yuthon.com/page/2/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text">Prev</span>
+      </a>
+    <a class="next" href="https://www.yuthon.com/page/4/">
+        <span class="next-text">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+  </nav>
+        </div>
+        
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xxdsox@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/5682817" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://twitter.com/corenel" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://www.facebook.com/xxdsox" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://github.com/corenel" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/pan-yu-su" class="iconfont icon-zhihu" title="zhihu"></a>
+  <a href="https://www.yuthon.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
+</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://www.yuthon.com/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      TeX: {equationNumbers: {autoNumber: "AMS"}},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-76233259-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

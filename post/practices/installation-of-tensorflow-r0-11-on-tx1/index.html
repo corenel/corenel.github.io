@@ -1,247 +1,179 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="en">
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Installation of TensorFlow r0.11 on TX1 - Yuthon&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-  <meta charset="utf-8" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
-  
-  <title>Installation of TensorFlow r0.11 on TX1</title>
-
-  
-  
-  <link href="//cdn.jsdelivr.net" rel="dns-prefetch">
-  <link href="//cdnjs.cloudflare.com" rel="dns-prefetch">
-  <link href="//at.alicdn.com" rel="dns-prefetch">
-  <link href="//fonts.googleapis.com" rel="dns-prefetch">
-  <link href="//fonts.gstatic.com" rel="dns-prefetch">
-  <link href="///disqus.com" rel="dns-prefetch">
-  <link href="//c.disquscdn.com" rel="dns-prefetch">
-  
-  <link href="//www.google-analytics.com" rel="dns-prefetch">
-  
-
-  
-
-  
-  
-  <meta name="description" content="今天折腾了一个下午, 特此记录一下其中遇到的坑, 主要还是因为 TX1 的 aarch64 架构, 以及小得可怜的内存与存储容量.
-">
-
-  
-  
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:site" content="@corenel">
-    <meta name="twitter:title" content="Installation of TensorFlow r0.11 on TX1">
-    <meta name="twitter:description" content="今天折腾了一个下午, 特此记录一下其中遇到的坑, 主要还是因为 TX1 的 aarch64 架构, 以及小得可怜的内存与存储容量.
-">
-    <meta name="twitter:image" content="/images/avatar.png">
-  
-
-  
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="Installation of TensorFlow r0.11 on TX1">
-  <meta property="og:description" content="今天折腾了一个下午, 特此记录一下其中遇到的坑, 主要还是因为 TX1 的 aarch64 架构, 以及小得可怜的内存与存储容量.
-">
-  <meta property="og:url" content="https://www.yuthon.com/post/practices/installation-of-tensorflow-r0-11-on-tx1/">
-  <meta property="og:image" content="/images/avatar.png">
-
-
-
-
-<meta name="generator" content="Hugo 0.54.0">
-
-
-<link rel="canonical" href="https://www.yuthon.com/post/practices/installation-of-tensorflow-r0-11-on-tx1/">
-
-<meta name="renderer" content="webkit">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="format-detection" content="telephone=no,email=no,adress=no">
-<meta http-equiv="Cache-Control" content="no-transform">
-
-
-<meta name="robots" content="index,follow">
-<meta name="referrer" content="origin-when-cross-origin">
-
-
-
-
-
-
-
-<meta name="theme-color" content="#02b875">
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="apple-mobile-web-app-title" content="Yuthon&#39;s Blog">
-<meta name="msapplication-tooltip" content="Yuthon&#39;s Blog">
-<meta name='msapplication-navbutton-color' content="#02b875">
-<meta name="msapplication-TileColor" content="#02b875">
-<meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
-<link rel="icon" href="https://www.yuthon.com/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://www.yuthon.com/icons/icon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://www.yuthon.com/icons/icon-32x32.png">
-<link rel="icon" sizes="192x192" href="https://www.yuthon.com/icons/icon-192x192.png">
-<link rel="apple-touch-icon" href="https://www.yuthon.com/icons/icon-152x152.png">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yusu Pan" /><meta name="description" content="今天折腾了一个下午, 特此记录一下其中遇到的坑, 主要还是因为 TX1 的 aarch64 架构, 以及小得可怜的内存与存储容量.
+" /><meta name="keywords" content="yuthon, yusu-pan, blog, deep-learning, computer-vision" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://www.yuthon.com/post/practices/installation-of-tensorflow-r0-11-on-tx1/" />
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.yuthon.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.yuthon.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.yuthon.com/favicon-16x16.png">
 <link rel="manifest" href="https://www.yuthon.com/manifest.json">
+<link rel="mask-icon" href="https://www.yuthon.com/safari-pinned-tab.svg" color="#5bbad5">
 
 
-<link rel="preload" href="https://www.yuthon.com/styles/main.min.css" as="style">
-
-<link rel="preload" href="https://fonts.googleapis.com/css?family=Lobster" as="style">
-<link rel="preload" href="https://www.yuthon.com/images/avatar.png" as="image">
-<link rel="preload" href="https://www.yuthon.com/images/grey-prism.svg" as="image">
+<link href="https://www.yuthon.com/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<style>
-  body {
-    background: rgb(244, 243, 241) url('/images/grey-prism.svg') repeat fixed;
-  }
-</style>
-<link rel="stylesheet" href="https://www.yuthon.com/styles/main.min.css">
+<meta property="og:title" content="Installation of TensorFlow r0.11 on TX1" />
+<meta property="og:description" content="今天折腾了一个下午, 特此记录一下其中遇到的坑, 主要还是因为 TX1 的 aarch64 架构, 以及小得可怜的内存与存储容量." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.yuthon.com/post/practices/installation-of-tensorflow-r0-11-on-tx1/" />
+<meta property="article:published_time" content="2016-12-04T20:53:55&#43;00:00"/>
+<meta property="article:modified_time" content="2016-12-04T20:53:55&#43;00:00"/>
 
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.2/dist/medium-zoom.min.js"></script>
+<meta itemprop="name" content="Installation of TensorFlow r0.11 on TX1">
+<meta itemprop="description" content="今天折腾了一个下午, 特此记录一下其中遇到的坑, 主要还是因为 TX1 的 aarch64 架构, 以及小得可怜的内存与存储容量.">
 
 
-
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video-js.min.css">
+<meta itemprop="datePublished" content="2016-12-04T20:53:55&#43;00:00" />
+<meta itemprop="dateModified" content="2016-12-04T20:53:55&#43;00:00" />
+<meta itemprop="wordCount" content="1666">
 
 
 
-  
-  
-<!--[if lte IE 8]>
-  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/videojs-ie8@1.1.2/dist/videojs-ie8.min.js"></script>
-<![endif]-->
+<meta itemprop="keywords" content="Tensorflow,NVIDIA,Jetson TX1,Ubuntu,Deep Learning," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Installation of TensorFlow r0.11 on TX1"/>
+<meta name="twitter:description" content="今天折腾了一个下午, 特此记录一下其中遇到的坑, 主要还是因为 TX1 的 aarch64 架构, 以及小得可怜的内存与存储容量."/>
 
 <!--[if lte IE 9]>
-  <script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20180112/classList.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
 <![endif]-->
 
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
 
 </head>
-  <body>
-    
-    <div class="suspension">
-      <a role="button" aria-label="Go to top" title="Go to top" class="to-top is-hide"><span class="icon icon-up" aria-hidden="true"></span></a>
-      
-        
-        <a role="button" aria-label="Go to comments" title="Go to comments" class="to-comment" href="#disqus_thread"><span class="icon icon-comment" aria-hidden="true"></span></a>
-        
-      
-    </div>
-    
-    
-  <header class="site-header">
-  <img class="avatar" src="https://www.yuthon.com/images/avatar.png" alt="Avatar">
-  
-  <h2 class="title">Yuthon&#39;s Blog</h2>
-  
-  <p class="subtitle"></p>
-  <button class="menu-toggle" type="button" aria-label="Main Menu" aria-expanded="false" tab-index="0">
-    <span class="icon icon-menu" aria-hidden="true"></span>
-  </button>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="https://www.yuthon.com/" class="logo">Yuthon&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="https://www.yuthon.com/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="https://www.yuthon.com/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="https://www.yuthon.com/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="https://www.yuthon.com/about/">
+        <li class="mobile-menu-item">About</li>
+      </a><a href="https://www.yuthon.com/resume/">
+        <li class="mobile-menu-item">Resume</li>
+      </a><a href="https://github.com/corenel">
+        <li class="mobile-menu-item">Works</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="https://www.yuthon.com/" class="logo">Yuthon&#39;s Blog</a>
+</div>
 
-  <nav class="site-menu collapsed">
-    <h2 class="offscreen">Main Menu</h2>
-    <ul class="menu-list">
-      
-      
-      
-      
-        <li class="menu-item
-          
-          
-           is-active">
-          <a href="https://www.yuthon.com/">Home</a>
-        </li>
-      
-        <li class="menu-item
-          
-          
-          ">
-          <a href="https://www.yuthon.com/categories/">Categories</a>
-        </li>
-      
-        <li class="menu-item
-          
-          
-          ">
-          <a href="https://www.yuthon.com/tags/">Tags</a>
-        </li>
-      
-        <li class="menu-item
-          
-          
-          ">
-          <a href="https://www.yuthon.com/about/">About</a>
-        </li>
-      
-        <li class="menu-item
-          
-          
-          ">
-          <a href="https://www.yuthon.com/resume/">Resume</a>
-        </li>
-      
-        <li class="menu-item
-          
-          
-          ">
-          <a href="https://github.com/corenel">Works</a>
-        </li>
-      
-    </ul>
-  </nav>
-  <nav class="social-menu collapsed">
-    <h2 class="offscreen">Social Networks</h2>
-    <ul class="social-list"><li class="social-item">
-          <a href="mailto:xxdsox@gmail.com" title="Email" aria-label="Email">
-            <span class="icon icon-email" aria-hidden="true"></span>
-          </a>
-        </li><li class="social-item">
-          <a href="//github.com/corenel" title="GitHub" aria-label="GitHub">
-            <span class="icon icon-github" aria-hidden="true"></span>
-          </a>
-        </li><li class="social-item">
-          <a href="//twitter.com/corenel" title="Twitter" aria-label="Twitter">
-            <span class="icon icon-twitter" aria-hidden="true"></span>
-          </a>
-        </li><li class="social-item">
-          <a href="//www.facebook.com/xxdsox" title="Facebook" aria-label="Facebook">
-            <span class="icon icon-facebook" aria-hidden="true"></span>
-          </a>
-        </li><li class="social-item">
-          <a href="//www.reddit.com/user/xxdsox" title="Reddit" aria-label="Reddit">
-            <span class="icon icon-reddit" aria-hidden="true"></span>
-          </a>
-        </li><li class="social-item">
-          <a href="//www.quora.com/profile/Yusu-Pan" title="Quora" aria-label="Quora">
-            <span class="icon icon-quora" aria-hidden="true"></span>
-          </a>
-        </li><li class="social-item">
-          <a href="//stackoverflow.com/users/5682817" title="stackOverflow"  aria-label="stackOverflow">
-            <span class="icon icon-stackoverflow" aria-hidden="true"></span>
-          </a>
-        </li><li class="social-item">
-          <a href="//www.zhihu.com/people/pan-yu-su" title="Zhihu" aria-label="Zhihu">
-            <span class="icon icon-zhihu" aria-hidden="true"></span>
-          </a>
-        </li></ul>
-  </nav>
-</header>
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/about/">About</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/resume/">Resume</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://github.com/corenel">Works</a>
+      </li>
+  </ul>
+</nav>
+    </header>
 
-  <section class="main post-detail">
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
     <header class="post-header">
       <h1 class="post-title">Installation of TensorFlow r0.11 on TX1</h1>
-      <p class="post-meta">@Yusu Pan · Dec 4, 2016 · 3 min read</p>
+
+      <div class="post-meta">
+        <span class="post-time"> 2016-12-04 </span>
+        <div class="post-category">
+            <a href="https://www.yuthon.com/categories/practices/"> Practices </a>
+            </div>
+          <span class="more-meta"> 1666 words </span>
+          <span class="more-meta"> 4 mins read </span>
+        
+      </div>
     </header>
-    <article class="post-content"><p>今天折腾了一个下午, 特此记录一下其中遇到的坑, 主要还是因为 TX1 的 aarch64 架构, 以及小得可怜的内存与存储容量.</p>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#environment">Environment</a></li>
+<li><a href="#installation">Installation</a>
+<ul>
+<li><a href="#install-java">Install Java</a></li>
+<li><a href="#install-dependencens">Install dependencens</a></li>
+<li><a href="#build-protobuf">Build protobuf</a></li>
+<li><a href="#build-grpc-java-compiler">Build grpc-java compiler</a></li>
+<li><a href="#build-bazel">Build bazel</a></li>
+<li><a href="#build-tensorflow">Build Tensorflow</a></li>
+<li><a href="#start-using-tensorflow">Start using Tensorflow</a></li>
+</ul></li>
+<li><a href="#tips">Tips</a>
+<ul>
+<li><a href="#swap-memory">Swap Memory</a></li>
+<li><a href="#build-on-external-storage">Build on external storage</a></li>
+</ul></li>
+<li><a href="#references">References</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>今天折腾了一个下午, 特此记录一下其中遇到的坑, 主要还是因为 TX1 的 aarch64 架构, 以及小得可怜的内存与存储容量.</p>
 
 <h2 id="environment">Environment</h2>
 
@@ -261,257 +193,551 @@
 <p>建议全程开HTTP/HTTPS代理, 否则国内下载速度堪忧.</p>
 
 <h3 id="install-java">Install Java</h3>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo add-apt-repository ppa:webupd8team/java
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">$ sudo add-apt-repository ppa:webupd8team/java
 $ sudo apt-get update
-$ sudo apt-get install oracle-java8-installer</code></pre></div>
+$ sudo apt-get install oracle-java8-installer</code></pre></td></tr></table>
+</div>
+</div>
 <h3 id="install-dependencens">Install dependencens</h3>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo apt-get install git zip unzip autoconf automake libtool curl zlib1g-dev maven
-$ sudo apt-get install python-numpy swig python-dev python-wheel</code></pre></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">$ sudo apt-get install git zip unzip autoconf automake libtool curl zlib1g-dev maven
+$ sudo apt-get install python-numpy swig python-dev python-wheel</code></pre></td></tr></table>
+</div>
+</div>
 <h3 id="build-protobuf">Build protobuf</h3>
 
 <p>这里测 Protobuf 要编译两份, 分别给 grpc 和 Bazel 用.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#8f5902;font-style:italic"># For grpc-java build</span>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># For grpc-java build</span>
 $ git clone https://github.com/google/protobuf.git
-$ <span style="color:#204a87">cd</span> protobuf
+$ <span class="nb">cd</span> protobuf
 $ git checkout master
 $ ./autogen.sh
 $ git checkout v3.0.0-beta-3
 $ ./autogen.sh
-$ <span style="color:#000">LDFLAGS</span><span style="color:#ce5c00;font-weight:bold">=</span>-static ./configure --prefix<span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#204a87;font-weight:bold">$(</span><span style="color:#204a87">pwd</span><span style="color:#204a87;font-weight:bold">)</span>/../
-$ sed -i -e <span style="color:#4e9a06">&#39;s/LDFLAGS = -static/LDFLAGS = -all-static/&#39;</span> ./src/Makefile
-$ make -j <span style="color:#0000cf;font-weight:bold">4</span>
+$ <span class="nv">LDFLAGS</span><span class="o">=</span>-static ./configure --prefix<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/../
+$ sed -i -e <span class="s1">&#39;s/LDFLAGS = -static/LDFLAGS = -all-static/&#39;</span> ./src/Makefile
+$ make -j <span class="m">4</span>
 $ make install
 
-<span style="color:#8f5902;font-style:italic"># For bazel build</span>
+<span class="c1"># For bazel build</span>
 $ git checkout v3.0.0-beta-2
 $./autogen.sh
-$ <span style="color:#000">LDFLAGS</span><span style="color:#ce5c00;font-weight:bold">=</span>-static ./configure --prefix<span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#204a87;font-weight:bold">$(</span><span style="color:#204a87">pwd</span><span style="color:#204a87;font-weight:bold">)</span>/../
-$ sed -i -e <span style="color:#4e9a06">&#39;s/LDFLAGS = -static/LDFLAGS = -all-static/&#39;</span> ./src/Makefile
-$ make -j <span style="color:#0000cf;font-weight:bold">4</span>
-$ <span style="color:#204a87">cd</span> ..</code></pre></div>
+$ <span class="nv">LDFLAGS</span><span class="o">=</span>-static ./configure --prefix<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/../
+$ sed -i -e <span class="s1">&#39;s/LDFLAGS = -static/LDFLAGS = -all-static/&#39;</span> ./src/Makefile
+$ make -j <span class="m">4</span>
+$ <span class="nb">cd</span> ..</code></pre></td></tr></table>
+</div>
+</div>
 <blockquote>
 <p>注意: 给 Bazel 用的不用<code>make install</code>, 之后直接<code>cp</code>过去.</p>
 </blockquote>
 
 <h3 id="build-grpc-java-compiler">Build grpc-java compiler</h3>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git clone https://github.com/neo-titans/odroid.git
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">$ git clone https://github.com/neo-titans/odroid.git
 $ git clone https://github.com/grpc/grpc-java.git
-$ <span style="color:#204a87">cd</span> grpc-java/
+$ <span class="nb">cd</span> grpc-java/
 $ git checkout v0.15.0
 $ patch -p0 &lt; ../odroid/build_tensorflow/grpc-java.v0.15.0.patch
-$ <span style="color:#000">CXXFLAGS</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#4e9a06">&#34;-I</span><span style="color:#204a87;font-weight:bold">$(</span><span style="color:#204a87">pwd</span><span style="color:#204a87;font-weight:bold">)</span><span style="color:#4e9a06">/../include&#34;</span> <span style="color:#000">LDFLAGS</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#4e9a06">&#34;-L</span><span style="color:#204a87;font-weight:bold">$(</span><span style="color:#204a87">pwd</span><span style="color:#204a87;font-weight:bold">)</span><span style="color:#4e9a06">/../lib&#34;</span> ./gradlew java_pluginExecutable -Pprotoc<span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#204a87;font-weight:bold">$(</span><span style="color:#204a87">pwd</span><span style="color:#204a87;font-weight:bold">)</span>/../bin/protoc
-$ <span style="color:#204a87">cd</span> ..</code></pre></div>
+$ <span class="nv">CXXFLAGS</span><span class="o">=</span><span class="s2">&#34;-I</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="s2">/../include&#34;</span> <span class="nv">LDFLAGS</span><span class="o">=</span><span class="s2">&#34;-L</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="s2">/../lib&#34;</span> ./gradlew java_pluginExecutable -Pprotoc<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/../bin/protoc
+$ <span class="nb">cd</span> ..</code></pre></td></tr></table>
+</div>
+</div>
 <h3 id="build-bazel">Build bazel</h3>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git clone https://github.com/bazelbuild/bazel.git
-$ <span style="color:#204a87">cd</span> bazel
-$ git checkout <span style="color:#0000cf;font-weight:bold">0</span>.3.2
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">$ git clone https://github.com/bazelbuild/bazel.git
+$ <span class="nb">cd</span> bazel
+$ git checkout <span class="m">0</span>.3.2
 $ cp ../protobuf/src/protoc third_party/protobuf/protoc-linux-arm32.exe
-$ cp ../grpc-java/compiler/build/exe/java_plugin/protoc-gen-grpc-java third_party/grpc/protoc-gen-grpc-java-0.15.0-linux-arm32.exe</code></pre></div>
+$ cp ../grpc-java/compiler/build/exe/java_plugin/protoc-gen-grpc-java third_party/grpc/protoc-gen-grpc-java-0.15.0-linux-arm32.exe</code></pre></td></tr></table>
+</div>
+</div>
 <p>在编译 Bazel 之前, 还需要改一些配置, 使得 Bazel 将 aarch64 认作 arm64, 以便编译成功.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff"><span style="color:#000080;font-weight:bold">diff --git a/compile.sh b/compile.sh
-</span><span style="color:#000080;font-weight:bold">index 53fc412..11035d9 100755
-</span><span style="color:#000080;font-weight:bold"></span><span style="color:#a40000">--- a/compile.sh
-</span><span style="color:#a40000"></span><span style="color:#00a000">+++ b/compile.sh
-</span><span style="color:#00a000"></span><span style="color:#800080;font-weight:bold">@@ -27,7 +27,7 @@ cd &#34;$(dirname &#34;$0&#34;)&#34;
-</span><span style="color:#800080;font-weight:bold"></span> # Set the default verbose mode in buildenv.sh so that we do not display command
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-diff" data-lang="diff"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span><span class="lnt">81
+</span><span class="lnt">82
+</span><span class="lnt">83
+</span><span class="lnt">84
+</span><span class="lnt">85
+</span><span class="lnt">86
+</span><span class="lnt">87
+</span><span class="lnt">88
+</span><span class="lnt">89
+</span><span class="lnt">90
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-diff" data-lang="diff"><span class="gh">diff --git a/compile.sh b/compile.sh
+</span><span class="gh">index 53fc412..11035d9 100755
+</span><span class="gh"></span><span class="gd">--- a/compile.sh
+</span><span class="gd"></span><span class="gi">+++ b/compile.sh
+</span><span class="gi"></span><span class="gu">@@ -27,7 +27,7 @@ cd &#34;$(dirname &#34;$0&#34;)&#34;
+</span><span class="gu"></span> # Set the default verbose mode in buildenv.sh so that we do not display command
  # output unless there is a failure.  We do this conditionally to offer the user
  # a chance of overriding this in case they want to do so.
-<span style="color:#a40000">-: ${VERBOSE:=no}
-</span><span style="color:#a40000"></span><span style="color:#00a000">+: ${VERBOSE:=yes}
-</span><span style="color:#00a000"></span>
+<span class="gd">-: ${VERBOSE:=no}
+</span><span class="gd"></span><span class="gi">+: ${VERBOSE:=yes}
+</span><span class="gi"></span>
  source scripts/bootstrap/buildenv.sh
 
-<span style="color:#000080;font-weight:bold">diff --git a/scripts/bootstrap/compile.sh b/scripts/bootstrap/compile.sh
-</span><span style="color:#000080;font-weight:bold">index 77372f0..657b254 100755
-</span><span style="color:#000080;font-weight:bold"></span><span style="color:#a40000">--- a/scripts/bootstrap/compile.sh
-</span><span style="color:#a40000"></span><span style="color:#00a000">+++ b/scripts/bootstrap/compile.sh
-</span><span style="color:#00a000"></span><span style="color:#800080;font-weight:bold">@@ -48,6 +48,7 @@ linux)
-</span><span style="color:#800080;font-weight:bold"></span>   else
+<span class="gh">diff --git a/scripts/bootstrap/compile.sh b/scripts/bootstrap/compile.sh
+</span><span class="gh">index 77372f0..657b254 100755
+</span><span class="gh"></span><span class="gd">--- a/scripts/bootstrap/compile.sh
+</span><span class="gd"></span><span class="gi">+++ b/scripts/bootstrap/compile.sh
+</span><span class="gi"></span><span class="gu">@@ -48,6 +48,7 @@ linux)
+</span><span class="gu"></span>   else
      if [ &#34;${MACHINE_IS_ARM}&#34; = &#39;yes&#39; ]; then
        PROTOC=${PROTOC:-third_party/protobuf/protoc-linux-arm32.exe}
-<span style="color:#00a000">+      GRPC_JAVA_PLUGIN=${GRPC_JAVA_PLUGIN:-third_party/grpc/protoc-gen-grpc-java-0.15.0-linux-arm32.exe}
-</span><span style="color:#00a000"></span>     else
+<span class="gi">+      GRPC_JAVA_PLUGIN=${GRPC_JAVA_PLUGIN:-third_party/grpc/protoc-gen-grpc-java-0.15.0-linux-arm32.exe}
+</span><span class="gi"></span>     else
        PROTOC=${PROTOC:-third_party/protobuf/protoc-linux-x86_32.exe}
        GRPC_JAVA_PLUGIN=${GRPC_JAVA_PLUGIN:-third_party/grpc/protoc-gen-grpc-java-0.15.0-linux-x86_32.exe}
-<span style="color:#800080;font-weight:bold">@@ -150,7 +151,7 @@ function java_compilation() {
-</span><span style="color:#800080;font-weight:bold"></span>
+<span class="gu">@@ -150,7 +151,7 @@ function java_compilation() {
+</span><span class="gu"></span>
    run &#34;${JAVAC}&#34; -classpath &#34;${classpath}&#34; -sourcepath &#34;${sourcepath}&#34; \
        -d &#34;${output}/classes&#34; -source &#34;$JAVA_VERSION&#34; -target &#34;$JAVA_VERSION&#34; \
-<span style="color:#a40000">-      -encoding UTF-8 &#34;@${paramfile}&#34;
-</span><span style="color:#a40000"></span><span style="color:#00a000">+      -encoding UTF-8 &#34;@${paramfile}&#34; -J-Xmx500M
-</span><span style="color:#00a000"></span>
+<span class="gd">-      -encoding UTF-8 &#34;@${paramfile}&#34;
+</span><span class="gd"></span><span class="gi">+      -encoding UTF-8 &#34;@${paramfile}&#34; -J-Xmx500M
+</span><span class="gi"></span>
    log &#34;Extracting helper classes for $name...&#34;
    for f in ${library_jars} ; do
-<span style="color:#000080;font-weight:bold">diff --git a/src/main/java/com/google/devtools/build/lib/util/CPU.java b/src/main/java/com/google/devtools/build/lib/util/CPU.java
-</span><span style="color:#000080;font-weight:bold">index 41af4b1..4d80610 100644
-</span><span style="color:#000080;font-weight:bold"></span><span style="color:#a40000">--- a/src/main/java/com/google/devtools/build/lib/util/CPU.java
-</span><span style="color:#a40000"></span><span style="color:#00a000">+++ b/src/main/java/com/google/devtools/build/lib/util/CPU.java
-</span><span style="color:#00a000"></span><span style="color:#800080;font-weight:bold">@@ -26,7 +26,7 @@ public enum CPU {
-</span><span style="color:#800080;font-weight:bold"></span>   X86_32(&#34;x86_32&#34;, ImmutableSet.of(&#34;i386&#34;, &#34;i486&#34;, &#34;i586&#34;, &#34;i686&#34;, &#34;i786&#34;, &#34;x86&#34;)),
+<span class="gh">diff --git a/src/main/java/com/google/devtools/build/lib/util/CPU.java b/src/main/java/com/google/devtools/build/lib/util/CPU.java
+</span><span class="gh">index 41af4b1..4d80610 100644
+</span><span class="gh"></span><span class="gd">--- a/src/main/java/com/google/devtools/build/lib/util/CPU.java
+</span><span class="gd"></span><span class="gi">+++ b/src/main/java/com/google/devtools/build/lib/util/CPU.java
+</span><span class="gi"></span><span class="gu">@@ -26,7 +26,7 @@ public enum CPU {
+</span><span class="gu"></span>   X86_32(&#34;x86_32&#34;, ImmutableSet.of(&#34;i386&#34;, &#34;i486&#34;, &#34;i586&#34;, &#34;i686&#34;, &#34;i786&#34;, &#34;x86&#34;)),
    X86_64(&#34;x86_64&#34;, ImmutableSet.of(&#34;amd64&#34;, &#34;x86_64&#34;, &#34;x64&#34;)),
    PPC(&#34;ppc&#34;, ImmutableSet.of(&#34;ppc&#34;, &#34;ppc64&#34;, &#34;ppc64le&#34;)),
-<span style="color:#a40000">-  ARM(&#34;arm&#34;, ImmutableSet.of(&#34;arm&#34;, &#34;armv7l&#34;)),
-</span><span style="color:#a40000"></span><span style="color:#00a000">+  ARM(&#34;arm&#34;, ImmutableSet.of(&#34;arm&#34;, &#34;armv7l&#34;, &#34;aarch64&#34;)),
-</span><span style="color:#00a000"></span>   UNKNOWN(&#34;unknown&#34;, ImmutableSet.&lt;String&gt;of());
+<span class="gd">-  ARM(&#34;arm&#34;, ImmutableSet.of(&#34;arm&#34;, &#34;armv7l&#34;)),
+</span><span class="gd"></span><span class="gi">+  ARM(&#34;arm&#34;, ImmutableSet.of(&#34;arm&#34;, &#34;armv7l&#34;, &#34;aarch64&#34;)),
+</span><span class="gi"></span>   UNKNOWN(&#34;unknown&#34;, ImmutableSet.&lt;String&gt;of());
 
    private final String canonicalName;
-<span style="color:#000080;font-weight:bold">diff --git a/third_party/grpc/BUILD b/third_party/grpc/BUILD
-</span><span style="color:#000080;font-weight:bold">index 2ba07e3..c7925ff 100644
-</span><span style="color:#000080;font-weight:bold"></span><span style="color:#a40000">--- a/third_party/grpc/BUILD
-</span><span style="color:#a40000"></span><span style="color:#00a000">+++ b/third_party/grpc/BUILD
-</span><span style="color:#00a000"></span><span style="color:#800080;font-weight:bold">@@ -29,7 +29,7 @@ filegroup(
-</span><span style="color:#800080;font-weight:bold"></span>         &#34;//third_party:darwin&#34;: [&#34;protoc-gen-grpc-java-0.15.0-osx-x86_64.exe&#34;],
+<span class="gh">diff --git a/third_party/grpc/BUILD b/third_party/grpc/BUILD
+</span><span class="gh">index 2ba07e3..c7925ff 100644
+</span><span class="gh"></span><span class="gd">--- a/third_party/grpc/BUILD
+</span><span class="gd"></span><span class="gi">+++ b/third_party/grpc/BUILD
+</span><span class="gi"></span><span class="gu">@@ -29,7 +29,7 @@ filegroup(
+</span><span class="gu"></span>         &#34;//third_party:darwin&#34;: [&#34;protoc-gen-grpc-java-0.15.0-osx-x86_64.exe&#34;],
          &#34;//third_party:k8&#34;: [&#34;protoc-gen-grpc-java-0.15.0-linux-x86_64.exe&#34;],
          &#34;//third_party:piii&#34;: [&#34;protoc-gen-grpc-java-0.15.0-linux-x86_32.exe&#34;],
-<span style="color:#a40000">-        &#34;//third_party:arm&#34;: [&#34;protoc-gen-grpc-java-0.15.0-linux-x86_32.exe&#34;],
-</span><span style="color:#a40000"></span><span style="color:#00a000">+        &#34;//third_party:arm&#34;: [&#34;protoc-gen-grpc-java-0.15.0-linux-arm32.exe&#34;],
-</span><span style="color:#00a000"></span>         &#34;//third_party:freebsd&#34;: [&#34;protoc-gen-grpc-java-0.15.0-linux-x86_32.exe&#34;],
+<span class="gd">-        &#34;//third_party:arm&#34;: [&#34;protoc-gen-grpc-java-0.15.0-linux-x86_32.exe&#34;],
+</span><span class="gd"></span><span class="gi">+        &#34;//third_party:arm&#34;: [&#34;protoc-gen-grpc-java-0.15.0-linux-arm32.exe&#34;],
+</span><span class="gi"></span>         &#34;//third_party:freebsd&#34;: [&#34;protoc-gen-grpc-java-0.15.0-linux-x86_32.exe&#34;],
      }),
  )
-<span style="color:#000080;font-weight:bold">diff --git a/third_party/protobuf/BUILD b/third_party/protobuf/BUILD
-</span><span style="color:#000080;font-weight:bold">index 203fe51..4c2a316 100644
-</span><span style="color:#000080;font-weight:bold"></span><span style="color:#a40000">--- a/third_party/protobuf/BUILD
-</span><span style="color:#a40000"></span><span style="color:#00a000">+++ b/third_party/protobuf/BUILD
-</span><span style="color:#00a000"></span><span style="color:#800080;font-weight:bold">@@ -28,6 +28,7 @@ filegroup(
-</span><span style="color:#800080;font-weight:bold"></span>         &#34;//third_party:darwin&#34;: [&#34;protoc-osx-x86_32.exe&#34;],
+<span class="gh">diff --git a/third_party/protobuf/BUILD b/third_party/protobuf/BUILD
+</span><span class="gh">index 203fe51..4c2a316 100644
+</span><span class="gh"></span><span class="gd">--- a/third_party/protobuf/BUILD
+</span><span class="gd"></span><span class="gi">+++ b/third_party/protobuf/BUILD
+</span><span class="gi"></span><span class="gu">@@ -28,6 +28,7 @@ filegroup(
+</span><span class="gu"></span>         &#34;//third_party:darwin&#34;: [&#34;protoc-osx-x86_32.exe&#34;],
          &#34;//third_party:k8&#34;: [&#34;protoc-linux-x86_64.exe&#34;],
          &#34;//third_party:piii&#34;: [&#34;protoc-linux-x86_32.exe&#34;],
-<span style="color:#00a000">+        &#34;//third_party:arm&#34;: [&#34;protoc-linux-arm32.exe&#34;],
-</span><span style="color:#00a000"></span>         &#34;//third_party:freebsd&#34;: [&#34;protoc-linux-x86_32.exe&#34;],
+<span class="gi">+        &#34;//third_party:arm&#34;: [&#34;protoc-linux-arm32.exe&#34;],
+</span><span class="gi"></span>         &#34;//third_party:freebsd&#34;: [&#34;protoc-linux-x86_32.exe&#34;],
      }),
  )
-<span style="color:#000080;font-weight:bold">diff --git a/tools/cpp/cc_configure.bzl b/tools/cpp/cc_configure.bzl
-</span><span style="color:#000080;font-weight:bold">index aeb0715..688835d 100644
-</span><span style="color:#000080;font-weight:bold"></span><span style="color:#a40000">--- a/tools/cpp/cc_configure.bzl
-</span><span style="color:#a40000"></span><span style="color:#00a000">+++ b/tools/cpp/cc_configure.bzl
-</span><span style="color:#00a000"></span><span style="color:#800080;font-weight:bold">@@ -150,7 +150,12 @@ def _get_cpu_value(repository_ctx):
-</span><span style="color:#800080;font-weight:bold"></span>     return &#34;x64_windows&#34;
+<span class="gh">diff --git a/tools/cpp/cc_configure.bzl b/tools/cpp/cc_configure.bzl
+</span><span class="gh">index aeb0715..688835d 100644
+</span><span class="gh"></span><span class="gd">--- a/tools/cpp/cc_configure.bzl
+</span><span class="gd"></span><span class="gi">+++ b/tools/cpp/cc_configure.bzl
+</span><span class="gi"></span><span class="gu">@@ -150,7 +150,12 @@ def _get_cpu_value(repository_ctx):
+</span><span class="gu"></span>     return &#34;x64_windows&#34;
    # Use uname to figure out whether we are on x86_32 or x86_64
    result = repository_ctx.execute([&#34;uname&#34;, &#34;-m&#34;])
-<span style="color:#a40000">-  return &#34;k8&#34; if result.stdout.strip() in [&#34;amd64&#34;, &#34;x86_64&#34;, &#34;x64&#34;] else &#34;piii&#34;
-</span><span style="color:#a40000"></span><span style="color:#00a000">+  machine = result.stdout.strip()
-</span><span style="color:#00a000">+  if machine in [&#34;arm&#34;, &#34;armv7l&#34;, &#34;aarch64&#34;]:
-</span><span style="color:#00a000">+   return &#34;arm&#34;
-</span><span style="color:#00a000">+  elif machine in [&#34;amd64&#34;, &#34;x86_64&#34;, &#34;x64&#34;]:
-</span><span style="color:#00a000">+   return &#34;k8&#34;
-</span><span style="color:#00a000">+  return &#34;piii&#34;
-</span><span style="color:#00a000"></span>
+<span class="gd">-  return &#34;k8&#34; if result.stdout.strip() in [&#34;amd64&#34;, &#34;x86_64&#34;, &#34;x64&#34;] else &#34;piii&#34;
+</span><span class="gd"></span><span class="gi">+  machine = result.stdout.strip()
+</span><span class="gi">+  if machine in [&#34;arm&#34;, &#34;armv7l&#34;, &#34;aarch64&#34;]:
+</span><span class="gi">+   return &#34;arm&#34;
+</span><span class="gi">+  elif machine in [&#34;amd64&#34;, &#34;x86_64&#34;, &#34;x64&#34;]:
+</span><span class="gi">+   return &#34;k8&#34;
+</span><span class="gi">+  return &#34;piii&#34;
+</span><span class="gi"></span>
 
  _INC_DIR_MARKER_BEGIN = &#34;#include &lt;...&gt;&#34;
-</code></pre></div>
+</code></pre></td></tr></table>
+</div>
+</div>
 <p>之后编译安装:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./compile.sh 
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">$ ./compile.sh 
 $ sudo cp output/bazel /usr/local/bin
-$ <span style="color:#204a87">cd</span> ..</code></pre></div>
+$ <span class="nb">cd</span> ..</code></pre></td></tr></table>
+</div>
+</div>
 <h3 id="build-tensorflow">Build Tensorflow</h3>
-
-<pre><code>$ git clone https://github.com/tensorflow/tensorflow.git
-$ git checkout r0.11
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">$ git clone https://github.com/tensorflow/tensorflow.git
+$ git checkout r0.11</pre></td></tr></table>
+</div>
+</div>
 <p>同样地, 修改配置文件:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff"><span style="color:#000080;font-weight:bold">diff --git a/tensorflow/core/kernels/BUILD b/tensorflow/core/kernels/BUILD
-</span><span style="color:#000080;font-weight:bold">index 2e04827..867aaca 100644
-</span><span style="color:#000080;font-weight:bold"></span><span style="color:#a40000">--- a/tensorflow/core/kernels/BUILD
-</span><span style="color:#a40000"></span><span style="color:#00a000">+++ b/tensorflow/core/kernels/BUILD
-</span><span style="color:#00a000"></span><span style="color:#800080;font-weight:bold">@@ -1184,7 +1184,7 @@ tf_kernel_libraries(
-</span><span style="color:#800080;font-weight:bold"></span>         &#34;segment_reduction_ops&#34;,
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-diff" data-lang="diff"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-diff" data-lang="diff"><span class="gh">diff --git a/tensorflow/core/kernels/BUILD b/tensorflow/core/kernels/BUILD
+</span><span class="gh">index 2e04827..867aaca 100644
+</span><span class="gh"></span><span class="gd">--- a/tensorflow/core/kernels/BUILD
+</span><span class="gd"></span><span class="gi">+++ b/tensorflow/core/kernels/BUILD
+</span><span class="gi"></span><span class="gu">@@ -1184,7 +1184,7 @@ tf_kernel_libraries(
+</span><span class="gu"></span>         &#34;segment_reduction_ops&#34;,
          &#34;scan_ops&#34;,
          &#34;sequence_ops&#34;,
-<span style="color:#a40000">-        &#34;sparse_matmul_op&#34;,
-</span><span style="color:#a40000"></span><span style="color:#00a000">+       #DC &#34;sparse_matmul_op&#34;,
-</span><span style="color:#00a000"></span>     ],
+<span class="gd">-        &#34;sparse_matmul_op&#34;,
+</span><span class="gd"></span><span class="gi">+       #DC &#34;sparse_matmul_op&#34;,
+</span><span class="gi"></span>     ],
      deps = [
          &#34;:bounds_check&#34;,
-<span style="color:#000080;font-weight:bold">diff --git a/tensorflow/core/kernels/cwise_op_gpu_select.cu.cc b/tensorflow/core/kernels/cwise_op_gpu_select.cu.cc
-</span><span style="color:#000080;font-weight:bold">index 02058a8..880252c 100644
-</span><span style="color:#000080;font-weight:bold"></span><span style="color:#a40000">--- a/tensorflow/core/kernels/cwise_op_gpu_select.cu.cc
-</span><span style="color:#a40000"></span><span style="color:#00a000">+++ b/tensorflow/core/kernels/cwise_op_gpu_select.cu.cc
-</span><span style="color:#00a000"></span><span style="color:#800080;font-weight:bold">@@ -43,8 +43,14 @@ struct BatchSelectFunctor&lt;GPUDevice, T&gt; {
-</span><span style="color:#800080;font-weight:bold"></span>     const int all_but_batch = then_flat_outer_dims.dimension(1);
+<span class="gh">diff --git a/tensorflow/core/kernels/cwise_op_gpu_select.cu.cc b/tensorflow/core/kernels/cwise_op_gpu_select.cu.cc
+</span><span class="gh">index 02058a8..880252c 100644
+</span><span class="gh"></span><span class="gd">--- a/tensorflow/core/kernels/cwise_op_gpu_select.cu.cc
+</span><span class="gd"></span><span class="gi">+++ b/tensorflow/core/kernels/cwise_op_gpu_select.cu.cc
+</span><span class="gi"></span><span class="gu">@@ -43,8 +43,14 @@ struct BatchSelectFunctor&lt;GPUDevice, T&gt; {
+</span><span class="gu"></span>     const int all_but_batch = then_flat_outer_dims.dimension(1);
 
  #if !defined(EIGEN_HAS_INDEX_LIST)
-<span style="color:#a40000">-    Eigen::array&lt;int, 2&gt; broadcast_dims{{ 1, all_but_batch }};
-</span><span style="color:#a40000">-    Eigen::Tensor&lt;int, 2&gt;::Dimensions reshape_dims{{ batch, 1 }};
-</span><span style="color:#a40000"></span><span style="color:#00a000">+    // Eigen::array&lt;int, 2&gt; broadcast_dims{{ 1, all_but_batch }};
-</span><span style="color:#00a000">+    Eigen::array&lt;int, 2&gt; broadcast_dims;
-</span><span style="color:#00a000">+    broadcast_dims[0] = 1;
-</span><span style="color:#00a000">+    broadcast_dims[1] = all_but_batch;
-</span><span style="color:#00a000">+    // Eigen::Tensor&lt;int, 2&gt;::Dimensions reshape_dims{{ batch, 1 }};
-</span><span style="color:#00a000">+    Eigen::Tensor&lt;int, 2&gt;::Dimensions reshape_dims;
-</span><span style="color:#00a000">+    reshape_dims[0] = batch;
-</span><span style="color:#00a000">+    reshape_dims[1] = 1;
-</span><span style="color:#00a000"></span> #else
+<span class="gd">-    Eigen::array&lt;int, 2&gt; broadcast_dims{{ 1, all_but_batch }};
+</span><span class="gd">-    Eigen::Tensor&lt;int, 2&gt;::Dimensions reshape_dims{{ batch, 1 }};
+</span><span class="gd"></span><span class="gi">+    // Eigen::array&lt;int, 2&gt; broadcast_dims{{ 1, all_but_batch }};
+</span><span class="gi">+    Eigen::array&lt;int, 2&gt; broadcast_dims;
+</span><span class="gi">+    broadcast_dims[0] = 1;
+</span><span class="gi">+    broadcast_dims[1] = all_but_batch;
+</span><span class="gi">+    // Eigen::Tensor&lt;int, 2&gt;::Dimensions reshape_dims{{ batch, 1 }};
+</span><span class="gi">+    Eigen::Tensor&lt;int, 2&gt;::Dimensions reshape_dims;
+</span><span class="gi">+    reshape_dims[0] = batch;
+</span><span class="gi">+    reshape_dims[1] = 1;
+</span><span class="gi"></span> #else
      Eigen::IndexList&lt;Eigen::type2index&lt;1&gt;, int&gt; broadcast_dims;
      broadcast_dims.set(1, all_but_batch);
-<span style="color:#000080;font-weight:bold">diff --git a/tensorflow/core/kernels/sparse_tensor_dense_matmul_op_gpu.cu.cc b/tensorflow/core/kernels/sparse_tensor_dense_matmul_op_gpu.cu.cc
-</span><span style="color:#000080;font-weight:bold">index a177696..75b67ba 100644
-</span><span style="color:#000080;font-weight:bold"></span><span style="color:#a40000">--- a/tensorflow/core/kernels/sparse_tensor_dense_matmul_op_gpu.cu.cc
-</span><span style="color:#a40000"></span><span style="color:#00a000">+++ b/tensorflow/core/kernels/sparse_tensor_dense_matmul_op_gpu.cu.cc
-</span><span style="color:#00a000"></span><span style="color:#800080;font-weight:bold">@@ -104,9 +104,17 @@ struct SparseTensorDenseMatMulFunctor&lt;GPUDevice, T, ADJ_A, ADJ_B&gt; {
-</span><span style="color:#800080;font-weight:bold"></span>     int n = (ADJ_B) ? b.dimension(0) : b.dimension(1);
+<span class="gh">diff --git a/tensorflow/core/kernels/sparse_tensor_dense_matmul_op_gpu.cu.cc b/tensorflow/core/kernels/sparse_tensor_dense_matmul_op_gpu.cu.cc
+</span><span class="gh">index a177696..75b67ba 100644
+</span><span class="gh"></span><span class="gd">--- a/tensorflow/core/kernels/sparse_tensor_dense_matmul_op_gpu.cu.cc
+</span><span class="gd"></span><span class="gi">+++ b/tensorflow/core/kernels/sparse_tensor_dense_matmul_op_gpu.cu.cc
+</span><span class="gi"></span><span class="gu">@@ -104,9 +104,17 @@ struct SparseTensorDenseMatMulFunctor&lt;GPUDevice, T, ADJ_A, ADJ_B&gt; {
+</span><span class="gu"></span>     int n = (ADJ_B) ? b.dimension(0) : b.dimension(1);
 
  #if !defined(EIGEN_HAS_INDEX_LIST)
-<span style="color:#a40000">-    Eigen::Tensor&lt;int, 2&gt;::Dimensions matrix_1_by_nnz{{ 1, nnz }};
-</span><span style="color:#a40000">-    Eigen::array&lt;int, 2&gt; n_by_1{{ n, 1 }};
-</span><span style="color:#a40000">-    Eigen::array&lt;int, 1&gt; reduce_on_rows{{ 0 }};
-</span><span style="color:#a40000"></span><span style="color:#00a000">+    // Eigen::Tensor&lt;int, 2&gt;::Dimensions matrix_1_by_nnz{{ 1, nnz }};
-</span><span style="color:#00a000">+    Eigen::Tensor&lt;int, 2&gt;::Dimensions matrix_1_by_nnz;
-</span><span style="color:#00a000">+    matrix_1_by_nnz[0] = 1;
-</span><span style="color:#00a000">+    matrix_1_by_nnz[1] = nnz;
-</span><span style="color:#00a000">+    // Eigen::array&lt;int, 2&gt; n_by_1{{ n, 1 }};
-</span><span style="color:#00a000">+    Eigen::Tensor&lt;int, 2&gt;::Dimensions matrix_1_by_nnz;
-</span><span style="color:#00a000">+    matrix_1_by_nnz[0] = 1;
-</span><span style="color:#00a000">+    matrix_1_by_nnz[1] = nnz;
-</span><span style="color:#00a000">+    // Eigen::array&lt;int, 2&gt; n_by_1{{ n, 1 }};
-</span><span style="color:#00a000">+    Eigen::array&lt;int, 2&gt; n_by_1;
-</span><span style="color:#00a000">+    n_by_1[0] = n;
-</span><span style="color:#00a000">+    n_by_1[1] = 1;
-</span><span style="color:#00a000">+    // Eigen::array&lt;int, 1&gt; reduce_on_rows{{ 0 }};
-</span><span style="color:#00a000">+    Eigen::array&lt;int, 1&gt; reduce_on_rows;
-</span><span style="color:#00a000">+    reduce_on_rows[0]= 0;
-</span><span style="color:#00a000"></span> #else
+<span class="gd">-    Eigen::Tensor&lt;int, 2&gt;::Dimensions matrix_1_by_nnz{{ 1, nnz }};
+</span><span class="gd">-    Eigen::array&lt;int, 2&gt; n_by_1{{ n, 1 }};
+</span><span class="gd">-    Eigen::array&lt;int, 1&gt; reduce_on_rows{{ 0 }};
+</span><span class="gd"></span><span class="gi">+    // Eigen::Tensor&lt;int, 2&gt;::Dimensions matrix_1_by_nnz{{ 1, nnz }};
+</span><span class="gi">+    Eigen::Tensor&lt;int, 2&gt;::Dimensions matrix_1_by_nnz;
+</span><span class="gi">+    matrix_1_by_nnz[0] = 1;
+</span><span class="gi">+    matrix_1_by_nnz[1] = nnz;
+</span><span class="gi">+    // Eigen::array&lt;int, 2&gt; n_by_1{{ n, 1 }};
+</span><span class="gi">+    Eigen::Tensor&lt;int, 2&gt;::Dimensions matrix_1_by_nnz;
+</span><span class="gi">+    matrix_1_by_nnz[0] = 1;
+</span><span class="gi">+    matrix_1_by_nnz[1] = nnz;
+</span><span class="gi">+    // Eigen::array&lt;int, 2&gt; n_by_1{{ n, 1 }};
+</span><span class="gi">+    Eigen::array&lt;int, 2&gt; n_by_1;
+</span><span class="gi">+    n_by_1[0] = n;
+</span><span class="gi">+    n_by_1[1] = 1;
+</span><span class="gi">+    // Eigen::array&lt;int, 1&gt; reduce_on_rows{{ 0 }};
+</span><span class="gi">+    Eigen::array&lt;int, 1&gt; reduce_on_rows;
+</span><span class="gi">+    reduce_on_rows[0]= 0;
+</span><span class="gi"></span> #else
      Eigen::IndexList&lt;Eigen::type2index&lt;1&gt;, int&gt; matrix_1_by_nnz;
      matrix_1_by_nnz.set(1, nnz);
-<span style="color:#000080;font-weight:bold">diff --git a/tensorflow/stream_executor/cuda/cuda_gpu_executor.cc b/tensorflow/stream_executor/cuda/cuda_gpu_executor.cc
-</span><span style="color:#000080;font-weight:bold">index 52256a7..1d027b9 100644
-</span><span style="color:#000080;font-weight:bold"></span><span style="color:#a40000">--- a/tensorflow/stream_executor/cuda/cuda_gpu_executor.cc
-</span><span style="color:#a40000"></span><span style="color:#00a000">+++ b/tensorflow/stream_executor/cuda/cuda_gpu_executor.cc
-</span><span style="color:#00a000"></span><span style="color:#800080;font-weight:bold">@@ -888,6 +888,9 @@ CudaContext* CUDAExecutor::cuda_context() { return context_; }
-</span><span style="color:#800080;font-weight:bold"></span> // For anything more complicated/prod-focused than this, you&#39;ll likely want to
+<span class="gh">diff --git a/tensorflow/stream_executor/cuda/cuda_gpu_executor.cc b/tensorflow/stream_executor/cuda/cuda_gpu_executor.cc
+</span><span class="gh">index 52256a7..1d027b9 100644
+</span><span class="gh"></span><span class="gd">--- a/tensorflow/stream_executor/cuda/cuda_gpu_executor.cc
+</span><span class="gd"></span><span class="gi">+++ b/tensorflow/stream_executor/cuda/cuda_gpu_executor.cc
+</span><span class="gi"></span><span class="gu">@@ -888,6 +888,9 @@ CudaContext* CUDAExecutor::cuda_context() { return context_; }
+</span><span class="gu"></span> // For anything more complicated/prod-focused than this, you&#39;ll likely want to
  // turn to gsys&#39; topology modeling.
  static int TryToReadNumaNode(const string &amp;pci_bus_id, int device_ordinal) {
-<span style="color:#00a000">+// DC - make this clever later. ARM has no NUMA node, just return 0
-</span><span style="color:#00a000">+LOG(INFO) &lt;&lt; &#34;ARM has no NUMA node, hardcoding to return zero&#34;;
-</span><span style="color:#00a000">+return 0;
-</span><span style="color:#00a000"></span> #if defined(__APPLE__)
+<span class="gi">+// DC - make this clever later. ARM has no NUMA node, just return 0
+</span><span class="gi">+LOG(INFO) &lt;&lt; &#34;ARM has no NUMA node, hardcoding to return zero&#34;;
+</span><span class="gi">+return 0;
+</span><span class="gi"></span> #if defined(__APPLE__)
    LOG(INFO) &lt;&lt; &#34;OS X does not support NUMA - returning NUMA node zero&#34;;
    return 0;
-</code></pre></div>
+</code></pre></td></tr></table>
+</div>
+</div>
 <p>之后即可编译:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./configure
-$ bazel build -c opt --jobs <span style="color:#0000cf;font-weight:bold">2</span> --local_resources <span style="color:#0000cf;font-weight:bold">1024</span>,4.0,1.0 --config<span style="color:#ce5c00;font-weight:bold">=</span>cuda //tensorflow/tools/pip_package:build_pip_package
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">$ ./configure
+$ bazel build -c opt --jobs <span class="m">2</span> --local_resources <span class="m">1024</span>,4.0,1.0 --config<span class="o">=</span>cuda //tensorflow/tools/pip_package:build_pip_package
 $ bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg
-<span style="color:#8f5902;font-style:italic"># The name of the .whl file will depend on your platform.</span>
-$ sudo pip install /tmp/tensorflow_pkg/tensorflow-0.11.0-py2-none-any.whl</code></pre></div>
+<span class="c1"># The name of the .whl file will depend on your platform.</span>
+$ sudo pip install /tmp/tensorflow_pkg/tensorflow-0.11.0-py2-none-any.whl</code></pre></td></tr></table>
+</div>
+</div>
 <p>这里有我自己编译好的 <a href="https://drive.google.com/open?id=0B0AsKkiz_kZRZG9BbFRxZ1FYWTg">tensorflow_gpu-0.11.0-py2-none-aarch64.whl</a>, 可供使用.</p>
 
 <h3 id="start-using-tensorflow">Start using Tensorflow</h3>
 
 <p>首先还得装一下 OpenCV 的 Python port:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo apt-get install -y libopencv4tegra–python</code></pre></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">$ sudo apt-get install -y libopencv4tegra–python</code></pre></td></tr></table>
+</div>
+</div>
 <p>之后即可测试 TensorFlow 是否成功安装:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ python
-Python <span style="color:#0000cf;font-weight:bold">2</span>.7.12 <span style="color:#ce5c00;font-weight:bold">(</span>default, Nov <span style="color:#0000cf;font-weight:bold">19</span> <span style="color:#0000cf;font-weight:bold">2016</span>, <span style="color:#0000cf;font-weight:bold">06</span>:48:10<span style="color:#ce5c00;font-weight:bold">)</span>
-<span style="color:#ce5c00;font-weight:bold">[</span>GCC <span style="color:#0000cf;font-weight:bold">5</span>.4.0 <span style="color:#0000cf;font-weight:bold">20160609</span><span style="color:#ce5c00;font-weight:bold">]</span> on linux2
-Type <span style="color:#4e9a06">&#34;help&#34;</span>, <span style="color:#4e9a06">&#34;copyright&#34;</span>, <span style="color:#4e9a06">&#34;credits&#34;</span> or <span style="color:#4e9a06">&#34;license&#34;</span> <span style="color:#204a87;font-weight:bold">for</span> more information.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">$ python
+Python <span class="m">2</span>.7.12 <span class="o">(</span>default, Nov <span class="m">19</span> <span class="m">2016</span>, <span class="m">06</span>:48:10<span class="o">)</span>
+<span class="o">[</span>GCC <span class="m">5</span>.4.0 <span class="m">20160609</span><span class="o">]</span> on linux2
+Type <span class="s2">&#34;help&#34;</span>, <span class="s2">&#34;copyright&#34;</span>, <span class="s2">&#34;credits&#34;</span> or <span class="s2">&#34;license&#34;</span> <span class="k">for</span> more information.
 &gt;&gt;&gt; import tensorflow as tf
-I tensorflow/stream_executor/dso_loader.cc:111<span style="color:#ce5c00;font-weight:bold">]</span> successfully opened CUDA library libcublas.so locally
-I tensorflow/stream_executor/dso_loader.cc:111<span style="color:#ce5c00;font-weight:bold">]</span> successfully opened CUDA library libcudnn.so locally
-I tensorflow/stream_executor/dso_loader.cc:111<span style="color:#ce5c00;font-weight:bold">]</span> successfully opened CUDA library libcufft.so locally
-I tensorflow/stream_executor/dso_loader.cc:111<span style="color:#ce5c00;font-weight:bold">]</span> successfully opened CUDA library libcuda.so.1 locally
-I tensorflow/stream_executor/dso_loader.cc:111<span style="color:#ce5c00;font-weight:bold">]</span> successfully opened CUDA library libcurand.so locally
-&gt;&gt;&gt;</code></pre></div>
+I tensorflow/stream_executor/dso_loader.cc:111<span class="o">]</span> successfully opened CUDA library libcublas.so locally
+I tensorflow/stream_executor/dso_loader.cc:111<span class="o">]</span> successfully opened CUDA library libcudnn.so locally
+I tensorflow/stream_executor/dso_loader.cc:111<span class="o">]</span> successfully opened CUDA library libcufft.so locally
+I tensorflow/stream_executor/dso_loader.cc:111<span class="o">]</span> successfully opened CUDA library libcuda.so.1 locally
+I tensorflow/stream_executor/dso_loader.cc:111<span class="o">]</span> successfully opened CUDA library libcurand.so locally
+&gt;&gt;&gt;</code></pre></td></tr></table>
+</div>
+</div>
 <p>不报错即是安装成功.</p>
 
 <h2 id="tips">Tips</h2>
@@ -519,16 +745,35 @@ I tensorflow/stream_executor/dso_loader.cc:111<span style="color:#ce5c00;font-we
 <h3 id="swap-memory">Swap Memory</h3>
 
 <p>如果编译失败, 很有可能是内存不足的原因, 因此可以外接U盘或是SSD等, 并且将一部分缓存放在上面.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#204a87">cd</span> /path/to/your/storage
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">$ <span class="nb">cd</span> /path/to/your/storage
 $ fallocate -l 8G swapfile
-$ chmod <span style="color:#0000cf;font-weight:bold">600</span> swapfile
+$ chmod <span class="m">600</span> swapfile
 $ mkswap swapfile
 $ sudo swapon swapfile
-$ swapon -s</code></pre></div>
+$ swapon -s</code></pre></td></tr></table>
+</div>
+</div>
 <p>8G的 swap 空间应该是够用了, 如果还嫌不够可以再设个大点的.</p>
 
 <p>之后再运行 Bazel 编译:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ bazel build -c opt --local_resources <span style="color:#0000cf;font-weight:bold">3072</span>,4.0,1.0 --verbose_failures --config<span style="color:#ce5c00;font-weight:bold">=</span>cuda //tensorflow/tools/pip_package:build_pip_package</code></pre></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">$ bazel build -c opt --local_resources <span class="m">3072</span>,4.0,1.0 --verbose_failures --config<span class="o">=</span>cuda //tensorflow/tools/pip_package:build_pip_package</code></pre></td></tr></table>
+</div>
+</div>
 <h3 id="build-on-external-storage">Build on external storage</h3>
 
 <p>整个安装过程所需的空间大概是3G以上, 而 TX1 装完系统之后只剩下了 4G 的剩余空间. 所以最好将安装时的根目录选在外置的存储上, 以免因为内置存储空间不足而导致失败.</p>
@@ -539,105 +784,122 @@ $ swapon -s</code></pre></div>
 <li><a href="http://stackoverflow.com/questions/39783919/tensorflow-on-nvidia-tx1/">http://stackoverflow.com/questions/39783919/tensorflow-on-nvidia-tx1/</a></li>
 <li><a href="https://github.com/tensorflow/tensorflow/issues/851">https://github.com/tensorflow/tensorflow/issues/851</a></li>
 <li><a href="https://www.neotitans.net/install-tensorflow-on-odroid-c2.html">https://www.neotitans.net/install-tensorflow-on-odroid-c2.html</a></li>
-</ul></article>
-    <footer class="post-footer">
-      
-      <ul class="post-tags">
+</ul>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Yusu Pan</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2016-12-04
         
-          <li><a href="https://www.yuthon.com/tags/tensorflow"><span class="tag">Tensorflow</span></a></li>
-        
-          <li><a href="https://www.yuthon.com/tags/nvidia"><span class="tag">NVIDIA</span></a></li>
-        
-          <li><a href="https://www.yuthon.com/tags/jetson-tx1"><span class="tag">Jetson TX1</span></a></li>
-        
-          <li><a href="https://www.yuthon.com/tags/ubuntu"><span class="tag">Ubuntu</span></a></li>
-        
-          <li><a href="https://www.yuthon.com/tags/deep-learning"><span class="tag">Deep Learning</span></a></li>
-        
-      </ul>
-      
-      <p class="post-copyright">
-        © This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
-This post was published <strong>824</strong> days ago, content in the post may be inaccurate, even wrong now, please take risk yourself.
-      </p>
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">License</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="https://www.yuthon.com/tags/tensorflow/">Tensorflow</a>
+          <a href="https://www.yuthon.com/tags/nvidia/">NVIDIA</a>
+          <a href="https://www.yuthon.com/tags/jetson-tx1/">Jetson TX1</a>
+          <a href="https://www.yuthon.com/tags/ubuntu/">Ubuntu</a>
+          <a href="https://www.yuthon.com/tags/deep-learning/">Deep Learning</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="https://www.yuthon.com/post/practices/backup-system-partition-on-tx1/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Backup system partition on TX1</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="https://www.yuthon.com/post/practices/train-yolov2-on-my-own-dataset/">
+            <span class="next-text nav-default">Train YOLOv2 on my own dataset</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
     </footer>
-    
-      <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
     (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "yuthons-blog" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
       
-    
-  </section>
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'yuthons-blog';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xxdsox@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/5682817" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://twitter.com/corenel" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://www.facebook.com/xxdsox" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://github.com/corenel" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/pan-yu-su" class="iconfont icon-zhihu" title="zhihu"></a>
+  <a href="https://www.yuthon.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
   
-<footer class="site-footer">
-  <p>© 2017-2019 Yuthon&#39;s Blog</p>
-  <p>Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank" rel="noopener">Nuo</a>.</p>
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
+</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
   
-</footer>
-
-
-<script src="https://cdn.jsdelivr.net/npm/smooth-scroll@15.0.0/dist/smooth-scroll.min.js"></script>
-
-
-
-<script async src="https://cdn.jsdelivr.net/npm/video.js@7.3.0/dist/video.min.js"></script>
-
-
-
-
-<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [['$','$'], ['\\(','\\)']],
-      displayMath: [['$$','$$'], ['\\[','\\]']],
-      processEscapes: true,
-      processEnvironments: true,
-      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
-      TeX: { equationNumbers: { autoNumber: "AMS" },
-      extensions: ["AMSmath.js", "AMSsymbols.js"] }
-    },
-  });
-</script>
-<script type="text/x-mathjax-config">
-  // Fix <code> tags after MathJax finishes running. This is a
-  // hack to overcome a shortcoming of Markdown. Discussion at
-  // https://github.com/mojombo/jekyll/issues/199
-  MathJax.Hub.Queue(() => {
-    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
-  });
-</script>
-
-
-
-<script src="https://www.yuthon.com/scripts/index.min.js"></script>
-
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('\/service-worker.js').then(function() {
-      console.log('[ServiceWorker] Registered');
-    });
-  }
-</script>
-
-
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://www.yuthon.com/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      TeX: {equationNumbers: {autoNumber: "AMS"}},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 
 
 <script type="application/javascript">
@@ -645,7 +907,7 @@ var doNotTrack = false;
 if (!doNotTrack) {
 	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
 	ga('create', 'UA-76233259-1', 'auto');
-	
+	ga('set', 'anonymizeIp', true);
 	ga('send', 'pageview');
 }
 </script>
@@ -657,5 +919,5 @@ if (!doNotTrack) {
 
 
 
-  </body>
+</body>
 </html>
