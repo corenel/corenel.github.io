@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Notes for Object Detection: One Stage Methods - Yuthon&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yusu Pan" /><meta name="description" content="In this post, we focus on two mainstreams of one-stage object detection methods: YOLO family and SSD family. Compared to two-stage methods (like R-CNN series), those models skip the region proposal stage and directly extract detection results from feature maps. For that reason, one-stage models are faster but at the cost of reduced accuracy.
+" /><meta name="keywords" content="yuthon, yusu-pan, blog, deep-learning, computer-vision" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://www.yuthon.com/post/tutorials/notes-for-object-detection-one-stage-methods/" />
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.yuthon.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.yuthon.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.yuthon.com/favicon-16x16.png">
+<link rel="manifest" href="https://www.yuthon.com/manifest.json">
+<link rel="mask-icon" href="https://www.yuthon.com/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="https://www.yuthon.com/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Notes for Object Detection: One Stage Methods" />
+<meta property="og:description" content="In this post, we focus on two mainstreams of one-stage object detection methods: YOLO family and SSD family. Compared to two-stage methods (like R-CNN series), those models skip the region proposal stage and directly extract detection results from feature maps. For that reason, one-stage models are faster but at the cost of reduced accuracy." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.yuthon.com/post/tutorials/notes-for-object-detection-one-stage-methods/" />
+<meta property="article:published_time" content="2018-12-31T21:45:13&#43;08:00"/>
+<meta property="article:modified_time" content="2018-12-31T21:45:13&#43;08:00"/>
+
+<meta itemprop="name" content="Notes for Object Detection: One Stage Methods">
+<meta itemprop="description" content="In this post, we focus on two mainstreams of one-stage object detection methods: YOLO family and SSD family. Compared to two-stage methods (like R-CNN series), those models skip the region proposal stage and directly extract detection results from feature maps. For that reason, one-stage models are faster but at the cost of reduced accuracy.">
+
+
+<meta itemprop="datePublished" content="2018-12-31T21:45:13&#43;08:00" />
+<meta itemprop="dateModified" content="2018-12-31T21:45:13&#43;08:00" />
+<meta itemprop="wordCount" content="9270">
+
+
+
+<meta itemprop="keywords" content="Object Detection,YOLO,SSD," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Notes for Object Detection: One Stage Methods"/>
+<meta name="twitter:description" content="In this post, we focus on two mainstreams of one-stage object detection methods: YOLO family and SSD family. Compared to two-stage methods (like R-CNN series), those models skip the region proposal stage and directly extract detection results from feature maps. For that reason, one-stage models are faster but at the cost of reduced accuracy."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="https://www.yuthon.com/" class="logo">Yuthon&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="https://www.yuthon.com/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="https://www.yuthon.com/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="https://www.yuthon.com/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="https://www.yuthon.com/about/">
+        <li class="mobile-menu-item">About</li>
+      </a><a href="https://www.yuthon.com/resume/">
+        <li class="mobile-menu-item">Resume</li>
+      </a><a href="https://github.com/corenel">
+        <li class="mobile-menu-item">Works</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="https://www.yuthon.com/" class="logo">Yuthon&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/about/">About</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/resume/">Resume</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://github.com/corenel">Works</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Notes for Object Detection: One Stage Methods</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2018-12-31 </span>
+        <div class="post-category">
+            <a href="https://www.yuthon.com/categories/notes/"> Notes </a>
+            <a href="https://www.yuthon.com/categories/tutorials/"> Tutorials </a>
+            </div>
+          <span class="more-meta"> 9270 words </span>
+          <span class="more-meta"> 19 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#yolo">YOLO</a>
+<ul>
+<li><a href="#workflow">Workflow</a></li>
+<li><a href="#details">Details</a>
+<ul>
+<li><a href="#network-architecture">Network Architecture</a></li>
+<li><a href="#loss-function">Loss Function</a></li>
+</ul></li>
+<li><a href="#tricks">Tricks</a></li>
+<li><a href="#drawbacks">Drawbacks</a></li>
+</ul></li>
+<li><a href="#ssd">SSD</a>
+<ul>
+<li><a href="#workflow-1">Workflow</a></li>
+<li><a href="#details-1">Details</a>
+<ul>
+<li><a href="#choosing-scales-and-aspect-ratios-for-default-boxes">Choosing scales and aspect ratios for default boxes</a></li>
+<li><a href="#loss-function-1">Loss Function</a></li>
+<li><a href="#matching-strategy">Matching Strategy</a></li>
+<li><a href="#hard-negative-mining">Hard Negative Mining</a></li>
+<li><a href="#data-argumentation">Data argumentation</a></li>
+</ul></li>
+<li><a href="#tricks-1">Tricks</a>
+<ul>
+<li><a href="#smooth-l1-loss">Smooth L1 Loss</a></li>
+<li><a href="#atrous-convolution">Atrous Convolution</a></li>
+</ul></li>
+<li><a href="#deduction">Deduction</a></li>
+<li><a href="#drawbacks-1">Drawbacks</a></li>
+</ul></li>
+<li><a href="#yolov2">YOLOv2</a>
+<ul>
+<li><a href="#improvements-of-yolov2">Improvements of YOLOv2</a>
+<ul>
+<li><a href="#batch-normalization">Batch Normalization</a></li>
+<li><a href="#high-resolution-classifier">High Resolution Classifier</a></li>
+<li><a href="#convolutional-with-anchor-boxes">Convolutional  With  Anchor  Boxes</a></li>
+<li><a href="#dimension-clusters">Dimension Clusters</a></li>
+<li><a href="#direct-location-prediction">Direct location prediction</a></li>
+<li><a href="#fine-grained-features">Fine-Grained  Features</a></li>
+<li><a href="#multi-scale-training">Multi-Scale Training</a></li>
+<li><a href="#light-weight-base-model">Light-weight base model</a></li>
+</ul></li>
+<li><a href="#yolo9000">YOLO9000</a></li>
+</ul></li>
+<li><a href="#retinanet">RetinaNet</a></li>
+<li><a href="#yolov3">YOLOv3</a>
+<ul>
+<li><a href="#improvements">Improvements</a>
+<ul>
+<li><a href="#logistic-regression-for-confidence-scores">Logistic regression for confidence scores</a></li>
+<li><a href="#no-more-softmax-for-class-prediction">No more softmax for class prediction</a></li>
+<li><a href="#darknet-resnet-as-the-base-model">Darknet + ResNet as the base model</a></li>
+<li><a href="#multi-scale-prediction">Multi-scale prediction</a></li>
+<li><a href="#skip-layer-concatenation">Skip-layer concatenation</a></li>
+</ul></li>
+<li><a href="#failed-cases">Failed Cases</a>
+<ul>
+<li><a href="#focal-loss">Focal Loss</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#reference">Reference</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>In this post, we focus on two mainstreams of one-stage object detection methods: YOLO family and SSD family. Compared to two-stage methods (like R-CNN series), those models skip the region proposal stage and directly extract detection results from feature maps. For that reason, one-stage models are faster but at the cost of reduced accuracy.</p>
+
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Resource</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>YOLO</td>
+<td>[<a href="https://arxiv.org/abs/1506.02640">paper</a>] [<a href="https://github.com/pjreddie/darknet">code (darknet)</a>]</td>
+</tr>
+
+<tr>
+<td>YOLOv2 (YOLO 9000)</td>
+<td>[<a href="https://arxiv.org/abs/1612.08242">paper</a>] [<a href="https://github.com/pjreddie/darknet">code (darknet)</a>] [<a href="https://github.com/marvis/pytorch-yolo2">code (PyTorch)</a>]</td>
+</tr>
+
+<tr>
+<td>YOLOv3</td>
+<td>[<a href="https://arxiv.org/abs/1804.02767">paper</a>] [<a href="https://github.com/pjreddie/darknet">code (darknet)</a>] [<a href="https://github.com/ultralytics/yolov3">code (PyTorch)</a>]</td>
+</tr>
+
+<tr>
+<td>SSD</td>
+<td>[<a href="https://arxiv.org/abs/1512.02325">paper</a>] [<a href="https://github.com/weiliu89/caffe/tree/ssd">code (Caffe)</a>] [<a href="https://github.com/amdegroot/ssd.pytorch">code (PyTorch)</a>]</td>
+</tr>
+
+<tr>
+<td>SSD w/ MobileNet</td>
+<td>[<a href="https://github.com/chuanqi305/MobileNet-SSD">code (Caffe)</a>] [<a href="https://github.com/tensorflow/models/tree/master/research/object_detection">code (TensorFlow)</a>] [<a href="https://github.com/qfgaohao/pytorch-ssd">code (PyTorch)</a>]</td>
+</tr>
+
+<tr>
+<td>RetinaNet</td>
+<td>[<a href="https://arxiv.org/abs/1708.02002">paper</a>]</td>
+</tr>
+</tbody>
+</table>
+
+<p><a href="">R-CNN系列</a>的目标检测方法都是基于region的，也就是说，其检测流程需要分为两个阶段：</p>
+
+<ol>
+<li>使用Selective Search或者RPN来生成一定数量的稀疏的RoI</li>
+<li>使用classifier来对于生成的region proposal进行分类</li>
+</ol>
+
+<p>而one-stage的目标检测方法则不显式地生成region proposal，而是直接从目标可能出现的位置上进行密集采样，然后进行位置回归与类别判断。这么做能够节省生成region proposal的时间，因此相较于two-stage的方法更为简单愉快速，不过这么一来性能可能也会有所下降。</p>
+
+<h2 id="yolo">YOLO</h2>
+
+<p>YOLO (You Look Only Once)是当时第一个能够实时的目标检测方法，开创了one-stage方法的先河。YOLO这么快是因为它只预测有限个bounding box而不经过生成region proposal的步骤。</p>
+
+<h3 id="workflow">Workflow</h3>
+
+<ol>
+<li><p>在大型数据集（例如ImageNet）上用图像分类任务预训练一个CNN网络。</p></li>
+
+<li><p>对于一张输入图像，将其分为$S\times S$个cell。当某个物体的预测中心落在了一个cell中时，该cell对检测该物体是否真的在cell内负责。每个cell需要预测：</p>
+
+<ul>
+<li>$B$个bounding boxes。一个bounding box的信息包含了中心点坐标$(x,y)$和长宽$(w,h)$。其中$(x.y)$的坐标是相对于cell位置的，而且$(x,y,w,h)$都根据输入图像的大小进行归一化，也就是说其值域为$[0,1]$。</li>
+<li>一个cell内是否存在物体的置信度，其真值为$Pr(Object)\times IoU^{truth}_{pred}$。</li>
+<li>当物体落在cell内时，物体的类别概率$Pr(Class_i | Object)$。值得注意的是，虽然每个cell有$B​$个bounding box，但是每个cell只预测一组类别概率。</li>
+</ul></li>
+</ol>
+
+<p>总而言之，一张输入图像总共有$S \times S \times B$个bounding box，每个bounding box包含4个定位预测和1个置信度，另外每个cell还要预测$K$个类别概率。所以对于一张输入图像，总计需要预测$S\times S \times (5B+K)​$个预测值。这也是网络最后一层的输出数量。</p>
+
+<ol>
+<li>把预训练好的CNN网络的最后一层输出数量修改为$S\times S \times (5B+K)$，然后进行训练。</li>
+</ol>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/YOLO_the_model.png"/> <figcaption>
+            <h4>YOLO v1 整体流程 (Source: original paper)</h4>
+        </figcaption>
+</figure>
+
+
+<h3 id="details">Details</h3>
+
+<h4 id="network-architecture">Network Architecture</h4>
+
+<p>YOLO的网络结构与<a href="https://www.cs.unc.edu/~wliu/papers/GoogLeNet.pdf">GoogLeNet</a>相似，只不过GoogLeNet中的Inception模块被换成了简单的$3\times 3​$与$1\times 1​$卷积层，最后的FC层的输出维度被修改为$S\times S \times (5B+K)​$。</p>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/YOLO_the_architecture_2.png"/> <figcaption>
+            <h4>YOLO v1 网络结构 (Source: Lilian Weng&#39;s blog post)</h4>
+        </figcaption>
+</figure>
+
+
+<h4 id="loss-function">Loss Function</h4>
+
+<p>YOLO的损失函数氛围定位损失与分类损失两个部分。定位损失主要是bounding box预测位置与真值之间的offset，分类损失则是条件类别概率上的损失。这两者均为SSE (sum of squared error)，并且由两个缩放因子<code>$\lambda_\text{coord}$与$\lambda_\text{noobj}$</code>来进行权衡。<code>$\lambda_\text{coord}$</code>用来表示错判定位造成损失的重要程度，<code>$\lambda_\text{coord}$</code>则用来表示错判是否有物体的置信度造成的损失的重要程度。相比较而言，<code>$\lambda_\text{coord}$</code>会更加低一些，因为bounding box之内只存在背景的情况比有物体的更为常见。在原文中，<code>$\lambda_\text{coord}=5$</code>，同时<code>$\lambda_\text{noobj}=0.5$</code>。</p>
+
+<div>
+$$
+\begin{aligned}
+\mathcal{L}_\text{loc} &= \lambda_\text{coord} \sum_{i=0}^{S^2} \sum_{j=0}^B \mathbb{1}_{ij}^\text{obj} [(x_i - \hat{x}_i)^2 + (y_i - \hat{y}_i)^2 + (\sqrt{w_i} - \sqrt{\hat{w}_i})^2 + (\sqrt{h_i} - \sqrt{\hat{h}_i})^2 ] \\
+\mathcal{L}_\text{cls}  &= \sum_{i=0}^{S^2} \sum_{j=0}^B \big( \mathbb{1}_{ij}^\text{obj} + \lambda_\text{noobj} (1 - \mathbb{1}_{ij}^\text{obj})\big) (C_{ij} - \hat{C}_{ij})^2 + \sum_{i=0}^{S^2} \sum_{c \in \mathcal{C}} \mathbb{1}_i^\text{obj} (p_i(c) - \hat{p}_i(c))^2\\
+\mathcal{L} &= \mathcal{L}_\text{loc} + \mathcal{L}_\text{cls}
+\end{aligned}
+$$
+</div>
+
+<p>其中，</p>
+
+<ul>
+<li>$\mathbb{1}_{ij}^\text{obj}$表示第$i$个cell中的第$j$个bounding box是否是对该cell内的物体预测负责，即其与ground truth的IoU在相邻的bounding boxes里面是否是最大的</li>
+<li>$\mathbb{1}_{i}^\text{obj}$表示第$i$个cell内是否包含物体</li>
+<li>$C_{ij}$表示第$i$个cell的物体置信度的真值$Pr(Object)\times IoU^{truth}_{pred}$</li>
+<li>$\hat{C}_{ij}$表示第$i$个cell的物体置信度的预测值</li>
+<li>$C$表示所有类别的集合</li>
+<li>$p_i( c )$表示第$i$个cell包含类别$c\in C$的条件概率真值</li>
+<li>$p_i( c )$表示第$i$个cell所预测的包含类别$c\in C$的条件概率</li>
+</ul>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/YOLO_responsible_bbox.png"/> <figcaption>
+            <h4>YOLO v1中bounding box对cell内的物体负责 (Source: Lilian Weng&#39;s blog post)</h4>
+        </figcaption>
+</figure>
+
+
+<p>可以看出，YOLO所设计的损失函数，只有当物体出现在某个cell中时（即<code>$\mathbb{1}_{i}^\text{obj}=1$</code>），才惩罚其分类错误；同时，只有当某个bounding box对其所在的cell内的物体预测负责时（即<code>$\mathbb{1}_{ij}^\text{obj}=1$</code>），才惩罚其定位错误</p>
+
+<h3 id="tricks">Tricks</h3>
+
+<h3 id="drawbacks">Drawbacks</h3>
+
+<p>YOLO v1开one-stage目标检测方法之先河，速度快。但是由于其只能预测有限个bounding box，对于具有不规则形状的目标或者数量较多的小目标时，其性能就不行了。</p>
+
+<h2 id="ssd">SSD</h2>
+
+<p>继YOLO之后，SSD时第一个使用CNN的金字塔特征层级（pyramidal feature hierarchy）来实现对于多尺度目标检测的one-stage方法。</p>
+
+<p>具体地说，SSD使用在ImageNet上预训练的VGG-16来提取特征，然后增加了一系列的卷积层来逐步进行降采样，减小feature map的空间尺寸。SSD所增加的这一部分可以得到一个金字塔式的不同尺度的特征表示。从直觉上来说，前面的feature map空间尺寸大、粒度细，比较适合检测小目标；靠后的feature map空间尺寸小、粒度粗，比较适合检测大目标。通过在不同尺寸的feature maps上分别做检测，SSD能够检测不同尺度的物体。</p>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/SSD_architecture.png"/> <figcaption>
+            <h4>SSD的网络结构 (Source: Lilian Weng&#39;s blog post)</h4>
+        </figcaption>
+</figure>
+
+
+<h3 id="workflow-1">Workflow</h3>
+
+<ol>
+<li>在大型数据集（例如ImageNet）上用图像分类任务预训练一个CNN网络。</li>
+<li>在提取到的各个尺度的feature maps中，SSD在各个cell上预测目标相对于预定义的anchor boxes的偏移（与YOLO在各个cell上预测任意位置的bounding boxes不同）。每个cell都有一系列预定义的anchor boxes，每个anchor box相对于其所属的cell有固定的位置与大小所有的anchor boxes能够铺平整个feature map。</li>
+
+<li><p>由于不同层的feature maps有不同的感受野，其中的anchor boxes被缩放到一定的大小，使得一个feature map只负责一种尺寸的目标检测。</p></li>
+
+<li><p>在每个cell的$k$个anchor boxes上，SSD使用$3\times 3 \times p$的卷积来预测位置的4个offset与$c$个类别概率，也就是说，对于一张$m\times n$的feature map，总计产生$k\times m \times n \times (4+c)​$个预测值。</p></li>
+</ol>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/SSD_framework.png"/> <figcaption>
+            <h4>SSD检测示意图，不同尺寸的feature map负责不同尺度的目标检测。可以看出，狗只能在$4\times 4$这样粗粒度的feature map中被检测到，而猫只能在$8\times 8$这样细粒度的feature map中被检测到。 (Source: original paper)</h4>
+        </figcaption>
+</figure>
+
+
+<h3 id="details-1">Details</h3>
+
+<h4 id="choosing-scales-and-aspect-ratios-for-default-boxes">Choosing scales and aspect ratios for default boxes</h4>
+
+<p>在$m\times n$大小的第$\ell$层feature map的第$(i,j)$个cell上，可以根据层级$l$定义一个线性缩放比例$s_\ell$以及5个基本的anchor box纵横比$r$，以及1个当$r=1$时与层级$l$有关的特殊缩放因子$s&rsquo;_\ell$，也就是每个cell预定义了6个不同大小的anchor boxes。每个anchor box的$(x,y,w,h)​$均经过了归一化。</p>
+
+<ul>
+<li>层级$\ell \in [1,L]$，其空间尺寸为$n\times m$</li>
+<li>Cell位置$(i,j) \text{ where }i \in [1,n], j \in [1,m]$</li>
+<li>anchor box缩放因子<code>$s_\ell = s_\text{min} + \frac{s_\text{max} - s_\text{min}}{L - 1} (\ell - 1)$</code></li>
+<li>anchor box纵横比<code>$r = \{1, 2, 3, 1 / 2, 1 / 3\}$</code></li>
+<li>anchor box特殊缩放因子<code>$s'_\ell = \sqrt{s_\ell s_{\ell + 1}} \text{ when } r = 1$</code></li>
+<li>anchor box宽度<code>$w_\ell^r = s_\ell \sqrt{r}$</code></li>
+<li>anchor box高度<code>$h_\ell^r = s_\ell / \sqrt{r}$</code></li>
+<li>anchor box中心点坐标<code>$(x^i_\ell, y^j_\ell) = (\frac{i+0.5}{m}, \frac{j+0.5}{n})$</code></li>
+</ul>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/SSD_box_scales.png"/> <figcaption>
+            <h4>SSD缩放anchor box示意图。图中只显示了$r=1$的anchor box，取$L=6, s_\text{min}=0.2, s_\text{max}=0.9$ (Source: original paper)</h4>
+        </figcaption>
+</figure>
+
+
+<h4 id="loss-function-1">Loss Function</h4>
+
+<p>同YOLO类似，SSD的损失函数也由定位损失与分类损失两者组成：</p>
+
+<div>
+$$
+\mathcal{L} = \frac{1}{N}(\mathcal{L}_\text{cls} + \alpha \mathcal{L}_\text{loc})
+$$
+</div>
+
+<p>其中$1 / N$为匹配成功的bounding boxes数量，$\alpha$为平衡两个损失的系数，由交叉验证来确定其值。</p>
+
+<ul>
+<li>SSD的<strong>定位损失</strong>使用的是<a href="file:///Users/yuthon/Downloads/SmoothL1Loss.1.pdf">Smooth L1 Loss</a>，坐标变换使用的是<a href="">R-CNN的bounding box回归</a>中的方法。其中<code>$\mathbb{1}_{ij}^\text{match} $</code>表示第$i​$个预测的bounding box<code>$(p^i_x, p^i_y, p^i_w, p^i_h)$</code>是否与第$j​$个真值<code>$(g^j_x, g^j_y, g^j_w, g^j_h)$</code>在位置上相匹配。<code>$d^i_m, m\in\{x, y, w, h\}$</code>为预测值的校正项。</li>
+</ul>
+
+<div>
+\begin{aligned}
+    \mathcal{L}_\text{loc} &= \sum_{i,j} \sum_{m\in\{x, y, w, h\}} 
+        \mathbb{1}_{ij}^\text{match} 
+        L_1^\text{smooth}(d_m^i - t_m^j)^2 \\
+    t^j_x &= (g^j_x - p^i_x) / p^i_w \\
+    t^j_y &= (g^j_y - p^i_y) / p^i_h \\
+    t^j_w &= \log(g^j_w / p^i_w) \\
+    t^j_h &= \log(g^j_h / p^i_h)
+\end{aligned}
+</div>
+
+<ul>
+<li>SSD的<strong>分类损失</strong>使用了多类别的softmax函数。其中<code>$\mathbb{1}_{ij}^k \log(\hat{c}_i^k)$</code>表示第$i$个bounding box是否与第$j$个真值是否在类别$k$上相匹配。$pos$代表了与真值匹配上的bounding boxes，$neg$则表示其他的负样本。</li>
+</ul>
+
+<div>
+$$
+\mathcal{L}_\text{cls} = -\sum_{i \in \text{pos}} \mathbb{1}_{ij}^k \log(\hat{c}_i^k) - \sum_{i \in \text{neg}} \log(\hat{c}_i^0)\text{, where }\hat{c}_i^k = \text{softmax}(c_i^k)
+$$
+</div>
+
+<h4 id="matching-strategy">Matching Strategy</h4>
+
+<p>与YOLO只将与某一个ground truth拥有最高IoU的预测bounding box视为匹配的做法不同，SSD将anchor boxes与所有IoU超过阈值的ground truth进行匹配。文章宣称，这种做法能够使网络对多个有重叠的anchor boxes都给出高置信度，而不是只对其中一个具有最高IoU的给高置信度。</p>
+
+<h4 id="hard-negative-mining">Hard Negative Mining</h4>
+
+<p>SSD同时也使用了<a href="">与R-CNN类似的hard negative examples</a>来使用容易被误分类的负样本构建$neg​$集合。最终用以训练的正负样本比例大约在$1:3​$左右。这种方法能够是模型快速收敛，并且提升训练的稳定性。</p>
+
+<h4 id="data-argumentation">Data argumentation</h4>
+
+<p>SSD在数据扩增方面主要使用了random crop来时的模型能够对不同尺寸与性状的输入更为鲁棒。其输入图像为：</p>
+
+<ul>
+<li>整张原始尺寸的输入图像</li>
+<li>随机裁剪后的与目标有一定IoU（如$0.1$，$0.3$，$0.5$，$0.7$，$0.9$等）的patch</li>
+<li>完全随机裁剪后的patch</li>
+</ul>
+
+<p>这些随机裁剪的大小为$[0.1,1]$的原始尺寸以及$[1 / 2, 2]$的纵横比。如果ground truth的中心在patch中，则保留之。</p>
+
+<p>此外，SSD还使用了概率为$0.5$的随机水平翻转。</p>
+
+<h3 id="tricks-1">Tricks</h3>
+
+<h4 id="smooth-l1-loss">Smooth L1 Loss</h4>
+
+<div>
+$$
+\begin{aligned}
+L_1^\text{smooth}(x) &= 
+\begin{cases}
+    0.5 x^2             & \text{if } \vert x \vert < 1\\
+    \vert x \vert - 0.5 & \text{otherwise}
+\end{cases}
+\end{aligned}
+$$
+</div>
+
+<ul>
+<li>相比于L2 Loss，Smooth L1 Loss对于离群值更不敏感，离群值不会占据损失的主要部分，避免梯度出现大的波动；</li>
+<li>相比于L1 Loss，Smooth L1 Loss在$0$处有唯一导数，不会影响到收敛。</li>
+</ul>
+
+<h4 id="atrous-convolution">Atrous Convolution</h4>
+
+<p>SSD在conv6与conv7层中使用了<a href="https://arxiv.org/abs/1706.05587">Atrous convolution</a>，其能够通过空洞的方式，在不增加kernel参数量的情况下，增大卷积操作的感受野。</p>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/SSD_atrous_conv.jpeg"/> <figcaption>
+            <h4>SSD中的Atrous Convolution操作(Source: DeeplabV3)</h4>
+        </figcaption>
+</figure>
+
+
+<h3 id="deduction">Deduction</h3>
+
+<ul>
+<li>使用上文所述的数据扩增方法能显著改善mAP</li>
+<li>使用更多的feature maps能改善mAP</li>
+<li>使用更多的anchor box性状可以改善mAP</li>
+<li>使用Atrous卷积版本VGG-16可以改善mAP并提高速度</li>
+</ul>
+
+<h3 id="drawbacks-1">Drawbacks</h3>
+
+<h2 id="yolov2">YOLOv2</h2>
+
+<p>YOLOv2是原版YOLO的改进版本，YOLO9000则在YOLOv2的基础上使用了COCO数据集进行训练，并且使用了ImageNet中的9000个类别。</p>
+
+<h3 id="improvements-of-yolov2">Improvements of YOLOv2</h3>
+
+<h4 id="batch-normalization">Batch Normalization</h4>
+
+<p>在所有卷积层之后增加了BN层，对于收敛有很大帮助，提升了2%的mAP。</p>
+
+<h4 id="high-resolution-classifier">High Resolution Classifier</h4>
+
+<p>原版YOLO使用$224\times 224$的分辨率来预训练分类网络，而后将分辨率提升到$448\times 448$来训练检测网络。这使得网络既要从分类任务切换到检测任务，又要适应新的分辨率。YOLOv2则<u>在训练检测任务之前，先将$224\times 224$的网络以$448\times 448$的分辨率在ImageNet上进行10个epoch的分类任务fine-tuning</u>，让网络有时间来调整filters来适应新的分辨率。在这之后，再进行检测任务的fine-tuning，这样能够提升4%的mAP。</p>
+
+<h4 id="convolutional-with-anchor-boxes">Convolutional  With  Anchor  Boxes</h4>
+
+<p>YOLOv2放弃了用FC层在整个feature map上预测bounding boxes的位置，转而同Faster-RCNN一样，<u>使用卷积层来预测anchor boxes的位置offset</u>，以此来简化问题，并且使网络更容易学习。</p>
+
+<p>为此，YOLOv2针对网络结构作出了以下改动：</p>
+
+<ul>
+<li>去掉了一个pooling层，提升了最后一层卷积层输出的尺寸。</li>
+<li>为了让图像中心只有一个cell，把输入尺寸从$448\times 448$改成了$416\times 416$。中心只有1个cell而不是4个的好处在于，图像中的大物体的中心通常都会落在图像的中心上，预测的时候从1个cell出发预测位置较好一些。</li>
+<li>最终feature map的cell数量为$13\times 13$。</li>
+</ul>
+
+<p>与此同时，YOLOv2将类别预测与空间位置解耦了，不再由cell统一预测其内bounding boxes的类别，而是对每个anchor box都进行单独的预测。</p>
+
+<p>作出这些更改后，YOLOv2所预测的boxes数量从原先的98个一跃上升到了超过一千个。这使得mAP有略微下降（69.5 vs 69.2），但是召回率有很大提升（81% vs 88%）。</p>
+
+<h4 id="dimension-clusters">Dimension Clusters</h4>
+
+<p>为了让模型能够更快地学习到如何做出好的检测，YOLOv2没有像Faster R-CNN和SSD那样，手动设定anchor box dimension的prior，而是<u>在训练集上使用了k-means聚类来获取prior</u>。同时，为了避免anchor box的大小对于聚类距离的影响，使用IoU来计算距离：</p>
+
+<div>
+$$
+d(\text{box,centroid}) = 1 - \text{IoU}(\text{box,centroid})    
+$$
+</div>
+
+<p>经过实验发现，取$k=5​$是一个比较好的对recall与complexity的trade-off，此时在平均IoU上已经与hand-picked的9个anchor boxes相差无几。同时，VOC与COCO数据集上的聚类结果都表明，anchor box更加偏向于thinner and taller的，而且COCO上的比VOC上的要大一些。</p>
+
+<h4 id="direct-location-prediction">Direct location prediction</h4>
+
+<p>引入anchor box的另一个问题是模型训练在早期的不稳定性，这主要是由于预测<code>$(b_x,b_y)$</code>的不稳定性，这一不稳定性又来源于其预测位置的机制。RPN通过预测anchor box <code>$(x_a, y_a, w_a, h_a)$</code>的偏移值<code>$(t_x, t_y)$</code>来计算<code>$(b_x,b_y)$</code>：</p>
+
+<div>
+$$
+\begin{aligned}
+    b_x &= (t_x \times w_a) - x_a \\
+    b_y &= (t_y \times h_a) - y_a \\
+\end{aligned}
+$$
+</div>
+
+<p>这样会使得极端情况（<code>$t_x = 1$</code>或<code>$t_x = -1$</code>）下，预测的bounding box会整个偏移anchor box的宽度。如此一来，任何anchor box能够不管其所属的cell在哪，都能够偏移到图像的任何位置上，这显然是不可接受的。这种预测位置的任意性使得网络训练初期并不稳定。</p>
+
+<p><u>为了让预测的bounding box尽可能地约束在其所属的grid cell内，YOLOv2还是采用了原版YOLO的方法，使用logistic activation来约束偏移量在$[0,1]$内。</u></p>
+
+<div>
+$$
+\begin{aligned}
+    b_x &= \sigma(t_x) + c_x\\
+    b_y &= \sigma(t_y) + c_y\\
+    b_w &= p_w e^{t_w}\\
+    b_h &= p_h e^{t_h}\\
+    \text{Pr}(\text{object}) &\cdot \text{IoU}(b, \text{object}) = \sigma(t_o)
+\end{aligned}
+$$
+</div>
+
+<p>其中，<code>$(t_x, t_y, t_w, t_h, t_o)$</code>为网络对每个bounding box的5个预测值，<code>$(p_w, p_h)$</code>为anchor box的宽高，<code>$(c_x, c_y)$</code>为anchor box所配属的grid cell的左上顶点的坐标。在训练时，ground truth也可以由上式得到，误差依然采用SSE (Sum Squared Error)来计算。</p>
+
+<p>使用direct location prediction与dimension clusters后，YOLOv2比直接使用anchor boxes的版本在性能上提升了5%。</p>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/YOLOv2_direct_location_prediction.jpeg"/> <figcaption>
+            <h4>YOLOv2中的直接位置预测 (Source: original paper)</h4>
+        </figcaption>
+</figure>
+
+
+<h4 id="fine-grained-features">Fine-Grained  Features</h4>
+
+<p>不同于Faster R-CNN与SSD那样在不同尺寸的feature map上分别做检测，<u>YOLOv2增加了一层passthrough层，将之前的$26\times 26$的细粒度的feature map引入到最终输出的$13\times 13$的feature map中去</u>。具体地说，类似于ResNet的Identity Mapping，YOLOv2直接将之前的层的输出（$26\times 26 \times 512$的feature map）中邻近的特征从空间位置堆叠到了channel上，变成了$13\times 13 \times 2048$大小的feature map。然后，将这一feature连接到最后一层的输出上。这一方法提升了1%的性能。</p>
+
+<h4 id="multi-scale-training">Multi-Scale Training</h4>
+
+<p>由于YOLOv2采用了全卷积的结构，其网络输入的尺寸可以缩放。<u>为了让网络对于多尺度的目标都能够检测，YOLOv2每10个epoch就会改变输入尺寸。</u>由于网络从输入到输出降采样了32倍，所以输入尺寸的选择为<code>$\{320,352,\ldots,608\}$</code>。更小的输入尺寸意味着更快的速度，$228\times 228$的YOLOv2在精度上能与Fast R-CNN不相上下，而速度则达到了90FPS；而$544\times 544$的YOLOv2则能够在PASCAL VOC 2007数据集上达到78.6的mAP。</p>
+
+<h4 id="light-weight-base-model">Light-weight base model</h4>
+
+<p>为了进一步提升网络预测速度，YOLOv2将其基础网络换成了Darknet-19，由19层卷积层与5层max-pooling层组成。</p>
+
+<ul>
+<li>类似于VGG，使用$3\times 3$卷积，在pooling层之后倍增channels数量</li>
+<li><u>类似于NIN (Network In Network)，在$3\times 3​$卷积之间使用$1\times 1​$卷积来压缩特征表示</u>，并且使用global average pooling来做预测</li>
+</ul>
+
+<h3 id="yolo9000">YOLO9000</h3>
+
+<p>由于image-level的标签比box-level的标签更加容易获取与标注，该文章提出了一种将小型目标检测数据集与大型的分类数据集（如ImageNet）联合训练的方法，使得检测模型能够使用ImageNet上的大量类别。YOLO9000的名字就是从ImageNet中的前9000个类别中来的。</p>
+
+<p>两个数据集的label通常不互斥，而且目标检测数据集的labels一般更为宽泛，比如ImageNet上有&rdquo;Persian cat&rdquo;的label，而COCO数据集上只有&rdquo;cat&rdquo;的label。所以直接使用softmax是没有任何意义的。为了更有效地整合ImageNet的1000个细分类的labels以及COCO/PASCAL的少于100个的粗分类的labels，<u>YOLO9000使用了类似<a href="https://wordnet.princeton.edu/">WordNet</a>的树结构</u>。宽泛、粗分类的labels更加靠近根节点，细分类的labels则为叶节点，比如说&rdquo;Persian car&rdquo;就是“cat”的子节点。</p>
+
+<p>此时，类别的概率的计算沿着某一类别的节点到根节点的路径进行：</p>
+
+<div>
+$$
+\begin{aligned}
+    Pr(\text{persian cat | contain a physical object}) = & Pr(\text{persian cat | cat}) \\
+    & Pr(\text{cat | animal}) \\
+    & Pr(\text{animal | physical object}) \\
+    & Pr(\text{contain a physical object})
+\end{aligned}
+$$
+</div>
+
+<ul>
+<li>在联合训练中，如果输入图像来自于图像分类数据集，则只计算并反传分类损失。即找到属于该类别的置信度最高的bounding box来计算。同时，分类损失只反传到其本身以及之上的类别，其下的细分类别不反传。</li>
+<li>为了平衡数据样本数量，通过过采样COCO数据集，使得来自ImageNet的样本（9418类）出现概率仅为COCO的4倍</li>
+<li>使用$k=3​$的prior来减少输出的大小</li>
+</ul>
+
+<h2 id="retinanet">RetinaNet</h2>
+
+<p>(WIP)</p>
+
+<h2 id="yolov3">YOLOv3</h2>
+
+<p>正如其标题所说，YOLOv3是一个增加了大量tricks的增量更新的版本。相比于YOLOv2，YOLOv3精度更高、鲁棒性更强，但是为此在速度上做出了一定的妥协。</p>
+
+<h3 id="improvements">Improvements</h3>
+
+<h4 id="logistic-regression-for-confidence-scores">Logistic regression for confidence scores</h4>
+
+<p>YOLOv3使用logistic regression来预测每个bounding box的objectness score。也就是说，在<a href="#loss-function">YOLOv1与YOLOv2的loss function</a>的基础上，将分类损失<code>$\mathcal{L}_\text{cls}$</code>的度量由SSE变成了交叉熵。</p>
+
+<h4 id="no-more-softmax-for-class-prediction">No more softmax for class prediction</h4>
+
+<p>YOLOv1与YOLOv2是使用softmax来处理类别预测，而后从中找出最大的得分作为该bounding box的类别。这么做有一个问题，softmax是假设所有的类别都是互斥的且每个目标只属于单个类别，这在COCO数据集上没问题，但是如果数据集上包含了不互斥的lables（如Open Images Dataset中的Person与Women），那就不行了。</p>
+
+<p>YOLO9000给出的答案是使用WordNet那样的层级label结构，而YOLOv3则使用不同的逻辑回归器与阈值来预测不同个类别。训练时，则使用二值的交叉熵损失来衡量。如此一来，YOLOv3对于单目标多标签的问题也能解决。</p>
+
+<h4 id="darknet-resnet-as-the-base-model">Darknet + ResNet as the base model</h4>
+
+<p>YOLOv3将residual block引入了Darknet，提出了新的Darknet-53基础网络。在Darknet-53的基础上，YOLOv3为了检测任务又增加了53层，总计达到了106层。整个网络引入了许多新的已经被其他方法证明行之有效的模块，比如residual blocks、skip-connections以及upsampling。这也是YOLOv3比YOLOv2略慢的原因。</p>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/YOLOv3_architecture.png"/> <figcaption>
+            <h4>YOLOv3网络结构 (Source: Ayoosh Kathuria‘s blog post)</h4>
+        </figcaption>
+</figure>
+
+
+<h4 id="multi-scale-prediction">Multi-scale prediction</h4>
+
+<p>YOLOv3最为显著的改进就是其使用3种不同尺度进行检测。不同于YOLOv2只是将之前层的输出concat到最后一层上，YOLOv3直接在三种不同尺度的feature maps上做检测。具体地说，首先在82层（输出大小$13\times 13$），其次是94层（尺寸$26\times 26$），最后是在$106$层（尺寸$52\times 52$）。在每一层都有三种anchor boxes，总计有9种anchor boxes。</p>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/YOLOv3_multi_scale.png"/> <figcaption>
+            <h4>YOLOv3多尺度检测 (Source: Ayoosh Kathuria‘s blog post)</h4>
+        </figcaption>
+</figure>
+
+
+<h4 id="skip-layer-concatenation">Skip-layer concatenation</h4>
+
+<p>(WIP)</p>
+
+<h3 id="failed-cases">Failed Cases</h3>
+
+<h4 id="focal-loss">Focal Loss</h4>
+
+<p>作者尝试在YOLOv3中引入Focal Loss，但是反而使得mAP降低了2%。其推测的原因是YOLOv3已经将objectness predictions与conditional class predictions分开了，所以对于focal loss想要解决的问题，YOLOv3已经足够鲁棒了，不需要再额外增加focal loss。</p>
+
+<h2 id="reference">Reference</h2>
+
+<ul>
+<li><a href="Speed/accuracy trade-offs for modern convolutional object detectors">Speed/accuracy trade-offs for modern convolutional object detectors</a></li>
+<li><a href="https://blog.paperspace.com/how-to-implement-a-yolo-object-detector-in-pytorch/">How to implement a YOLO (v3) object detector from scratch in PyTorch</a></li>
+<li><a href="https://towardsdatascience.com/review-deeplabv3-atrous-convolution-semantic-segmentation-6d818bfd1d74">Review: DeepLabv3  -  Atrous Convolution (Semantic Segmentation)</a></li>
+<li><a href="https://towardsdatascience.com/yolo-v3-object-detection-53fb7d3bfe6b">What’s new in YOLO v3?</a></li>
+</ul>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Yusu Pan</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2018-12-31
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">License</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="https://www.yuthon.com/tags/object-detection/">Object Detection</a>
+          <a href="https://www.yuthon.com/tags/yolo/">YOLO</a>
+          <a href="https://www.yuthon.com/tags/ssd/">SSD</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="https://www.yuthon.com/post/tutorials/from-progan-to-stylegan/">
+            <span class="next-text nav-default">From ProGAN to StyleGAN</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'yuthons-blog';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xxdsox@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/5682817" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://twitter.com/corenel" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://www.facebook.com/xxdsox" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://github.com/corenel" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/pan-yu-su" class="iconfont icon-zhihu" title="zhihu"></a>
+  <a href="https://www.yuthon.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
+</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://www.yuthon.com/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      TeX: {equationNumbers: {autoNumber: "AMS"}},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script type="text/javascript" async src="https://www.yuthon.com/lib/mathjax/math-code.js"></script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-76233259-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

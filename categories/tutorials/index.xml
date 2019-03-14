@@ -8,10 +8,19 @@
     <language>en-us</language>
     <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
 </copyright>
-    <lastBuildDate>Mon, 26 Feb 2018 19:42:13 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 31 Dec 2018 21:45:13 +0800</lastBuildDate>
     
 	<atom:link href="https://www.yuthon.com/categories/tutorials/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Notes for Object Detection: One Stage Methods</title>
+      <link>https://www.yuthon.com/post/tutorials/notes-for-object-detection-one-stage-methods/</link>
+      <pubDate>Mon, 31 Dec 2018 21:45:13 +0800</pubDate>
+      
+      <guid>https://www.yuthon.com/post/tutorials/notes-for-object-detection-one-stage-methods/</guid>
+      <description>&lt;p&gt;In this post, we focus on two mainstreams of one-stage object detection methods: YOLO family and SSD family. Compared to two-stage methods (like R-CNN series), those models skip the region proposal stage and directly extract detection results from feature maps. For that reason, one-stage models are faster but at the cost of reduced accuracy.&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>From ProGAN to StyleGAN</title>
