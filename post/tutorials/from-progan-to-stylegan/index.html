@@ -52,7 +52,7 @@
 
 <meta itemprop="datePublished" content="2018-02-26T19:42:13&#43;08:00" />
 <meta itemprop="dateModified" content="2018-12-31T19:42:13&#43;08:00" />
-<meta itemprop="wordCount" content="6015">
+<meta itemprop="wordCount" content="6013">
 
 
 
@@ -138,7 +138,7 @@
             <a href="https://www.yuthon.com/categories/notes/"> Notes </a>
             <a href="https://www.yuthon.com/categories/tutorials/"> Tutorials </a>
             </div>
-          <span class="more-meta"> 6015 words </span>
+          <span class="more-meta"> 6013 words </span>
           <span class="more-meta"> 13 mins read </span>
         
       </div>
@@ -146,7 +146,7 @@
 
     <div class="post-toc" id="post-toc">
   <h2 class="post-toc-title">Contents</h2>
-  <div class="post-toc-content always-active">
+  <div class="post-toc-content">
     <nav id="TableOfContents">
 <ul>
 <li>
@@ -700,7 +700,7 @@ $$
 
 <p>如果像传统的cGANs及其衍生版本那样，只靠输入向量自身控制视觉特征，这种能力是有限的，因为其还要受到训练数据的概率密度分布的影响。训练数据中如果某一类出现得多一些，那么输入向量中的值就更可能被映射到这一类上面。这就导致了模型所控制的特征是耦合的（coupled）或者说是纠缠的（entangled），模型并不能单独控制输入向量的某一部分的映射。但是通过Mapping Network将输入向量映射为另外的中间表示，则不用服从训练数据集的分布，并且能够在一定程度上减少特征之间的相关性。</p>
 
-<p>Mapping Network由8层FC层组成，输入为随机向量$\mathbf{z} \in \mathcal{Z}​$，输出为中间表示$\mathbf{w} \in \mathcal{W}​$，两者维度均为$512\times 1​$。</p>
+<p>Mapping Network由8层FC层组成，输入为随机向量$\mathbf{z} \in \mathcal{Z}$，输出为中间表示$\mathbf{w} \in \mathcal{W}$，两者维度均为$512\times 1$。</p>
 
 <figure class="zoomable">
     <img src="https://www.yuthon.com/images/StyleGAN_mapping_network.png"/> <figcaption>
@@ -755,9 +755,9 @@ $$
 </div>
 
 <ol>
-<li>对卷积层的输出进行Instance Normalization，也就是将输出的每个通道都进行归一化，得到$\frac{x_i - \mu(x_i)}{\sigma(x_i)}$</li>
-<li>对输入的中间表示$\mathbf{w}$（维度$512$）通过一个FC层$A$转换为针对$n$个通道的scale ($y<em>{s,i}$)与bias ($y</em>{b,i}$)，维度为$2n$</li>
-<li>通过第2部得到的scale与bias，对于第1步得到的归一化输出的每个通道都进行shift。这种操作相当于对卷积层的每个滤波器的输出进行加权平均，而这个权重是可学习的。通过训练，使得$\mathbf{w}​$所代表的权重能够被转化为视觉表示。</li>
+<li>对卷积层的输出进行Instance Normalization，也就是将输出的每个通道都进行归一化，得到<code>$\frac{x_i - \mu(x_i)}{\sigma(x_i)}$</code></li>
+<li>对输入的中间表示$\mathbf{w}$（维度$512$）通过一个FC层$A$转换为针对$n$个通道的scale (<code>$y_{s,i}$</code>)与bias (<code>$y_{b,i}$</code>)，维度为$2n$</li>
+<li>通过第2部得到的scale与bias，对于第1步得到的归一化输出的每个通道都进行shift。这种操作相当于对卷积层的每个滤波器的输出进行加权平均，而这个权重是可学习的。通过训练，使得$\mathbf{w}$所代表的权重能够被转化为视觉表示。</li>
 </ol>
 
 <figure class="zoomable">
@@ -1009,7 +1009,8 @@ $$
       messageStyle: 'none'
     };
   </script>
-  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+  <script type="text/javascript" async src="https://www.yuthon.com/lib/mathjax/math-code.js"></script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 
 
 <script type="application/javascript">
