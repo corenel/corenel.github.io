@@ -247,6 +247,15 @@
     </item>
     
     <item>
+      <title>Notes for CS231n Recurrent Neural Network</title>
+      <link>https://www.yuthon.com/post/tutorials/notes-for-cs231n-rnn/</link>
+      <pubDate>Sun, 30 Oct 2016 14:59:17 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/tutorials/notes-for-cs231n-rnn/</guid>
+      <description>从 RNN 开始, CS231n 的 Lecture Notes 就没有了, 因此我根据上课时的 Slides 整理了一些需要重视的知识点. 还可以参考这些文章或是视频来加深理解。 Lecture 10 Introduction Recurrent Networks offer a lot of flexibility: one to one: Vanilla Neural Networks one to many: e.g. Image Captioning (image -&amp;gt; sequence of words) many to one: e.g. Sentiment Classification (sequence of words -&amp;gt; sentiment) many to many: e.g. Machine</description>
+    </item>
+    
+    <item>
       <title>Traffic Prediction Using LSTM</title>
       <link>https://www.yuthon.com/post/projects/traffic-prediction-using-lstm/</link>
       <pubDate>Sun, 30 Oct 2016 13:53:32 +0000</pubDate>
@@ -272,6 +281,96 @@
       
       <guid>https://www.yuthon.com/post/practices/cuda-and-tensorflow-installation-on-ubuntu-16-04/</guid>
       <description>&lt;p&gt;昨天折腾了一个下午开发环境的配置，记录一下其中遇到的坑。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Notes for CS231n Convolutional Neural Network</title>
+      <link>https://www.yuthon.com/post/tutorials/notes-for-cs231n-cnn/</link>
+      <pubDate>Wed, 19 Oct 2016 11:06:30 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/tutorials/notes-for-cs231n-cnn/</guid>
+      <description>本文主要对于 CS231n 课程自带的 Lecture Notes 的一些补充与总结. 建议先看原版的 Lecture Notes，或者可以看知乎专栏中的中文翻译。 另外, 本文主要根据讲课的 Slides 上的顺序来, 与 Lecture Notes 的顺序略有不同. Lecture 7 Introduction CNN 主要有以下的层(layer</description>
+    </item>
+    
+    <item>
+      <title>Notes for CS231n Neural Network</title>
+      <link>https://www.yuthon.com/post/tutorials/notes-for-cs231n-nn/</link>
+      <pubDate>Sun, 16 Oct 2016 21:04:26 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/tutorials/notes-for-cs231n-nn/</guid>
+      <description>本文主要对于 CS231n 课程自带的 Lecture Notes 的一些补充与总结. 建议先看原版的 Lecture Notes或者可以看知乎专栏中的中文翻译: 另外, 本文主要根据讲课的 Slides 上的顺序来, 与 Lecture Notes 的顺序略有不同. Lecture 5 Activation Functions 课程中主要讲了Sigmoid</description>
+    </item>
+    
+    <item>
+      <title>Notes for Machine Learning - Week 6</title>
+      <link>https://www.yuthon.com/post/tutorials/coursera-machine-learning-week-6/</link>
+      <pubDate>Sat, 10 Sep 2016 15:18:41 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/tutorials/coursera-machine-learning-week-6/</guid>
+      <description>&lt;h1 id=&#34;advice-for-applying-machine-learning&#34;&gt;Advice for Applying Machine Learning&lt;/h1&gt;
+
+&lt;h2 id=&#34;evaluating-a-learning-algorithm&#34;&gt;Evaluating a Learning Algorithm&lt;/h2&gt;
+
+&lt;h3 id=&#34;deciding-what-to-try-next&#34;&gt;Deciding What to Try Next&lt;/h3&gt;
+
+&lt;p&gt;Errors in your predictions can be troubleshooted by:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Getting more training examples&lt;/li&gt;
+&lt;li&gt;Trying smaller sets of features&lt;/li&gt;
+&lt;li&gt;Trying additional features&lt;/li&gt;
+&lt;li&gt;Trying adding polynomial features&lt;/li&gt;
+&lt;li&gt;Increasing or decreasing $\lambda$&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Don&amp;rsquo;t just pick one of these avenues at random. We&amp;rsquo;ll explore diagnostic techniques for choosing one of the above solutions in the following sections.&lt;/p&gt;
+
+&lt;p&gt;In the next few sections, We&amp;rsquo;ll first talk about how evaluate your learning algorithms and after that we&amp;rsquo;ll talk about some of these diagnostics which will hopefully let you much more effectively select more of the useful things to try mixing if your goal to improve the machine learning system.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Notes for Machine Learning - Week 5</title>
+      <link>https://www.yuthon.com/post/tutorials/coursera-machine-learning-week-5/</link>
+      <pubDate>Wed, 17 Aug 2016 11:57:03 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/tutorials/coursera-machine-learning-week-5/</guid>
+      <description>Neural Networks: Learning Cost Function and Backpropagation Cost Function Let&amp;rsquo;s first define a few variables that we will need to use: $L$ = total number of layers in the network $s_l$ = number of units (not counting bias unit) in layer $l$ $K$ = number of output units/classes Recall that the cost function for regularized logistic regression was: $J(\theta) = - \frac{1}{m} \sum_{i=1}^m \large[ y^{(i)}\ \log (h_\theta (x^{(i)})) + (1 - y^{(i)})\ \log (1 - h_\theta(x^{(i)}))\large] + \frac{\lambda}{2m}\sum_{j=1}^n \theta_j^2$ For neural networks, it is going to be slightly more complicated: $J(\Theta) = - \frac{1}{m} \sum_{i=1}^m \sum_{k=1}^K \left[y^{(i)}_k \log ((h_\Theta (x^{(i)}))_k)</description>
+    </item>
+    
+    <item>
+      <title>Notes for Machine Learning - Week 4</title>
+      <link>https://www.yuthon.com/post/tutorials/coursera-machine-learning-week-4/</link>
+      <pubDate>Mon, 15 Aug 2016 17:05:54 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/tutorials/coursera-machine-learning-week-4/</guid>
+      <description>Neural Networks: Representation Motivations Non-linear Hypotheses Performing linear regression with a complex set of data with many features is very unwieldy. For 100 features, if we wanted to make them quadratic we would get 5050 resulting new features. We can approximate the growth of the number of new features we get with all quadratic terms with $\mathcal{O}(n^2/2)$. And if you wanted to include all cubic terms in your hypothesis, the features would grow asymptotically at $\mathcal{O}(n^3)$. These are very steep growths, so as the number of our features increase, the number of quadratic or cubic features increase very rapidly and</description>
+    </item>
+    
+    <item>
+      <title>Notes for Machine Learning - Week 3</title>
+      <link>https://www.yuthon.com/post/tutorials/coursera-machine-learning-week-3/</link>
+      <pubDate>Fri, 05 Aug 2016 12:16:08 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/tutorials/coursera-machine-learning-week-3/</guid>
+      <description>Logistic Regression Classification and Representation Classification Calssification Problem $y\in {0,1}$ 0: &amp;ldquo;Negative Class&amp;rdquo;, 负类 1: &amp;ldquo;Positive Class&amp;rdquo;, 正类 One method is to use linear regression and map all predictions greater than 0.5 as a 1 and all less than 0.5 as a 0. This method doesn&amp;rsquo;t work well because classification is not actually a linear function. Logistic Regression (逻辑回归) : $0\le h_\theta \le 1$ Hypothesis Representation Logistic Regression Model $h_\theta (x) = \frac{1}{1+e^{-\theta ^T x}}​$ Want $0\le h_\theta(x)\le 1$ $h_\theta (x) = g(\theta ^T x)$ $g(z) = \frac{1}{1+e^{-z}}$ Called</description>
+    </item>
+    
+    <item>
+      <title>Notes for Machine Learning - Week 2</title>
+      <link>https://www.yuthon.com/post/tutorials/coursera-machine-learning-week-2/</link>
+      <pubDate>Wed, 27 Jul 2016 10:30:35 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/tutorials/coursera-machine-learning-week-2/</guid>
+      <description>Linear Regression with Multiple Variables Multivariate Linear Regression Multiple features (variables) $n$ = number of features $x^{(i)}$ = input (features) of $i^{th}$ training example. $x^{(i)}_j$ = value of feature $j$ in $i^{th}$ training example. Hypotesis Previously: $h_\theta (x) = \theta_0 + \theta_1 x$ $h_\theta (x) = \theta_0 + \theta_1 x_1 + \theta_2 x_2 + \cdots + \theta_n x_n$ For convenience of notation, define $x_0=1$ $x=\begin{bmatrix}x_0 \\ x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix}, \theta = \begin{bmatrix}\theta_0 \\ \theta_1 \\ \theta_2 \\ \vdots \\ \theta_n \end{bmatrix}, h_\theta (x) = \theta^T x​$ Gradient Descent for Multiple Variables Hypothesis: $h_\theta(x)=\theta^Tx=\theta_0</description>
+    </item>
+    
+    <item>
+      <title>Notes for Machine Learning - Week 1</title>
+      <link>https://www.yuthon.com/post/tutorials/coursera-machine-learning-week-1/</link>
+      <pubDate>Tue, 26 Jul 2016 11:55:36 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/tutorials/coursera-machine-learning-week-1/</guid>
+      <description>Linear Regression with One Variable Model and Cost Function Model Representation Supervised Learning (监督学习): Given the &amp;ldquo;right answer&amp;rdquo; for each example in the data. Regression Problem (回归问题): Predict real-valued output. Classification Problem (分类问题): Predict discrete-valued output. Training set (训练集) m: number of training examples x&amp;rsquo;s: &amp;ldquo;input&amp;rdquo; variable / features y&amp;rsquo;s: &amp;ldquo;output&amp;rdquo; variable / &amp;ldquo;target&amp;rdquo; variable $(x, y)$: one training example $(x^i, y^i)$: $i^{th}$ training example Training Set -&amp;gt; Learning Algorithm -&amp;gt; h(hypothesis, 假设) h is a</description>
     </item>
     
     <item>

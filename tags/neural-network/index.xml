@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Neural Network on Yuthon&#39;s Blog</title>
+    <link>https://www.yuthon.com/tags/neural-network/</link>
+    <description>Recent content in Neural Network on Yuthon&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
+</copyright>
+    <lastBuildDate>Sun, 16 Oct 2016 21:04:26 +0000</lastBuildDate>
+    
+	<atom:link href="https://www.yuthon.com/tags/neural-network/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Notes for CS231n Neural Network</title>
+      <link>https://www.yuthon.com/post/tutorials/notes-for-cs231n-nn/</link>
+      <pubDate>Sun, 16 Oct 2016 21:04:26 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/tutorials/notes-for-cs231n-nn/</guid>
+      <description>本文主要对于 CS231n 课程自带的 Lecture Notes 的一些补充与总结. 建议先看原版的 Lecture Notes或者可以看知乎专栏中的中文翻译: 另外, 本文主要根据讲课的 Slides 上的顺序来, 与 Lecture Notes 的顺序略有不同. Lecture 5 Activation Functions 课程中主要讲了Sigmoid</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -52,7 +52,7 @@
 
 <meta itemprop="datePublished" content="2018-12-31T21:45:13&#43;08:00" />
 <meta itemprop="dateModified" content="2018-12-31T21:45:13&#43;08:00" />
-<meta itemprop="wordCount" content="9270">
+<meta itemprop="wordCount" content="10657">
 
 
 
@@ -138,8 +138,8 @@
             <a href="https://www.yuthon.com/categories/notes/"> Notes </a>
             <a href="https://www.yuthon.com/categories/tutorials/"> Tutorials </a>
             </div>
-          <span class="more-meta"> 9270 words </span>
-          <span class="more-meta"> 19 mins read </span>
+          <span class="more-meta"> 10657 words </span>
+          <span class="more-meta"> 22 mins read </span>
         
       </div>
     </header>
@@ -196,7 +196,11 @@
 </ul></li>
 <li><a href="#yolo9000">YOLO9000</a></li>
 </ul></li>
-<li><a href="#retinanet">RetinaNet</a></li>
+<li><a href="#retinanet">RetinaNet</a>
+<ul>
+<li><a href="#focal-loss">Focal Loss</a></li>
+<li><a href="#featureized-image-pyrmaid">Featureized Image Pyrmaid</a></li>
+</ul></li>
 <li><a href="#yolov3">YOLOv3</a>
 <ul>
 <li><a href="#improvements">Improvements</a>
@@ -209,8 +213,11 @@
 </ul></li>
 <li><a href="#failed-cases">Failed Cases</a>
 <ul>
-<li><a href="#focal-loss">Focal Loss</a></li>
+<li><a href="#anchor-box-x-y-offset-predictions">Anchor box $x,y$ offset predictions</a></li>
+<li><a href="#linear-x-y-predictions-instead-of-logistic">Linear $x,y$ predictions instead of logistic</a></li>
+<li><a href="#focal-loss-1">Focal Loss</a></li>
 </ul></li>
+<li><a href="#benchmark">Benchmark</a></li>
 </ul></li>
 <li><a href="#reference">Reference</a></li>
 </ul></li>
@@ -257,7 +264,7 @@
 
 <tr>
 <td>RetinaNet</td>
-<td>[<a href="https://arxiv.org/abs/1708.02002">paper</a>]</td>
+<td>[<a href="https://arxiv.org/abs/1708.02002">paper</a>] [<a href="https://github.com/yhenon/pytorch-retinanet">code (PyTorch)</a>]</td>
 </tr>
 </tbody>
 </table>
@@ -455,7 +462,7 @@ $$
 
 <h4 id="hard-negative-mining">Hard Negative Mining</h4>
 
-<p>SSD同时也使用了<a href="">与R-CNN类似的hard negative examples</a>来使用容易被误分类的负样本构建$neg​$集合。最终用以训练的正负样本比例大约在$1:3​$左右。这种方法能够是模型快速收敛，并且提升训练的稳定性。</p>
+<p>SSD同时也使用了<a href="">与R-CNN类似的hard negative examples</a>来使用容易被误分类的负样本构建$neg$集合。最终用以训练的正负样本比例大约在$1:3$左右。这种方法能够是模型快速收敛，并且提升训练的稳定性。</p>
 
 <h4 id="data-argumentation">Data argumentation</h4>
 
@@ -640,11 +647,79 @@ $$
 
 <h2 id="retinanet">RetinaNet</h2>
 
-<p>(WIP)</p>
+<h3 id="focal-loss">Focal Loss</h3>
+
+<p>目标检测的一大难题是，没有物体的背景与有物体的前景之间极端的数量不平衡的问题。RetinaNet提出了<strong>Focal Loss</strong>来给难以训练、容易误分类的样本（例如拥有复杂纹理的背景或者只包含了部分物体的样本）更高的权重，而给那些容易的样本（如完全空无物体的背景）更低的权重。</p>
+
+<p>二分类问题的交叉熵损失定义如下：</p>
+
+<div>
+$$
+\text{CE}(p, y) = -y\log p - (1-y)\log(1-p)
+$$
+</div>
+
+<p>其中<code>$y\in\{0,1\}$</code>表示该bounding box是否包含物体的ground truth label，$p\in[0,1]​$则表示预测是否有物体的置信度。</p>
+
+<p>令</p>
+
+<div>
+$$
+p_t = \begin{cases}
+p    & \text{if } y = 1\\
+1-p  & \text{otherwise}
+\end{cases}
+$$
+</div>
+
+<p>则有</p>
+
+<div>
+$$
+\text{CE}(p, y)=\text{CE}(p_t) = -\log p_t
+$$
+</div>
+
+<p>容易分类的样本一般具有较高的物体置信度，<code>$p_t \gg 0.5$</code>。也就是说当$y=0$时，$p \to 0$；当$y=1$时，$p \to 1$。这可能会导致loss出现非平凡的量级。Focal Loss在交叉熵损失中显式地增加了一个权重因子<code>$(1-p_t)^\gamma, \gamma \geq 0$</code>，使得当<code>$p_t$</code>变大时，该权重会减小，从而使得容易样本被降权。</p>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/RetinaNet_focal_loss.png"/> <figcaption>
+            <h4>Focal Loss与原始交叉熵损失 (Source: original paper)</h4>
+        </figcaption>
+</figure>
+
+
+<p>此外，为了更好的控制权重函数的形状，Focal Loss还加了一个系数$\alpha$来平衡。一般取$\alpha=0.25, \gamma =2$。</p>
+
+<div>
+$$
+\text{FL}(p_t) = -\alpha (1-p_t)^\gamma \log p_t
+$$
+</div>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/RetinaNet_focal_loss_plot.png"/> <figcaption>
+            <h4>不同$\alpha$与$\gamma$下的Focal Loss (Source: Lilian Weng&#39;s blog post)</h4>
+        </figcaption>
+</figure>
+
+
+<h3 id="featureized-image-pyrmaid">Featureized Image Pyrmaid</h3>
+
+<p>RetinaNet还采用了</p>
+
+<p>(W.I.P.)</p>
 
 <h2 id="yolov3">YOLOv3</h2>
 
 <p>正如其标题所说，YOLOv3是一个增加了大量tricks的增量更新的版本。相比于YOLOv2，YOLOv3精度更高、鲁棒性更强，但是为此在速度上做出了一定的妥协。</p>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/YOLOv3_benchmark.png"/> <figcaption>
+            <h4>YOLOv3性能 (Source: Ayoosh Kathuria‘s blog post)</h4>
+        </figcaption>
+</figure>
+
 
 <h3 id="improvements">Improvements</h3>
 
@@ -671,7 +746,24 @@ $$
 
 <h4 id="multi-scale-prediction">Multi-scale prediction</h4>
 
-<p>YOLOv3最为显著的改进就是其使用3种不同尺度进行检测。不同于YOLOv2只是将之前层的输出concat到最后一层上，YOLOv3直接在三种不同尺度的feature maps上做检测。具体地说，首先在82层（输出大小$13\times 13$），其次是94层（尺寸$26\times 26$），最后是在$106$层（尺寸$52\times 52$）。在每一层都有三种anchor boxes，总计有9种anchor boxes。</p>
+<p>YOLOv3最为显著的改进就是其使用3种不同尺度进行检测。不同于YOLOv2只是将之前层的输出concat到最后一层上，YOLOv3直接用$1\times 1$卷积在三种不同尺度的feature maps上做检测。</p>
+
+<p>具体地说，假设输入尺寸为$416\times 416$，YOLOv3的检测在3个尺度展开：</p>
+
+<ul>
+<li>82层：尺寸$13\times 13$，缩小$32$倍，用以检测大物体</li>
+<li>94层：尺寸$26\times 26$，缩小$16$，用以检测中等大小的物体</li>
+<li>$106$层（尺寸$52\times 52$，缩小$8​$倍，用以检测小物体</li>
+</ul>
+
+<p>在每一层都有三种anchor boxes，总计有9种anchor boxes。卷积核的大小为$1\times 1 \times (B \times(5+C))$，即每个cell上预测$B$个bounding box，每个bounding box含有4个位置信息、1个物体是否存在的置信度以及$C$类的类别概率。</p>
+
+<p>这种多尺度的预测，使得YOLOv3在每张图像上预测的bounding boxes数量远远多于YOLOv2。</p>
+
+<ul>
+<li>YOLOv2只在最后一层进行预测，每个cell预测5个bounding boxes，总计$13\times 13 \times 5 = 845$个</li>
+<li>YOLOv3在三个尺度进行预测，每个cell预测3个bounding boxes，总计$(13^2+26^2+52^2)\times 3=10647$个</li>
+</ul>
 
 <figure class="zoomable">
     <img src="https://www.yuthon.com/images/YOLOv3_multi_scale.png"/> <figcaption>
@@ -682,13 +774,32 @@ $$
 
 <h4 id="skip-layer-concatenation">Skip-layer concatenation</h4>
 
-<p>(WIP)</p>
+<p>同样地，YOLOv3在两个尺度的检测之间增加了跨层的连接，后面的层通过<code>Upsample</code>层扩大尺寸与前面的层在通道上进行concat。这样能够提升对小物体的检测性能。</p>
 
 <h3 id="failed-cases">Failed Cases</h3>
 
-<h4 id="focal-loss">Focal Loss</h4>
+<h4 id="anchor-box-x-y-offset-predictions">Anchor box $x,y$ offset predictions</h4>
+
+<p>直接预测anchor box的实际$(x,y)$偏移（相当于已经乘上了$w$与$h$），这样会降低模型稳定性。</p>
+
+<h4 id="linear-x-y-predictions-instead-of-logistic">Linear $x,y$ predictions instead of logistic</h4>
+
+<p>直接使用线性回归而不是logistic回归来预测$(x,y)$偏移，会使mAP下降好几个点。</p>
+
+<h4 id="focal-loss-1">Focal Loss</h4>
 
 <p>作者尝试在YOLOv3中引入Focal Loss，但是反而使得mAP降低了2%。其推测的原因是YOLOv3已经将objectness predictions与conditional class predictions分开了，所以对于focal loss想要解决的问题，YOLOv3已经足够鲁棒了，不需要再额外增加focal loss。</p>
+
+<h3 id="benchmark">Benchmark</h3>
+
+<p>在COCO数据集上，如果采用更加严格的IoU overlap限制（如<code>$\text{AP}_75$</code>），则YOLOv3在性能上就比不过RetinaNet。这是因为更加严格的IoU overlap限制，要求预测的bounding boxes与ground truth在对齐上做得更好。如果IoU低于限制的阈值，则被视为是定位错误，并被标记为false positive，然后被reject掉。YOLOv3在这一点上比不过RetinaNet。</p>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/YOLOv3_benchmark_2.png"/> <figcaption>
+            <h4>YOLOv3在COCO数据集上的性能 (Source: original paper)</h4>
+        </figcaption>
+</figure>
+
 
 <h2 id="reference">Reference</h2>
 

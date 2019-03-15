@@ -8,10 +8,37 @@
     <language>en-us</language>
     <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
 </copyright>
-    <lastBuildDate>Tue, 25 Oct 2016 20:53:50 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 19 Oct 2016 11:06:30 +0000</lastBuildDate>
     
 	<atom:link href="https://www.yuthon.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Convolutional Neural Network</title>
+      <link>https://www.yuthon.com/tags/convolutional-neural-network/</link>
+      <pubDate>Wed, 19 Oct 2016 11:06:30 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/convolutional-neural-network/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Coursera</title>
+      <link>https://www.yuthon.com/tags/coursera/</link>
+      <pubDate>Sat, 10 Sep 2016 15:18:41 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/coursera/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Cs231n</title>
+      <link>https://www.yuthon.com/tags/cs231n/</link>
+      <pubDate>Sun, 30 Oct 2016 14:59:17 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/cs231n/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Cuda</title>
@@ -113,11 +140,29 @@
     </item>
     
     <item>
+      <title>Machine Learning</title>
+      <link>https://www.yuthon.com/tags/machine-learning/</link>
+      <pubDate>Sat, 10 Sep 2016 15:18:41 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/machine-learning/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Mask R Cnn</title>
       <link>https://www.yuthon.com/tags/mask-r-cnn/</link>
       <pubDate>Thu, 27 Apr 2017 12:55:33 +0000</pubDate>
       
       <guid>https://www.yuthon.com/tags/mask-r-cnn/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Neural Network</title>
+      <link>https://www.yuthon.com/tags/neural-network/</link>
+      <pubDate>Sun, 16 Oct 2016 21:04:26 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/neural-network/</guid>
       <description></description>
     </item>
     
@@ -154,6 +199,15 @@
       <pubDate>Mon, 16 May 2016 20:20:08 +0000</pubDate>
       
       <guid>https://www.yuthon.com/tags/os-x/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Recurrent Neural Network</title>
+      <link>https://www.yuthon.com/tags/recurrent-neural-network/</link>
+      <pubDate>Sun, 30 Oct 2016 14:59:17 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/recurrent-neural-network/</guid>
       <description></description>
     </item>
     

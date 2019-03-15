@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Notes for Machine Learning - Week 2 - Yuthon&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yusu Pan" /><meta name="description" content="Linear Regression with Multiple Variables Multivariate Linear Regression Multiple features (variables) $n$ = number of features $x^{(i)}$ = input (features) of $i^{th}$ training example. $x^{(i)}_j$ = value of feature $j$ in $i^{th}$ training example. Hypotesis Previously: $h_\theta (x) = \theta_0 &#43; \theta_1 x$ $h_\theta (x) = \theta_0 &#43; \theta_1 x_1 &#43; \theta_2 x_2 &#43; \cdots &#43; \theta_n x_n$ For convenience of notation, define $x_0=1$ $x=\begin{bmatrix}x_0 \\ x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix}, \theta = \begin{bmatrix}\theta_0 \\ \theta_1 \\ \theta_2 \\ \vdots \\ \theta_n \end{bmatrix}, h_\theta (x) = \theta^T x​$ Gradient Descent for Multiple Variables Hypothesis: $h_\theta(x)=\theta^Tx=\theta_0" /><meta name="keywords" content="yuthon, yusu-pan, blog, deep-learning, computer-vision" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://www.yuthon.com/post/tutorials/coursera-machine-learning-week-2/" />
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.yuthon.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.yuthon.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.yuthon.com/favicon-16x16.png">
+<link rel="manifest" href="https://www.yuthon.com/manifest.json">
+<link rel="mask-icon" href="https://www.yuthon.com/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="https://www.yuthon.com/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Notes for Machine Learning - Week 2" />
+<meta property="og:description" content="Linear Regression with Multiple Variables Multivariate Linear Regression Multiple features (variables) $n$ = number of features $x^{(i)}$ = input (features) of $i^{th}$ training example. $x^{(i)}_j$ = value of feature $j$ in $i^{th}$ training example. Hypotesis Previously: $h_\theta (x) = \theta_0 &#43; \theta_1 x$ $h_\theta (x) = \theta_0 &#43; \theta_1 x_1 &#43; \theta_2 x_2 &#43; \cdots &#43; \theta_n x_n$ For convenience of notation, define $x_0=1$ $x=\begin{bmatrix}x_0 \\ x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix}, \theta = \begin{bmatrix}\theta_0 \\ \theta_1 \\ \theta_2 \\ \vdots \\ \theta_n \end{bmatrix}, h_\theta (x) = \theta^T x​$ Gradient Descent for Multiple Variables Hypothesis: $h_\theta(x)=\theta^Tx=\theta_0" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.yuthon.com/post/tutorials/coursera-machine-learning-week-2/" />
+<meta property="article:published_time" content="2016-07-27T10:30:35&#43;00:00"/>
+<meta property="article:modified_time" content="2016-07-27T10:30:35&#43;00:00"/>
+
+<meta itemprop="name" content="Notes for Machine Learning - Week 2">
+<meta itemprop="description" content="Linear Regression with Multiple Variables Multivariate Linear Regression Multiple features (variables) $n$ = number of features $x^{(i)}$ = input (features) of $i^{th}$ training example. $x^{(i)}_j$ = value of feature $j$ in $i^{th}$ training example. Hypotesis Previously: $h_\theta (x) = \theta_0 &#43; \theta_1 x$ $h_\theta (x) = \theta_0 &#43; \theta_1 x_1 &#43; \theta_2 x_2 &#43; \cdots &#43; \theta_n x_n$ For convenience of notation, define $x_0=1$ $x=\begin{bmatrix}x_0 \\ x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix}, \theta = \begin{bmatrix}\theta_0 \\ \theta_1 \\ \theta_2 \\ \vdots \\ \theta_n \end{bmatrix}, h_\theta (x) = \theta^T x​$ Gradient Descent for Multiple Variables Hypothesis: $h_\theta(x)=\theta^Tx=\theta_0">
+
+
+<meta itemprop="datePublished" content="2016-07-27T10:30:35&#43;00:00" />
+<meta itemprop="dateModified" content="2016-07-27T10:30:35&#43;00:00" />
+<meta itemprop="wordCount" content="2017">
+
+
+
+<meta itemprop="keywords" content="Coursera,Machine Learning," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Notes for Machine Learning - Week 2"/>
+<meta name="twitter:description" content="Linear Regression with Multiple Variables Multivariate Linear Regression Multiple features (variables) $n$ = number of features $x^{(i)}$ = input (features) of $i^{th}$ training example. $x^{(i)}_j$ = value of feature $j$ in $i^{th}$ training example. Hypotesis Previously: $h_\theta (x) = \theta_0 &#43; \theta_1 x$ $h_\theta (x) = \theta_0 &#43; \theta_1 x_1 &#43; \theta_2 x_2 &#43; \cdots &#43; \theta_n x_n$ For convenience of notation, define $x_0=1$ $x=\begin{bmatrix}x_0 \\ x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix}, \theta = \begin{bmatrix}\theta_0 \\ \theta_1 \\ \theta_2 \\ \vdots \\ \theta_n \end{bmatrix}, h_\theta (x) = \theta^T x​$ Gradient Descent for Multiple Variables Hypothesis: $h_\theta(x)=\theta^Tx=\theta_0"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="https://www.yuthon.com/" class="logo">Yuthon&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="https://www.yuthon.com/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="https://www.yuthon.com/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="https://www.yuthon.com/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="https://www.yuthon.com/about/">
+        <li class="mobile-menu-item">About</li>
+      </a><a href="https://www.yuthon.com/resume/">
+        <li class="mobile-menu-item">Resume</li>
+      </a><a href="https://github.com/corenel">
+        <li class="mobile-menu-item">Works</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="https://www.yuthon.com/" class="logo">Yuthon&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/about/">About</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/resume/">Resume</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://github.com/corenel">Works</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Notes for Machine Learning - Week 2</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2016-07-27 </span>
+        <div class="post-category">
+            <a href="https://www.yuthon.com/categories/tutorials/"> Tutorials </a>
+            </div>
+          <span class="more-meta"> 2017 words </span>
+          <span class="more-meta"> 5 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#linear-regression-with-multiple-variables">Linear Regression with Multiple Variables</a>
+<ul>
+<li><a href="#multivariate-linear-regression">Multivariate Linear Regression</a></li>
+<li><a href="#gradient-descent-for-multiple-variables">Gradient Descent for Multiple Variables</a></li>
+<li><a href="#gradient-descent-in-practice">Gradient Descent in Practice</a>
+<ul>
+<li><a href="#feature-normalization">Feature Normalization</a>
+<ul>
+<li><a href="#example">Example</a></li>
+<li><a href="#feature-scaling">Feature scaling</a></li>
+<li><a href="#mean-normalization">Mean normalization</a></li>
+</ul></li>
+<li><a href="#learning-rate">Learning Rate</a></li>
+</ul></li>
+<li><a href="#features-and-polynomial-regression">Features and Polynomial Regression</a>
+<ul>
+<li><a href="#choice-of-features">Choice of features</a></li>
+<li><a href="#polynomial-regression">Polynomial Regression</a></li>
+</ul></li>
+<li><a href="#computing-parameters-analytically">Computing Parameters Analytically</a>
+<ul>
+<li><a href="#normal-equation">Normal Equation</a>
+<ul>
+<li><a href="#intuition">Intuition</a></li>
+<li><a href="#method">Method</a></li>
+<li><a href="#example-1">Example</a></li>
+<li><a href="#usage-in-octave">Usage in Octave</a></li>
+<li><a href="#comparison-of-gradient-descent-and-the-normal-equation">Comparison of gradient descent and the normal equation</a></li>
+</ul></li>
+<li><a href="#normal-equation-noninvertibility">Normal Equation Noninvertibility</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#octave-matlab-tutorial">Octave/Matlab Tutorial</a>
+<ul>
+<li><a href="#basic-operations">Basic Operations</a></li>
+<li><a href="#moving-data-around">Moving Data Around</a></li>
+<li><a href="#computing-on-data">Computing on Data</a></li>
+<li><a href="#plotting-data">Plotting Data</a></li>
+<li><a href="#control-statements-for-while-if-statement">Control Statements: for, while, if statement</a></li>
+<li><a href="#vectorization">Vectorization</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<h1 id="linear-regression-with-multiple-variables">Linear Regression with Multiple Variables</h1>
+
+<!-- more -->
+
+<h2 id="multivariate-linear-regression">Multivariate Linear Regression</h2>
+
+<ul>
+<li>Multiple features (variables)
+
+<ul>
+<li>$n$ = number of features</li>
+<li>$x^{(i)}$ = input (features) of $i^{th}$ training example.</li>
+<li>$x^{(i)}_j$ = value of feature $j$ in $i^{th}$ training example.</li>
+</ul></li>
+<li>Hypotesis
+
+<ul>
+<li>Previously: $h_\theta (x) = \theta_0 + \theta_1 x$</li>
+<li>$h_\theta (x) = \theta_0 + \theta_1 x_1 + \theta_2 x_2 + \cdots + \theta_n x_n$</li>
+<li>For convenience of notation, define $x_0=1$</li>
+<li>$x=\begin{bmatrix}x_0 \\ x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix}, \theta = \begin{bmatrix}\theta_0 \\ \theta_1 \\ \theta_2 \\ \vdots \\ \theta_n \end{bmatrix}, h_\theta (x) = \theta^T x​$</li>
+</ul></li>
+</ul>
+
+<h2 id="gradient-descent-for-multiple-variables">Gradient Descent for Multiple Variables</h2>
+
+<ul>
+<li><p>Hypothesis: $h_\theta(x)=\theta^Tx=\theta_0 x_0 + \theta_1 x_1 + \theta_2 x_2 + \cdots + \theta_n x_n$</p></li>
+
+<li><p>Parameters: $\theta_0, \theta_1, \dots ,\theta_n$</p></li>
+
+<li><p>Cost function: $J(\theta_0, \theta<em>1, \dots, \theta_n) = \frac{1}{2m} \sum^m_{i=1}\left(h</em>\theta (x^{(i)})-y^{(i)}\right)^2$</p>
+
+<ul>
+<li>or $J(\theta) = \frac{1}{2m}\sum_{i=1}^{m}(\theta^T x^{(i)} - y^{(i)})^2$</li>
+</ul></li>
+
+<li><p>Gradient descent</p></li>
+</ul>
+
+<blockquote>
+<p>repeat {</p>
+
+<p>$\theta_j := \theta_j - \alpha \frac{\partial}{\partial \theta_j} J(\theta_0, \dots ,\theta_n)$</p>
+
+<p>(simultaneously update for every $j=0,\dots,n$)</p>
+
+<p>}</p>
+</blockquote>
+
+<p>or</p>
+
+<blockquote>
+<p>repeat {</p>
+
+<p>$\theta<em>j := \theta_j - \alpha \frac{1}{m} \sum^m_{i=1}\left(h</em>\theta(x^{(i)})-y^{(i)}\right) x^{(i)}_j$</p>
+
+<p>(simultaneously update for every $j=0,\dots,n$)</p>
+
+<p>}</p>
+</blockquote>
+
+<h2 id="gradient-descent-in-practice">Gradient Descent in Practice</h2>
+
+<h3 id="feature-normalization">Feature Normalization</h3>
+
+<p>Idea: Make sure featueres are on a similar scale.</p>
+
+<ul>
+<li>We can speed up gradient descent by having each of our input values in roughly the same range. This is because $\theta$ will descend quickly on small ranges and slowly on large ranges, and so will oscillate inefficiently down to the optimum when the variables are very uneven.</li>
+<li>The way to prevent this is to modify the ranges of our input variables so that they are all roughly the same.</li>
+</ul>
+
+<h4 id="example">Example</h4>
+
+<ul>
+<li>$x_1$ = size (0-2000 $feet^2$)</li>
+<li>$x_2$ = number of bedrooms (1-5)</li>
+</ul>
+
+<p>$x_1$ has a much larger range of values than $x_2$. So the $J(\theta_1, \theta_2)$ can be a very very skewed elliptical shape. And if you run gradient descents on this cost function, your gradients may end up taking a long time and can oscillate back and forth and take a long time before it can finally find its way to the global minimum.</p>
+
+<h4 id="feature-scaling">Feature scaling</h4>
+
+<p>Get every feature into approcimately $-1\le x_i \le 1$ range.</p>
+
+<ul>
+<li>Feature scaling involves dividing the input values by the range (i.e. the maximum value minus the minimum value) of the input variable, resulting in a new range of just 1.</li>
+
+<li><p>These aren&rsquo;t exact requirements; we are only trying to speed things up.</p></li>
+
+<li><p>$-3\le x_i \le 3$ or $ -\frac{1}{3} \le x_i \le \frac{1}{3}$ just is fine.</p></li>
+</ul>
+
+<h4 id="mean-normalization">Mean normalization</h4>
+
+<p>Replace $x_i$ with $x_i - \mu _i$ to make features have approximately zero mean (Do not apply to $x_0 = 1$)</p>
+
+<ul>
+<li>E.g. $x_1 = \frac{size -1000}{2000}, x_2 = \frac{bedrooms - 2}{5}$</li>
+<li>$x_i = \frac{x_i - \mu _i}{s_i}$
+
+<ul>
+<li>$\mu _i$ is the average value of $x_i$ in training set.</li>
+<li>$s_i$ is the range ($x_{imax}-x_{imin}$) or standard deviation ($\sigma$)</li>
+</ul></li>
+</ul>
+
+<h3 id="learning-rate">Learning Rate</h3>
+
+<ul>
+<li>&ldquo;Debugging&rdquo;: <strong>How to make sure gradient descent is working correctly</strong>
+
+<ul>
+<li>Make a plot with *number of iterations* on the x-axis. Now plot the cost function, $J(\theta)$ over the number of iterations of gradient descent.</li>
+<li>For sufficient small $\alpha$, $J(\theta)$ should decreases on every iteration.</li>
+<li>But if $\alpha$ is too small, gradient descent can be slow to converge.</li>
+<li>If $J(\theta)$ ever increases, then you probably need to use smaller $\alpha$.</li>
+<li>Example automatic convergence test</li>
+<li>Declare convergence if $J(\theta)$ decreases by less than $\epsilon$ (e.g., $10^{-3})$ in one iteration.</li>
+</ul></li>
+<li><strong>How to choose learing rate $\alpha$</strong>
+
+<ul>
+<li>So just try running gradient descent with a range of values for $\alpha$, like 0.001 and 0.01. And for these different values of $\alpha$ are just plot $J(\theta)$ as a function of number of iterations, and then pick the value of $\alpha$ that seems to be causing $J(\theta)$to decrease rapidly.</li>
+<li>Andrew Ng recommends decreasing $\alpha$ by multiples of 3. And then try to pick the largest possible value, or just something slightly smaller than the largest reasonable value.</li>
+<li>E.g. $\dots, 0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, \dots$</li>
+</ul></li>
+</ul>
+
+<h2 id="features-and-polynomial-regression">Features and Polynomial Regression</h2>
+
+<h3 id="choice-of-features">Choice of features</h3>
+
+<ul>
+<li>We can improve our features and the form of our hypothesis function in a couple different ways.</li>
+<li>We can <strong>combine</strong> multiple features into one. For example, we can combine $x_1​$ and $x_2​$ into a new feature $x_3​$ by taking $x_1\cdot x_2​$. (E.g. $House Area = Frontage \times Depth​$)</li>
+</ul>
+
+<h3 id="polynomial-regression">Polynomial Regression</h3>
+
+<p>Our hypothesis function need not be linear (a straight line) if that does not fit the data well.</p>
+
+<ul>
+<li><p>We can <strong>change the behavior or curve</strong> of our hypothesis function by making it a quadratic, cubic or square root function (or any other form).</p>
+
+<ul>
+<li><p>For example, if our hypothesis function is <code>$h_\theta(x) = \theta_0 + \theta_1 x_1$</code> then we can create additional features based on <code>$x\_1$</code>, to get the quadratic function <code>$h_\theta(x) = \theta_0 + \theta_1 x_1 + \theta_2 x\_1^2$</code> or the cubic function <code>$h\_\theta(x) = \theta_0 + \theta_1 x_1 + \theta_2 x_1^2 + \theta_3 x_1^3$</code>.</p></li>
+
+<li><p>In the cubic version, we have created new features $x_2$ and $x_3$ where $x_2 = x_1^2$ and $x_3=x^3_1$.</p></li>
+
+<li><p>To make it a square root function, we could do: $h_\theta(x) = \theta_0 + \theta_1 x_1 + \theta_2 \sqrt{x_1}$</p></li>
+
+<li><p>Note that at 2:52 and through 6:22 in the &ldquo;Features and Polynomial Regression&rdquo; video, the curve that Prof Ng discusses about &ldquo;doesn&rsquo;t ever come back down&rdquo; is in reference to the hypothesis function that uses the <code>sqrt()</code> function (shown by the solid purple line), not the one that uses $size^2$ (shown with the dotted blue line). The quadratic form of the hypothesis function would have the shape shown with the blue dotted line if $\theta _2$ was negative.</p></li>
+</ul>
+
+<p><img src="https://www.yuthon.com/images/ML_polynomial_regression.png" alt="polynomial_regression" /></p></li>
+
+<li><p>One important thing to keep in mind is, if you choose your features this way then <strong>feature scaling becomes very important</strong>.</p>
+
+<ul>
+<li>E.g. if $x_1$ has range $1 - 1000$ then range of $x^2_1$ becomes $1 - 1000000$ and that of $x^3_1$ becomes $1 - 1000000000$</li>
+<li>So you should scale $x_1$ before using polynomial regression.</li>
+</ul></li>
+</ul>
+
+<h2 id="computing-parameters-analytically">Computing Parameters Analytically</h2>
+
+<h3 id="normal-equation">Normal Equation</h3>
+
+<p>The &ldquo;Normal Equation&rdquo; (正规方程) is a method of finding the optimum $\theta$ <strong>without iteration.</strong></p>
+
+<blockquote>
+<p>There is <strong>no need</strong> to do feature scaling with the normal equation.</p>
+</blockquote>
+
+<h4 id="intuition">Intuition</h4>
+
+<ul>
+<li><code>$\theta \in R^{n+1} , J(\theta _0, \theta _1, \dots , \theta\_m) = \frac{1}{2m} \sum ^m\_{i=1} \left( h_\theta (x^{(i)}) - y^{(i)} \right) ^2$</code></li>
+<li>Set <code>$\frac{\partial }{\partial \theta _j} J(\theta ) = \cdots = 0$ (for every $j$), solve for $\theta _0, \theta _1, \dots , \theta _m$</code></li>
+</ul>
+
+<h4 id="method">Method</h4>
+
+<p>We have $m$ examples $(x^{(1)}, y^{(1)}), \dots , (x^{(m)}, y^{(m)})$ and $n$ features. (Note that $x^{(i)}_0 = 0$)</p>
+
+<p>$$x^{(i)} = \begin{bmatrix}x^{(i)}_0 \\ x^{(i)}_1 \\ x^{(i)}_2 \\ \vdots \\ x^{(i)}_n \end{bmatrix}$$</p>
+
+<p>And construct the $m \times (n+1)$ matrix $X$</p>
+
+<p>$$X = \begin{bmatrix} (x^{(1)})^T \\ (x^{(2)})^T \\ \vdots \\ (x^{(m)})^T \end{bmatrix}$$</p>
+
+<p>And the $m$-dimension vector $y$</p>
+
+<p>$$y = \begin{bmatrix}y^{(i)} \\ y^{(i)} \\ y^{(i)} \\ \vdots \\ y^{(m)} \end{bmatrix}$$</p>
+
+<p>Finally, we can get</p>
+
+<p>$$ \theta = (X^T X)^{-1}X^T y $$</p>
+
+<h4 id="example-1">Example</h4>
+
+<p>Suppose you have the training in the table below:</p>
+
+<table>
+<thead>
+<tr>
+<th align="center">age ($x_1$)</th>
+<th align="center">height in cm ($x_2$)</th>
+<th align="center">weight in kg ($y$)</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">4</td>
+<td align="center">89</td>
+<td align="center">16</td>
+</tr>
+
+<tr>
+<td align="center">9</td>
+<td align="center">124</td>
+<td align="center">28</td>
+</tr>
+
+<tr>
+<td align="center">5</td>
+<td align="center">103</td>
+<td align="center">20</td>
+</tr>
+</tbody>
+</table>
+
+<p>You would like to predict a child&rsquo;s weight as a function of his age and height with the model</p>
+
+<p>$$weight = \theta _0 + \theta _1 age + \theta _2 height$$</p>
+
+<p>Then you can construct $X$ and $y$</p>
+
+<p>$$X = \begin{bmatrix} 1 &amp; 4 &amp; 89 \\ 1 &amp; 9 &amp; 124 \\ 1 &amp; 5 &amp; 103 \end{bmatrix}$$</p>
+
+<p>$$Y = \begin{bmatrix} 16 \\ 28 \\ 20 \end{bmatrix}$$</p>
+
+<h4 id="usage-in-octave">Usage in Octave</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-octave" data-lang="octave"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-octave" data-lang="octave"><span class="nb">pinv</span> <span class="p">(</span><span class="n">X</span><span class="s">&#39;*X)*X&#39;</span><span class="o">*</span><span class="n">y</span></code></pre></td></tr></table>
+</div>
+</div>
+<h4 id="comparison-of-gradient-descent-and-the-normal-equation">Comparison of gradient descent and the normal equation</h4>
+
+<p>$m$ training examples and $n$ features.</p>
+
+<table>
+<thead>
+<tr>
+<th>Gradient Descent</th>
+<th>Normal Equation</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Need to choose $\alpha$</td>
+<td>No need to choose $\alpha$</td>
+</tr>
+
+<tr>
+<td>Needs many iterations</td>
+<td>No need to iterate</td>
+</tr>
+
+<tr>
+<td>$O (kn^2)$</td>
+<td>$O (n^3)$, need to calculate  $(X^TX)^{-1}$</td>
+</tr>
+
+<tr>
+<td>Works well when $n$ is large</td>
+<td>Slow if $n$ is very large</td>
+</tr>
+</tbody>
+</table>
+
+<p>With the normal equation, computing the inversion has complexity $O(n^3)$. So if we have a very large number of features, the normal equation will be slow. In practice, <strong>when $n$ exceeds 10,000 it might be a good time to go from a normal solution to an iterative process.</strong></p>
+
+<h3 id="normal-equation-noninvertibility">Normal Equation Noninvertibility</h3>
+
+<p>$$ \theta = (X^T X)^{-1}X^T y $$</p>
+
+<ul>
+<li>What if $X^TX$ is non-invertible (不可逆的) ? (singular/ degenerate)</li>
+<li>Octave: <code>pinv(X'*X)*X&quot;*y</code>
+
+<ul>
+<li>There&rsquo;s two functions in Octave for inverting matrices, <code>pinv</code> (pseudo-inverse, 伪逆) and <code>inv</code> (inverse).</li>
+<li>As long as you use the <code>pinv</code> function then this will actually compute the value of data that you want even if X transpose X is non-invertible.</li>
+<li>So when implementing the normal equation in octave we want to use the <code>pinv</code> function rather than <code>inv</code>.</li>
+</ul></li>
+<li>$X^TX$ may be <strong>noninvertible</strong>. The common causes are:
+
+<ul>
+<li>Redundant features, where two features are very closely related (i.e. they are linearly dependent)</li>
+<li>E.g. $x_1$ = size in $feet^2$, and $x_2$ = size in $m^2$. So you&rsquo;ll always have $x_1 = (3.28)^2 x_2$</li>
+<li>Too many features (e.g. $m\le n$).</li>
+<li>In this case, delete some features or use &ldquo;regularization&rdquo;.</li>
+</ul></li>
+</ul>
+
+<h1 id="octave-matlab-tutorial">Octave/Matlab Tutorial</h1>
+
+<h2 id="basic-operations">Basic Operations</h2>
+
+<ul>
+<li>Print specific decimals: <code>disp(sprintf('6 decimals: %0.6f', a)) // 6 decimals: 3.141593</code></li>
+<li><code>v = 1:0.2:2 // [1.0 1.2 1.4 1.6 1.8 2.0]</code></li>
+<li><code>ones</code>, <code>zeros</code>, <code>rand</code>, <code>randn</code> (生成正态分布的随机数矩阵), <code>eye</code> (生成单位矩阵)</li>
+<li><code>hist</code> (直方图，第二个参数课自定义条数)</li>
+<li><code>size</code> (返回矩阵的行数与列数 [m n] )</li>
+<li><code>length</code> (返回向量的维数)</li>
+</ul>
+
+<h2 id="moving-data-around">Moving Data Around</h2>
+
+<ul>
+<li>Use <code>load</code> to load data set.</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-octave" data-lang="octave"><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-octave" data-lang="octave">  <span class="nb">load</span> <span class="n">featureX</span><span class="p">.</span><span class="n">dat</span><span class="err">
+</span><span class="err"></span>  <span class="nb">load</span><span class="p">(</span><span class="s">&#39;priceY.dat&#39;</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<ul>
+<li><p>Use <code>who</code> to show all variables in Octave workspace</p>
+
+<ul>
+<li><p><code>whos</code> for detail information</p></li>
+
+<li><p><code>clear</code> to delete a variable</p></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-octave" data-lang="octave"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-octave" data-lang="octave"><span class="n">clear</span> <span class="n">featureX</span></code></pre></td></tr></table>
+</div>
+</div></li>
+
+<li><p>Get first ten elements of a matrix</p></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-octave" data-lang="octave"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-octave" data-lang="octave">  <span class="n">v</span> <span class="p">=</span> <span class="n">priceY</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">10</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<ul>
+<li>Use <code>save</code> to save your variable</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-octave" data-lang="octave"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-octave" data-lang="octave">  <span class="n">save</span> <span class="n">hello</span><span class="p">.</span><span class="n">mat</span> <span class="n">v</span></code></pre></td></tr></table>
+</div>
+</div>
+<ul>
+<li><p>By default the data is saved in binary. You can save it to ASCII by</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-octave" data-lang="octave"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-octave" data-lang="octave"><span class="n">save</span> <span class="n">hello</span><span class="p">.</span><span class="n">txt</span> <span class="n">v</span> <span class="o">-</span><span class="nb">ascii</span></code></pre></td></tr></table>
+</div>
+</div></li>
+
+<li><p>Use <code>A(3, 2)</code> to get $A_{32}$, or <code>A(2, :)</code> to get every element along the second row</p>
+
+<ul>
+<li><code>A([1, 3], :)</code> to get everything in the first and third rows</li>
+<li><code>A(:, 2) = [10; 11; 12]</code> to change the value of elements in second column.</li>
+<li><code>A = [A, [100; 101; 102]]</code> to append another column vector to right</li>
+<li><code>A(:)</code> to put all elements of $A$ into a single vector</li>
+</ul></li>
+</ul>
+
+<h2 id="computing-on-data">Computing on Data</h2>
+
+<ul>
+<li>Use <code>max</code> to get the largest element in a vector</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">  a = [1 15 2 0.5];
+  [val, ind] = max(a); // val = 15, ind = 2</pre></td></tr></table>
+</div>
+</div>
+<ul>
+<li><p>If you do <code>max(A)</code>, where $A$ is a matrix, what this does is this actually does the column wise maximum.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">A = [1 2; 3 4; 5 6];
+max(A) // [5 6]
+
+A = [8 1 6; 3 5 7; 4 9 2];
+max(A, [], 1) // [8 9 7] (get the column wise maximum)
+max(A, [], 2) // [8 7 9] (get the row wise maximum)
+max(max(A)) // 9
+max(A(:)) // 9</pre></td></tr></table>
+</div>
+</div></li>
+
+<li><p><code>a &lt; 3</code>  does the element wise operation, you&rsquo;ll get <code>[1 0 1 1]</code></p>
+
+<ul>
+<li><code>find(a&lt;3)</code> gets <code>[1 3 4]</code></li>
+</ul></li>
+
+<li><p><code>magic(3)</code> gets a 3x3 magic matrix</p></li>
+
+<li><p><code>sum</code>, <code>prod</code>, <code>floor</code>, <code>ceil</code>, <code>flipud</code></p></li>
+</ul>
+
+<h2 id="plotting-data">Plotting Data</h2>
+
+<ul>
+<li><code>plot</code></li>
+<li><code>hold on</code>, <code>figure</code>, <code>subplot</code></li>
+<li><code>xlabel</code>, <code>ylabel</code>, <code>legend</code>, <code>title</code>, <code>axis</code></li>
+<li><code>print -dpng 'myPlot.png'</code></li>
+<li><code>imagesc(A)</code> to visualize a matrix
+
+<ul>
+<li><code>imagesc(A), colorer, colormap gray</code> to be in gray scale.</li>
+</ul></li>
+</ul>
+
+<h2 id="control-statements-for-while-if-statement">Control Statements: for, while, if statement</h2>
+
+<h2 id="vectorization">Vectorization</h2>
+
+<p>Vectorization is the process of taking code that relies on <strong>loops</strong> and converting it into <strong>matrix operations</strong>. It is more efficient, more elegant, and more concise.</p>
+
+<p>As an example, let&rsquo;s compute our prediction from a hypothesis. Theta is the vector of fields for the hypothesis and x is a vector of variables.</p>
+
+<p>With loops ($h_\theta (x) =\theta_0 x_0 + \theta_1 x_1 + \theta_2 x_2 + \cdots + \theta_n x_n$):</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">prediction = 0.0;
+for j = 1:n+1,
+  prediction += theta(j) * x(j);
+end;</pre></td></tr></table>
+</div>
+</div>
+<p>With vectorization ($h_\theta (x) = \theta^T x$):</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">prediction = theta&#39; * x;</pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Yusu Pan</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2016-07-27
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">License</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="https://www.yuthon.com/tags/coursera/">Coursera</a>
+          <a href="https://www.yuthon.com/tags/machine-learning/">Machine Learning</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="https://www.yuthon.com/post/tutorials/coursera-machine-learning-week-3/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Notes for Machine Learning - Week 3</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="https://www.yuthon.com/post/tutorials/coursera-machine-learning-week-1/">
+            <span class="next-text nav-default">Notes for Machine Learning - Week 1</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'yuthons-blog';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xxdsox@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/5682817" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://twitter.com/corenel" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://www.facebook.com/xxdsox" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://github.com/corenel" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/pan-yu-su" class="iconfont icon-zhihu" title="zhihu"></a>
+  <a href="https://www.yuthon.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
+</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://www.yuthon.com/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      TeX: {equationNumbers: {autoNumber: "AMS"}},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script type="text/javascript" async src="https://www.yuthon.com/lib/mathjax/math-code.js"></script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-76233259-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

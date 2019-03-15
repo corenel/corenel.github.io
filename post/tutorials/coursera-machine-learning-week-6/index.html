@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Notes for Machine Learning - Week 6 - Yuthon&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yusu Pan" /><meta name="description" content="Advice for Applying Machine Learning Evaluating a Learning Algorithm Deciding What to Try Next Errors in your predictions can be troubleshooted by:
+ Getting more training examples Trying smaller sets of features Trying additional features Trying adding polynomial features Increasing or decreasing $\lambda$  Don&amp;rsquo;t just pick one of these avenues at random. We&amp;rsquo;ll explore diagnostic techniques for choosing one of the above solutions in the following sections.
+In the next few sections, We&amp;rsquo;ll first talk about how evaluate your learning algorithms and after that we&amp;rsquo;ll talk about some of these diagnostics which will hopefully let you much more effectively select more of the useful things to try mixing if your goal to improve the machine learning system.
+" /><meta name="keywords" content="yuthon, yusu-pan, blog, deep-learning, computer-vision" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://www.yuthon.com/post/tutorials/coursera-machine-learning-week-6/" />
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.yuthon.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.yuthon.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.yuthon.com/favicon-16x16.png">
+<link rel="manifest" href="https://www.yuthon.com/manifest.json">
+<link rel="mask-icon" href="https://www.yuthon.com/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="https://www.yuthon.com/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Notes for Machine Learning - Week 6" />
+<meta property="og:description" content="Advice for Applying Machine Learning
+
+Evaluating a Learning Algorithm
+
+Deciding What to Try Next
+
+Errors in your predictions can be troubleshooted by:
+
+
+Getting more training examples
+Trying smaller sets of features
+Trying additional features
+Trying adding polynomial features
+Increasing or decreasing $\lambda$
+
+
+Don&rsquo;t just pick one of these avenues at random. We&rsquo;ll explore diagnostic techniques for choosing one of the above solutions in the following sections.
+
+In the next few sections, We&rsquo;ll first talk about how evaluate your learning algorithms and after that we&rsquo;ll talk about some of these diagnostics which will hopefully let you much more effectively select more of the useful things to try mixing if your goal to improve the machine learning system." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.yuthon.com/post/tutorials/coursera-machine-learning-week-6/" />
+<meta property="article:published_time" content="2016-09-10T15:18:41&#43;00:00"/>
+<meta property="article:modified_time" content="2016-09-10T15:18:41&#43;00:00"/>
+
+<meta itemprop="name" content="Notes for Machine Learning - Week 6">
+<meta itemprop="description" content="Advice for Applying Machine Learning
+
+Evaluating a Learning Algorithm
+
+Deciding What to Try Next
+
+Errors in your predictions can be troubleshooted by:
+
+
+Getting more training examples
+Trying smaller sets of features
+Trying additional features
+Trying adding polynomial features
+Increasing or decreasing $\lambda$
+
+
+Don&rsquo;t just pick one of these avenues at random. We&rsquo;ll explore diagnostic techniques for choosing one of the above solutions in the following sections.
+
+In the next few sections, We&rsquo;ll first talk about how evaluate your learning algorithms and after that we&rsquo;ll talk about some of these diagnostics which will hopefully let you much more effectively select more of the useful things to try mixing if your goal to improve the machine learning system.">
+
+
+<meta itemprop="datePublished" content="2016-09-10T15:18:41&#43;00:00" />
+<meta itemprop="dateModified" content="2016-09-10T15:18:41&#43;00:00" />
+<meta itemprop="wordCount" content="1361">
+
+
+
+<meta itemprop="keywords" content="Coursera,Machine Learning," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Notes for Machine Learning - Week 6"/>
+<meta name="twitter:description" content="Advice for Applying Machine Learning
+
+Evaluating a Learning Algorithm
+
+Deciding What to Try Next
+
+Errors in your predictions can be troubleshooted by:
+
+
+Getting more training examples
+Trying smaller sets of features
+Trying additional features
+Trying adding polynomial features
+Increasing or decreasing $\lambda$
+
+
+Don&rsquo;t just pick one of these avenues at random. We&rsquo;ll explore diagnostic techniques for choosing one of the above solutions in the following sections.
+
+In the next few sections, We&rsquo;ll first talk about how evaluate your learning algorithms and after that we&rsquo;ll talk about some of these diagnostics which will hopefully let you much more effectively select more of the useful things to try mixing if your goal to improve the machine learning system."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="https://www.yuthon.com/" class="logo">Yuthon&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="https://www.yuthon.com/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="https://www.yuthon.com/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="https://www.yuthon.com/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="https://www.yuthon.com/about/">
+        <li class="mobile-menu-item">About</li>
+      </a><a href="https://www.yuthon.com/resume/">
+        <li class="mobile-menu-item">Resume</li>
+      </a><a href="https://github.com/corenel">
+        <li class="mobile-menu-item">Works</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="https://www.yuthon.com/" class="logo">Yuthon&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/about/">About</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/resume/">Resume</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://github.com/corenel">Works</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Notes for Machine Learning - Week 6</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2016-09-10 </span>
+        <div class="post-category">
+            <a href="https://www.yuthon.com/categories/notes/"> Notes </a>
+            </div>
+          <span class="more-meta"> 1361 words </span>
+          <span class="more-meta"> 3 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#advice-for-applying-machine-learning">Advice for Applying Machine Learning</a>
+<ul>
+<li><a href="#evaluating-a-learning-algorithm">Evaluating a Learning Algorithm</a>
+<ul>
+<li><a href="#deciding-what-to-try-next">Deciding What to Try Next</a></li>
+<li><a href="#evaluating-a-hypothesis">Evaluating a Hypothesis</a></li>
+<li><a href="#model-selection-and-train-validation-test-sets">Model Selection and Train/Validation/Test Sets</a></li>
+</ul></li>
+<li><a href="#bias-vs-variance">Bias vs. Variance</a>
+<ul>
+<li><a href="#diagnosing-bias-vs-variance">Diagnosing Bias vs. Variance</a></li>
+<li><a href="#regularization-and-bias-variance">Regularization and Bias/Variance</a></li>
+<li><a href="#learning-curves">Learning Curves</a>
+<ul>
+<li><a href="#high-bias">High Bias</a></li>
+<li><a href="#high-variance">High Variance</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="advice-for-applying-machine-learning">Advice for Applying Machine Learning</h1>
+
+<h2 id="evaluating-a-learning-algorithm">Evaluating a Learning Algorithm</h2>
+
+<h3 id="deciding-what-to-try-next">Deciding What to Try Next</h3>
+
+<p>Errors in your predictions can be troubleshooted by:</p>
+
+<ul>
+<li>Getting more training examples</li>
+<li>Trying smaller sets of features</li>
+<li>Trying additional features</li>
+<li>Trying adding polynomial features</li>
+<li>Increasing or decreasing $\lambda$</li>
+</ul>
+
+<p>Don&rsquo;t just pick one of these avenues at random. We&rsquo;ll explore diagnostic techniques for choosing one of the above solutions in the following sections.</p>
+
+<p>In the next few sections, We&rsquo;ll first talk about how evaluate your learning algorithms and after that we&rsquo;ll talk about some of these diagnostics which will hopefully let you much more effectively select more of the useful things to try mixing if your goal to improve the machine learning system.</p>
+
+<h3 id="evaluating-a-hypothesis">Evaluating a Hypothesis</h3>
+
+<p>A hypothesis may have low error for the training examples but still be inaccurate (because of overfitting). And it may fail to generalize to new examples not in training set.</p>
+
+<p>With a given dataset of training examples, we can split up the data into two sets: a <strong>training set</strong> and a <strong>test set</strong>. (normally 70% for training set and 30% for test set)</p>
+
+<p>The training/testing procedure using these two sets is then:</p>
+
+<ol>
+<li><p>Learn $\Theta$ and minimize $J_{train}(\Theta)$ using the training set</p></li>
+
+<li><p>Compute the test set error $J_{test}(\Theta)$</p>
+
+<ul>
+<li><p>For linear regression: $J_{test}(\Theta) = \dfrac{1}{2m_{test}} \sum_{i=1}^{m_{test}}(h_\Theta(x^{(i)}_{test}) - y^{(i)}_{test})^2$</p></li>
+
+<li><p>For classification ~ Misclassification error (aka 0/1 misclassification error): </p></li>
+</ul>
+
+<p>$err(h_\Theta(x),y) = \begin{cases} 1 &amp; \mbox{if } h_\Theta(x) \geq 0.5\ and\ y = 0\ or\ h_\Theta(x) &lt; 0.5\ and\ y = 1 \\ 0 &amp; otherwise \end{cases}$</p>
+
+<ul>
+<li><p>This gives us a binary 0 or 1 error result based on a misclassification.</p></li>
+
+<li><p>The average test error for the test set is</p></li>
+</ul>
+
+<p>$\text{Test Error} = \dfrac{1}{m_{test}} \sum^{m_{test}}_{i=1} err(h_\Theta(x^{(i)}_{test}), y^{(i)}_{test})$</p>
+
+<ul>
+<li>This gives us the proportion of the test data that was misclassified.</li>
+</ul></li>
+</ol>
+
+<h3 id="model-selection-and-train-validation-test-sets">Model Selection and Train/Validation/Test Sets</h3>
+
+<p>Once parameters $\theta _0, \theta _1, \dots , \theta _4$ were fit to some set of data (training set), the error of the parameters as measured on that data (the training error $J(\theta)$ ) is likely to be lower than the actual generalization error.</p>
+
+<ul>
+<li>Just because a learning algorithm fits a training set well, that does not mean it is a good hypothesis.</li>
+<li>The error of your hypothesis as measured on the data set with which you trained the parameters will be lower than any other data set.</li>
+</ul>
+
+<p>In order to choose the model of your hypothesis, you can test each degree of polynomial and look at the error result.</p>
+
+<p><strong>Without the Validation Set (bad method)</strong></p>
+
+<ol>
+<li>Optimize the parameters in $\Theta$ using the training set for each polynomial degree.</li>
+<li>Find the polynomial degree d with the least error using the test set.</li>
+<li>Estimate the generalization error also using the test set with $J_{test}(\Theta^{(d)})$, (d = theta from polynomial with lower error);</li>
+</ol>
+
+<p>In this case, we have trained one variable, d, or the degree of the polynomial, using the test set. I.e., our extra parameter is fit to the test set. This will cause our error value to be greater for any other set of data. <u>Then the performance of the fitted model on the training set is not predictive of how well the hypothesis will generalize to new examples.</u></p>
+
+<p><strong>Use of the CV set</strong></p>
+
+<p>To solve this, we can introduce a third set, the <strong>Cross Validation Set</strong> (交叉验证集), to serve as an intermediate set that we can train d with. Then our test set will give us an accurate, non-optimistic error.</p>
+
+<p>One example way to break down our dataset into the three sets is:</p>
+
+<ul>
+<li>Training set: 60%</li>
+<li>Cross validation set: 20%</li>
+<li>Test set: 20%</li>
+</ul>
+
+<p>We can now calculate three separate error values for the three different sets.</p>
+
+<p><strong>With the Validation Set (note: this method presumes we do not also use the CV set for regularization)</strong></p>
+
+<ol>
+<li>Optimize the parameters in $\Theta$ using the training set for each polynomial degree.</li>
+<li>Find the polynomial degree d with the least error using the cross validation set.</li>
+<li>Estimate the generalization error using the test set with $J_{test}(\Theta^{(d)})$, (d = theta from polynomial with lower error);</li>
+</ol>
+
+<p>This way, <u>the degree of the polynomial d has not been trained using the test set.</u></p>
+
+<blockquote>
+<p>Be aware that using the CV set to select &rsquo;d&rsquo; means that we cannot also use it for the validation curve process of setting the lambda value.</p>
+</blockquote>
+
+<h2 id="bias-vs-variance">Bias vs. Variance</h2>
+
+<h3 id="diagnosing-bias-vs-variance">Diagnosing Bias vs. Variance</h3>
+
+<p>We&rsquo;ll examine the relationship between the degree of the polynomial $d$ and the underfitting or overfitting of our hypothesis.</p>
+
+<ul>
+<li>We need to distinguish whether <strong>bias</strong> (偏差) or <strong>variance</strong> (方差) is the problem contributing to bad predictions.</li>
+<li><u>High bias is underfitting and high variance is overfitting.</u> We need to find a golden mean between these two.</li>
+</ul>
+
+<p>The training error will tend to <strong>decrease</strong> as we increase the degree d of the polynomial.</p>
+
+<p>At the same time, the cross validation error will tend to <strong>decrease</strong> as we increase d up to a point, and then it will <strong>increase</strong> as d is increased, forming a convex curve.</p>
+
+<ul>
+<li><strong>High bias (underfitting)</strong>: both $J_{train}(\Theta)$ and $J_{CV}(\Theta)$ will be high, and $J_{CV}(\Theta) \approx J_{train}(\Theta)$.</li>
+<li><strong>High variance (overfitting)</strong>: $J_{train}(\Theta)$ will be low but $J_{CV}(\Theta)$ will be high. And $J_{CV}(\Theta) \gg J_{train}(\Theta)$.</li>
+</ul>
+
+<p><img src="https://www.yuthon.com/images/Features-and-polynom-degree.png" alt="Features-and-polynom-degree" /></p>
+
+<h3 id="regularization-and-bias-variance">Regularization and Bias/Variance</h3>
+
+<p>The relationship of $\lambda$ to the training set and the variance set is as follows:</p>
+
+<ul>
+<li><strong>Low $\lambda$ (High variance, overfitting)</strong>: $J_{train}(\Theta)$ is low and $J_{CV}(\Theta)$ is high (high variance/overfitting).</li>
+<li><strong>Intermediate λ</strong>: $J_{train}(\Theta)$ and $J_{CV}(\Theta)$ are somewhat low and Jtrain(Θ)≈JCV(Θ).</li>
+<li><strong>Large $\lambda$ (High bias, underfitting)</strong>: both $J_{train}(\Theta)$ and $J_{CV}(\Theta)$ will be high (underfitting/high bias)
+
+<ul>
+<li>A large lambda heavily penalizes all the $\Theta$ parameters, which greatly simplifies the line of our resulting function, so causes underfitting.</li>
+</ul></li>
+</ul>
+
+<p><img src="https://www.yuthon.com/images/Features-and-polynom-degree-fix.png" alt="Features-and-polynom-degree-fix.png" /></p>
+
+<p>In order to choose the model and the regularization $\lambda$, we need:</p>
+
+<ol>
+<li>Create a list of lambda (i.e. $\lambda \in {0,0.01,0.02,0.04,0.08,0.16,0.32,0.64,1.28,2.56,5.12,10.24}$);</li>
+<li>Select a lambda to compute;</li>
+<li>Create a model set like degree of the polynomial or others;</li>
+<li>Select a model to learn $\Theta$;</li>
+<li>Learn the parameter $\Theta$ for the model selected, using $J_{train}(\Theta)$ <strong>with</strong> $\lambda$ selected (this will learn $\Theta$ for the next step);</li>
+<li>Compute the train error using the learned $\Theta$ (computed with λ ) on the $J_{train}(\Theta)$ <strong>without</strong> regularization or $\lambda = 0$;</li>
+<li>Compute the cross validation error using the learned $\Theta$ (computed with λ) on the $J_{CV}(\Theta)​$ <strong>without</strong> regularization or $\lambda = 0$;</li>
+<li>Do this for the entire model set and lambdas, then <u>select the best combo that produces the lowest error on the cross validation set</u>;</li>
+<li>Now if you need visualize to help you understand your decision, you can plot to the figure like above with: ($\lambda$ x Cost $J_{train}(\Theta)$) and ($\lambda$ x Cost $J_{CV}(\Theta)$);</li>
+<li>Now using the best combo $\Theta$ and $\lambda$, apply it on Jtest(Θ) to see if it has a good generalization of the problem.</li>
+<li>To help decide the best polynomial degree and $\lambda$ to use, we can diagnose with the learning curves, that is the next subject.</li>
+</ol>
+
+<h3 id="learning-curves">Learning Curves</h3>
+
+<p>Supposed we use $h_\theta(x) = \theta_0 + \theta_1x + \theta_2x^2$, it&rsquo;s clear that when $m=1, 2, 3$, we&rsquo;ll get $0$ errors because we can always find a quadratic curve that exactly touches given points.</p>
+
+<ul>
+<li>As the training set gets larger, the error for a quadratic function increases.</li>
+<li>The error value will plateau out after a certain m, or training set size.</li>
+</ul>
+
+<p><img src="https://www.yuthon.com/images/learning-curves-m.png" alt="learning-curves-m.png" /></p>
+
+<p><img src="https://www.yuthon.com/images/typical-learning-curve.png" alt="typical-learning-curve.png" /></p>
+
+<h4 id="high-bias">High Bias</h4>
+
+<ul>
+<li><strong>Low training set size</strong>:  $J_{train}(\Theta)$ will be low and $J_{CV}(\Theta)$ will be high.</li>
+<li><strong>Large training set size</strong>: both $J_{train}(\Theta)$ and $J_{CV}(\Theta)$ will be high with $J_{train}(\Theta) \approx J_{CV}(\Theta)$.</li>
+</ul>
+
+<p>If a learning algorithm is suffering from <strong>high bias</strong>, getting more training data <strong>will not (by itself) help much</strong>.</p>
+
+<p><img src="https://www.yuthon.com/images/learning-curves-high-bias.png" alt="learning-curves-high-bias" /></p>
+
+<p><img src="https://www.yuthon.com/images/typical-learning-curve-for-high-bias.png" alt="typical-learning-curve-for-high-bias" /></p>
+
+<h4 id="high-variance">High Variance</h4>
+
+<ul>
+<li><strong>Low training set size</strong>:  $J_{train}(\Theta)$ will be low and $J_{CV}(\Theta)$ will be high.</li>
+<li><strong>Large training set size</strong>: $J_{train}(\Theta)$  increases with training set size and $J_{CV}(\Theta)$ continues to decrease without leveling off. Also, $J_{train}(\Theta) &lt; J_{CV}(\Theta)$ but the difference between them remains significant.</li>
+</ul>
+
+<p>If a learning algorithm is suffering from <strong>high variance</strong>, getting more training data is <strong>likely to help.</strong></p>
+
+<p><img src="https://www.yuthon.com/images/learning-curves-high-variance.png" alt="learning-curves-high-variance" /></p>
+
+<p><img src="https://www.yuthon.com/images/typical-learning-curve-for-high-variance.png" alt="typical-learning-curve-for-high-variance" /></p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Yusu Pan</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2016-09-10
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">License</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="https://www.yuthon.com/tags/coursera/">Coursera</a>
+          <a href="https://www.yuthon.com/tags/machine-learning/">Machine Learning</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="https://www.yuthon.com/post/tutorials/notes-for-cs231n-nn/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Notes for CS231n Neural Network</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="https://www.yuthon.com/post/tutorials/coursera-machine-learning-week-5/">
+            <span class="next-text nav-default">Notes for Machine Learning - Week 5</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'yuthons-blog';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xxdsox@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/5682817" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://twitter.com/corenel" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://www.facebook.com/xxdsox" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://github.com/corenel" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/pan-yu-su" class="iconfont icon-zhihu" title="zhihu"></a>
+  <a href="https://www.yuthon.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
+</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://www.yuthon.com/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      TeX: {equationNumbers: {autoNumber: "AMS"}},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script type="text/javascript" async src="https://www.yuthon.com/lib/mathjax/math-code.js"></script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-76233259-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

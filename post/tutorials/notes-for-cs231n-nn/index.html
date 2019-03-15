@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Notes for CS231n Neural Network - Yuthon&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yusu Pan" /><meta name="description" content="本文主要对于 CS231n 课程自带的 Lecture Notes 的一些补充与总结. 建议先看原版的 Lecture Notes或者可以看知乎专栏中的中文翻译: 另外, 本文主要根据讲课的 Slides 上的顺序来, 与 Lecture Notes 的顺序略有不同. Lecture 5 Activation Functions 课程中主要讲了Sigmoid" /><meta name="keywords" content="yuthon, yusu-pan, blog, deep-learning, computer-vision" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://www.yuthon.com/post/tutorials/notes-for-cs231n-nn/" />
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.yuthon.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.yuthon.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.yuthon.com/favicon-16x16.png">
+<link rel="manifest" href="https://www.yuthon.com/manifest.json">
+<link rel="mask-icon" href="https://www.yuthon.com/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="https://www.yuthon.com/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Notes for CS231n Neural Network" />
+<meta property="og:description" content="本文主要对于 CS231n 课程自带的 Lecture Notes 的一些补充与总结. 建议先看原版的 Lecture Notes或者可以看知乎专栏中的中文翻译: 另外, 本文主要根据讲课的 Slides 上的顺序来, 与 Lecture Notes 的顺序略有不同. Lecture 5 Activation Functions 课程中主要讲了Sigmoid" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.yuthon.com/post/tutorials/notes-for-cs231n-nn/" />
+<meta property="article:published_time" content="2016-10-16T21:04:26&#43;00:00"/>
+<meta property="article:modified_time" content="2016-10-16T21:04:26&#43;00:00"/>
+
+<meta itemprop="name" content="Notes for CS231n Neural Network">
+<meta itemprop="description" content="本文主要对于 CS231n 课程自带的 Lecture Notes 的一些补充与总结. 建议先看原版的 Lecture Notes或者可以看知乎专栏中的中文翻译: 另外, 本文主要根据讲课的 Slides 上的顺序来, 与 Lecture Notes 的顺序略有不同. Lecture 5 Activation Functions 课程中主要讲了Sigmoid">
+
+
+<meta itemprop="datePublished" content="2016-10-16T21:04:26&#43;00:00" />
+<meta itemprop="dateModified" content="2016-10-16T21:04:26&#43;00:00" />
+<meta itemprop="wordCount" content="2893">
+
+
+
+<meta itemprop="keywords" content="CS231n,Neural Network,Deep Learning," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Notes for CS231n Neural Network"/>
+<meta name="twitter:description" content="本文主要对于 CS231n 课程自带的 Lecture Notes 的一些补充与总结. 建议先看原版的 Lecture Notes或者可以看知乎专栏中的中文翻译: 另外, 本文主要根据讲课的 Slides 上的顺序来, 与 Lecture Notes 的顺序略有不同. Lecture 5 Activation Functions 课程中主要讲了Sigmoid"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="https://www.yuthon.com/" class="logo">Yuthon&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="https://www.yuthon.com/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="https://www.yuthon.com/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="https://www.yuthon.com/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="https://www.yuthon.com/about/">
+        <li class="mobile-menu-item">About</li>
+      </a><a href="https://www.yuthon.com/resume/">
+        <li class="mobile-menu-item">Resume</li>
+      </a><a href="https://github.com/corenel">
+        <li class="mobile-menu-item">Works</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="https://www.yuthon.com/" class="logo">Yuthon&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/about/">About</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/resume/">Resume</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://github.com/corenel">Works</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Notes for CS231n Neural Network</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2016-10-16 </span>
+        <div class="post-category">
+            <a href="https://www.yuthon.com/categories/tutorials/"> Tutorials </a>
+            </div>
+          <span class="more-meta"> 2893 words </span>
+          <span class="more-meta"> 6 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#lecture-5">Lecture 5</a>
+<ul>
+<li><a href="#activation-functions">Activation Functions</a></li>
+<li><a href="#data-preprocessing">Data Preprocessing</a></li>
+<li><a href="#weight-initialization">Weight Initialization</a></li>
+<li><a href="#babysitting-the-learning-process">Babysitting the Learning Process</a>
+<ul>
+<li><a href="#double-check-that-the-loss-is-reasonable">Double check that the loss is reasonable</a></li>
+<li><a href="#other-sanity-check-tips">Other sanity check tips</a></li>
+</ul></li>
+<li><a href="#hyperparameter-optimization">Hyperparameter Optimization</a></li>
+</ul></li>
+<li><a href="#lecture-6">Lecture 6</a>
+<ul>
+<li><a href="#parameter-updates">Parameter Updates</a>
+<ul>
+<li><a href="#learning-rate-decay">Learning rate decay</a></li>
+<li><a href="#second-order-optimization-methods">Second order optimization methods</a></li>
+</ul></li>
+<li><a href="#evaluation-model-ensembles">Evaluation: Model Ensembles</a></li>
+<li><a href="#regularization-dropout">Regularization (dropout)</a></li>
+<li><a href="#gradient-checking">Gradient Checking</a></li>
+<li><a href="#references">References</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<p>本文主要对于 CS231n 课程自带的 Lecture Notes 的一些补充与总结. 建议先看原版的 Lecture Notes或者可以看知乎专栏中的中文翻译:</p>
+
+<p>另外, 本文主要根据讲课的 Slides 上的顺序来, 与 Lecture Notes 的顺序略有不同.</p>
+
+<!-- more -->
+
+<h1 id="lecture-5">Lecture 5</h1>
+
+<h2 id="activation-functions">Activation Functions</h2>
+
+<p>课程中主要讲了Sigmoid, tanh, ReLU, Leaky ReLU, Maxout 以及 ELU 这几种激活函数.</p>
+
+<p><img src="https://www.yuthon.com/images/NN_activation_functions.png" alt="activation_functions" /></p>
+
+<ul>
+<li>Sigmoid 由于以下原因, 基本不使用
+
+<ul>
+<li>函数饱和使得梯度消失(Saturated neurons “kill” the gradients)</li>
+<li>函数并非以零为中心(zero-centered)</li>
+<li>指数运算消耗大量计算资源</li>
+</ul></li>
+<li>tanh 相对于 Sigmoid 来说, 多了零中心这一个特性, 但还是不常用</li>
+<li>重头戏 ReLU (Rectified Linear Unit):
+
+<ul>
+<li>在正半轴上没有饱和现象</li>
+<li>线性结构省下了很多计算资源, 可以直接对矩阵进行阈值计算来实现, 速度是 sigmoid/tanh 的6倍</li>
+<li>然而由于负半轴直接是0, 训练的时候会&rdquo;死掉&rdquo;(die), 因此就有了 Leaky ReLU 和 ELU (Exponential Linear Units), 以及更加通用的 Maxout (代价是消耗两倍的计算资源)</li>
+</ul></li>
+</ul>
+
+<p><strong>实践中一般就直接选 ReLU, 同时注意 Learning Rate 的调整. 实在不行用 Leaky ReLU 或者 Mahout 碰碰运气. 还可以试试 tanh. 坚决别用 Sigmoid.</strong></p>
+
+<h2 id="data-preprocessing">Data Preprocessing</h2>
+
+<p>有很多数据预处理的方法, 比如零中心化(zero-centering), 归一化(normalization), PCA(Principal Component Analysis, 主成分分析)和白化(Whitening).</p>
+
+<ul>
+<li>零中心化(zero-centering): 主要方法就是均值减法, 将数据的中心移到原点上</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">  <span class="c1"># Assume X [NxD] is data matrix, each example in a row</span>
+  <span class="n">X</span> <span class="o">-=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>零中心化主要有两种做法(e.g. consider CIFAR-10 example with [32,32,3] images):</p>
+
+<ul>
+<li><p>Subtract the mean image (e.g.AlexNet)  (mean image = [32,32,3] array)</p></li>
+
+<li><p>Subtract per-channel mean (e.g.VGGNet)  (mean along each channel = 3 numbers)</p></li>
+
+<li><p>归一化(normalization): 使得数据所有维度的范围基本相等, 当然由于图像像素的数值范围本身基本是一致的(一般为0-255), 所以不一定要用.</p></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">  <span class="n">X</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<ul>
+<li>PCA 和白化在 CNN 中并没有什么用, 就不介绍了.</li>
+</ul>
+
+<p><img src="https://www.yuthon.com/images/NN_data_preprocessing.png" alt="data_preprocessing" /></p>
+
+<p><strong>实践中一般就只做零中心化, 其他几样基本都不用做.</strong></p>
+
+<blockquote>
+<p>以下引自知乎专栏[智能单元]所翻译的课程讲义:</p>
+
+<p><strong>常见错误。</strong>进行预处理很重要的一点是：任何预处理策略（比如数据均值）都只能在训练集数据上进行计算，算法训练完毕后再应用到验证集或者测试集上。例如，如果先计算整个数据集图像的平均值然后每张图片都减去平均值，最后将整个数据集分成训练/验证/测试集，那么这个做法是错误的。<strong>应该怎么做呢？应该先分成训练/验证/测试集，只是从训练集中求图片平均值，然后各个集（训练/验证/测试集）中的图像再减去这个平均值。</strong></p>
+
+<p><strong>译者注：此处确为初学者常见错误，请务必注意！</strong></p>
+</blockquote>
+
+<h2 id="weight-initialization">Weight Initialization</h2>
+
+<p>由于各种原因, 将 Weight 全部初始化为0, 或者是小随机数的方法都不大好(一个是由于对称性, 另一个是由于梯度信号太小). 建议使用的是下面这个(配合 ReLU):</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">sqrt</span><span class="p">(</span><span class="mf">2.0</span><span class="o">/</span><span class="n">n</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>或者 Xavier initialization:</p>
+
+<p><img src="https://www.yuthon.com/images/NN_xavier_init.png" alt="xavier_init" /></p>
+
+<p>另外就是还推荐 <strong>Batch Normalization</strong> (批量归一化), 通常应用在全连接层之后, 激活函数之前. 具体参见论文[Ioffe and Szegedy, 2015].</p>
+
+<p><img src="https://www.yuthon.com/images/NN_batch_normalizaition.png" alt="batch_normalizaition" /></p>
+
+<ul>
+<li>Improves gradient flow through thenetwork</li>
+<li>Allows higher learning rates</li>
+<li>Reduces the strong dependence on initialization</li>
+<li>Acts as a form of regularization in afunny way, and slightly reduces the need for dropout, maybe</li>
+</ul>
+
+<h2 id="babysitting-the-learning-process">Babysitting the Learning Process</h2>
+
+<h3 id="double-check-that-the-loss-is-reasonable">Double check that the loss is reasonable</h3>
+
+<ul>
+<li>首先不使用 regularization, 观察 loss 是否合理(下例中对于 CIFAR-10 的初始 loss 应近似等于$log(0.1)=2.31$)</li>
+<li>然后再开启 regularization, 观察 loss 是否上升</li>
+</ul>
+
+<p><img src="https://www.yuthon.com/images/NN_loss_double_check.png" alt="loss_double_check" /></p>
+
+<h3 id="other-sanity-check-tips">Other sanity check tips</h3>
+
+<ul>
+<li>首先在一个小数据集上进行训练(可先设 regualrization 为0), 看看是否过拟合, 确保算法的正确性.</li>
+</ul>
+
+<p><img src="https://www.yuthon.com/images/NN_overfit_on_a_small_portion_of_training_data.png" alt="overfit_on_a_small_portion_of_training_data" /></p>
+
+<ul>
+<li><p>之后再从一个小的 regularization 开始, 寻找合适的能够使 loss 下降的 learning rate.</p>
+
+<ul>
+<li>如果几次 epoch 后, loss 没没有下降, 说明 learning rate 太小了</li>
+</ul>
+
+<p><img src="https://www.yuthon.com/images/NN_loss_barely_changing.png" alt="loss_barely_changing" /></p>
+
+<ul>
+<li>如果 loss 爆炸了, 那么说明 learning rate 太大了</li>
+</ul>
+
+<p><img src="https://www.yuthon.com/images/NN_loss_exploding.png" alt="loss_exploding" /></p>
+
+<ul>
+<li>通常 learning rate 的范围是$[1e-3, 1e-5]$</li>
+</ul></li>
+</ul>
+
+<h2 id="hyperparameter-optimization">Hyperparameter Optimization</h2>
+
+<ul>
+<li><p><strong>从粗放(coarse)到细致(fine)地分段搜索</strong>, 先大范围小周期(1-5 epoch足矣), 然后再根据结果小范围长周期</p>
+
+<ul>
+<li>First stage: only a few epochs to get rough idea of what params work</li>
+<li>Second stage: longer running time, finer search</li>
+<li>… (repeat as necessary)</li>
+</ul></li>
+</ul>
+
+<blockquote>
+<p>If the cost is ever &gt; 3 * original cost, break out early</p>
+</blockquote>
+
+<ul>
+<li><p><strong>在对数尺度上进行搜索</strong>, 例如<code>learning_rate = 10 ** uniform(-6, 1)</code>. 当然有些超参数还是按原来的, 比如 <code>dropout = uniform(0,1)</code></p></li>
+
+<li><p><strong>小心边界上的最优值</strong>, 否则可能会错过更好的参数搜索范围.</p></li>
+</ul>
+
+<p><img src="https://www.yuthon.com/images/NN_coarse_search.png" alt="coarse_search" /></p>
+
+<p><img src="https://www.yuthon.com/images/NN_finer_search.png" alt="finer_search" /></p>
+
+<ul>
+<li><strong>随机搜索优于网格搜索</strong></li>
+</ul>
+
+<p><img src="https://www.yuthon.com/images/NN_random_search_vs_grid_search .png" alt="random_search_vs_grid_search " /></p>
+
+<h1 id="lecture-6">Lecture 6</h1>
+
+<h2 id="parameter-updates">Parameter Updates</h2>
+
+<p>参数更新有很多种方法, 常见的如下图:</p>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/NN_parameter_update.png"
+         alt="参数更新" width="415px"/> 
+</figure>
+
+
+<ul>
+<li>最普通的就是SGD, 仅仅按照负梯度来更新</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">  <span class="n">x</span> <span class="o">+=</span> <span class="o">-</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">dx</span></code></pre></td></tr></table>
+</div>
+</div>
+<p><img src="https://www.yuthon.com/images/NN_sgd.png" alt="sgd" /></p>
+
+<ul>
+<li>其次就是各种动量方法, 比如 <strong>Momentum</strong>,  以及其衍生的 <strong>Nesterov</strong> 方法. 其主要思想就是在任何具有持续梯度的方向上保持一个会慢慢消失的动量, 使得梯度下降更为圆滑.</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">  <span class="c1"># Momentum update</span>
+  <span class="n">v</span> <span class="o">=</span> <span class="n">mu</span> <span class="o">*</span> <span class="n">v</span> <span class="o">-</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">dx</span> <span class="c1"># integrate velocity</span>
+  <span class="n">x</span> <span class="o">+=</span> <span class="n">v</span> <span class="c1"># integrate position</span>
+
+  <span class="c1"># Mesterov momentum update rewrite</span>
+  <span class="n">v_prev</span> <span class="o">=</span> <span class="n">v</span>
+  <span class="n">v</span> <span class="o">=</span> <span class="n">mu</span> <span class="o">*</span> <span class="n">v</span> <span class="o">-</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">dx</span>
+  <span class="n">x</span> <span class="o">+=</span> <span class="o">-</span><span class="n">mu</span> <span class="o">*</span> <span class="n">v_prev</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">mu</span><span class="p">)</span> <span class="o">*</span> <span class="n">v</span></code></pre></td></tr></table>
+</div>
+</div>
+<p><img src="https://www.yuthon.com/images/NN_momentum_and_Nesterov.png" alt="momentum_and_Nesterov" /></p>
+
+<blockquote>
+<ul>
+<li>v 初始为 0</li>
+<li>mu 一般取 0.5, 0.9 或 0.99. 有时候可以先 0.5, 然后慢慢变成 0.99</li>
+</ul>
+</blockquote>
+
+<ul>
+<li>然后就是逐步改 learning rate 的方法, 比如 AdaGrad 或者 RMSProp (Hinton 大神在 Coursera 课上提出的改进方法)</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">  <span class="c1"># AdaGrad</span>
+  <span class="n">cache</span> <span class="o">+=</span> <span class="n">dx</span><span class="o">**</span><span class="mi">2</span>
+  <span class="n">x</span> <span class="o">+=</span> <span class="o">-</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">dx</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">cache</span><span class="p">)</span> <span class="o">+</span> <span class="n">eps</span><span class="p">)</span>
+
+  <span class="c1"># RMSProp</span>
+  <span class="n">cache</span> <span class="o">=</span> <span class="n">decay_rate</span> <span class="o">*</span> <span class="n">cache</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">decay_rate</span><span class="p">)</span> <span class="o">*</span> <span class="n">dx</span><span class="o">**</span><span class="mi">2</span>
+  <span class="n">x</span> <span class="o">+=</span> <span class="o">-</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">dx</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">cache</span><span class="p">)</span> <span class="o">+</span> <span class="n">eps</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<blockquote>
+<ul>
+<li>cache 尺寸与 dx 相同</li>
+<li>eps 取值在 1e-4 到 1e-8 之间, 主要是为了防止分母为 0.</li>
+<li>AdaGrad 通常过早停止学习, RMSProp 通过引入一个梯度平方的滑动平均改善了它.</li>
+</ul>
+</blockquote>
+
+<ul>
+<li>最后就是集上述方法之大成的 <strong>Adam</strong>, 在大多数的实践中都是一个很好的选择.</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">  <span class="c1"># Adam</span>
+  <span class="n">m</span> <span class="p">,</span><span class="n">v</span> <span class="o">=</span> <span class="c1"># ... initialize cacahe to zeros</span>
+  <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">big_number</span><span class="p">):</span>
+      <span class="n">dx</span> <span class="o">=</span> <span class="c1"># ... evaluate gradient</span>
+      <span class="n">m</span> <span class="o">=</span> <span class="n">beta1</span> <span class="o">*</span> <span class="n">m</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">beta1</span><span class="p">)</span> <span class="o">*</span> <span class="n">dx</span> <span class="c1"># update first momentum</span>
+      <span class="n">v</span> <span class="o">=</span> <span class="n">beta2</span> <span class="o">*</span> <span class="n">v</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">beta2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">dx</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="c1"># update second momentum</span>
+      <span class="n">mb</span> <span class="o">=</span> <span class="n">m</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">beta1</span> <span class="o">**</span> <span class="n">t</span><span class="p">)</span> <span class="c1"># bias correction</span>
+      <span class="n">vb</span> <span class="o">=</span> <span class="n">v</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">beta2</span> <span class="o">**</span> <span class="n">t</span><span class="p">)</span> <span class="c1"># bias correction</span>
+      <span class="n">x</span> <span class="o">+=</span> <span class="o">-</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">mb</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">vb</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1e-7</span><span class="p">)</span> <span class="c1"># RMSProp-like</span></code></pre></td></tr></table>
+</div>
+</div>
+<blockquote>
+<ul>
+<li>The bias correction compensates for the fact that m,v are initialized at zero and need
+some time to “warm up”. Only relevant in first few iterations when t is small.</li>
+</ul>
+</blockquote>
+
+<h3 id="learning-rate-decay">Learning rate decay</h3>
+
+<p>主要是为了让 learning rate 随着训练时间的推移慢慢变小, 防止系统动能太大, 到最后在最优点旁边跳来跳去.</p>
+
+<ul>
+<li><strong>step decay</strong>: e.g. decay learning rate by half every few epochs.</li>
+<li><strong>exponential decay</strong>: $\alpha = \alpha_0 e^{-kt}$</li>
+<li><strong>1/t decay</strong>: $\alpha = \alpha_0 / (1+kt)$</li>
+</ul>
+
+<h3 id="second-order-optimization-methods">Second order optimization methods</h3>
+
+<p>主要是一些基于牛顿法的二阶最优化方法, 包括 L-BGFS 之类的. 其优点是根本就没有 learning rate 这个超参数, 而缺点则是 Hessian 矩阵实在是太大了, 非常耗费时间与空间, 因此在 DL 和 CNN 中基本不使用.</p>
+
+<h2 id="evaluation-model-ensembles">Evaluation: Model Ensembles</h2>
+
+<ul>
+<li><p>训练多个独立的模型, 然后在测试的时候对其结果进行平均, 一般能得到 2% 的额外性能提升;</p></li>
+
+<li><p>平均单个模型的多个记录点 (check point) 上的参数, 也能获得一些提升</p></li>
+
+<li><p>训练的时候对参数进行平滑操作, 并用于测试集 (keep track of (and use at test time) a running average</p></li>
+</ul>
+
+<p>parameter vector)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">  <span class="n">While</span> <span class="bp">True</span><span class="p">:</span>
+      <span class="n">data_batch</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">sample_data_batch</span><span class="p">()</span>
+      <span class="n">loss</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">data_batch</span><span class="p">)</span>
+      <span class="n">dx</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+      <span class="n">x</span> <span class="o">+=</span> <span class="o">-</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">dx</span>
+      <span class="n">x_test</span> <span class="o">=</span> <span class="mf">0.995</span> <span class="o">*</span> <span class="n">x_test</span> <span class="o">+</span> <span class="mf">0.005</span> <span class="o">*</span> <span class="n">x</span> <span class="c1"># use for test set</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="regularization-dropout">Regularization (dropout)</h2>
+
+<p>Dropout 算是很常用的一种方法了, 主要就是在前向传播的时候随机设置某些神经元为零 (“randomly set some neurons to zero in the forward pass”).</p>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/NN_dropout.png"
+         alt="dropout" width="100%"/> 
+</figure>
+
+
+<p>其主要想法是让网络具有一定的冗余能力 (Forces the network to have a
+redundant representation), 或者说是训练出了一个大的集成网络 (Dropout is training a large ensemble of models (that share parameters), each binary mask is one model, gets trained on only ~one datapoint.)</p>
+
+<p><img src="https://www.yuthon.com/images/NN_dropout_a_good_idea.png" alt="dropout_a_good_idea" /></p>
+
+<p>具体实现如下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="n">p</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="c1"># probability of keeping a unit active. higher = less dropout</span>
+<span class="k">def</span> <span class="nf">train_step</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+    <span class="s2">&#34;&#34;&#34; X contains the datat &#34;&#34;&#34;</span>
+
+    <span class="c1"># forward pass for example 3-layer neural network</span>
+    <span class="n">H1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">W1</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span> <span class="o">+</span> <span class="n">b1</span><span class="p">)</span>
+    <span class="n">U1</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="o">*</span><span class="n">H1</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">p</span><span class="p">)</span> <span class="o">/</span> <span class="n">p</span> <span class="c1"># First dropout mask. Notice /p!</span>
+    <span class="n">H1</span> <span class="o">*=</span> <span class="n">U1</span> <span class="c1"># drop!</span>
+    <span class="n">H2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">W2</span><span class="p">,</span> <span class="n">H1</span><span class="p">)</span> <span class="o">+</span> <span class="n">b2</span><span class="p">)</span>
+    <span class="n">U2</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="o">*</span><span class="n">H2</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">p</span><span class="p">)</span> <span class="o">/</span> <span class="n">p</span> <span class="c1"># Second dropout mask. Notice /p!  </span>
+    <span class="n">H2</span> <span class="o">*=</span> <span class="n">U2</span> <span class="c1"># drop!</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">W3</span><span class="p">,</span> <span class="n">H2</span><span class="p">)</span> <span class="o">+</span> <span class="n">b3</span>
+
+    <span class="c1"># backward pass: compute geadients ... (not shown)</span>
+    <span class="c1"># parameter update... (not shown)</span>
+
+<span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+    <span class="c1"># ensembled forward pass</span>
+    <span class="n">H1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">W1</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span> <span class="o">+</span> <span class="n">b1</span><span class="p">)</span> <span class="c1"># no scaling necessary</span>
+    <span class="n">H2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">W2</span><span class="p">,</span> <span class="n">H1</span><span class="p">)</span> <span class="o">+</span> <span class="n">b2</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">W3</span><span class="p">,</span> <span class="n">H2</span><span class="p">)</span> <span class="o">+</span> <span class="n">b3</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="gradient-checking">Gradient Checking</h2>
+
+<p>主要就是通过数值法计算梯度, 然后和通过后向传播得到的解析梯度比较, 看看误差大不大, 防止手贱算错梯度导致后面算法全乱了.</p>
+
+<ol>
+<li>用中心化公式$\frac{df(x)}{dx} = \frac{f(x+h - f(x-h)}{2h}$计算数值梯度, $h$取 $1e-5$ 左右.</li>
+<li>使用相对误差$\frac{|f^{&lsquo;}_a - f^{&lsquo;}_n|}{max(|f^{&lsquo;}_a|, |f^{&lsquo;}_n|)}​$</li>
+</ol>
+
+<p>同时还有些注意事项, 参见 <a href="http://cs231n.github.io/neural-networks-3/#gradcheck">Gradient Checks</a>.</p>
+
+<h2 id="references">References</h2>
+
+<ul>
+<li><a href="http://cs231n.github.io/neural-networks-1/">Neural Networks Part 1: Setting up the Architecture</a></li>
+<li><a href="http://cs231n.github.io/neural-networks-2/">Neural Networks Part 2: Setting up the Data and the Loss</a></li>
+<li><a href="http://cs231n.github.io/neural-networks-3/">Neural Networks Part 3: Learning and Evaluation</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/21462488?refer=intelligentunit">CS231n课程笔记翻译：神经网络笔记1（上）</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/21513367?refer=intelligentunit">CS231n课程笔记翻译：神经网络笔记1（下）</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/21560667?refer=intelligentunit">CS231n课程笔记翻译：神经网络笔记2 </a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/21741716?refer=intelligentunit">CS231n课程笔记翻译：神经网络笔记3（上）</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/21798784?refer=intelligentunit">CS231n课程笔记翻译：神经网络笔记3（下）</a></li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Yusu Pan</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2016-10-16
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">License</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="https://www.yuthon.com/tags/cs231n/">CS231n</a>
+          <a href="https://www.yuthon.com/tags/neural-network/">Neural Network</a>
+          <a href="https://www.yuthon.com/tags/deep-learning/">Deep Learning</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="https://www.yuthon.com/post/tutorials/notes-for-cs231n-cnn/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Notes for CS231n Convolutional Neural Network</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="https://www.yuthon.com/post/tutorials/coursera-machine-learning-week-6/">
+            <span class="next-text nav-default">Notes for Machine Learning - Week 6</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'yuthons-blog';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xxdsox@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/5682817" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://twitter.com/corenel" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://www.facebook.com/xxdsox" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://github.com/corenel" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/pan-yu-su" class="iconfont icon-zhihu" title="zhihu"></a>
+  <a href="https://www.yuthon.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
+</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://www.yuthon.com/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      TeX: {equationNumbers: {autoNumber: "AMS"}},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script type="text/javascript" async src="https://www.yuthon.com/lib/mathjax/math-code.js"></script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-76233259-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

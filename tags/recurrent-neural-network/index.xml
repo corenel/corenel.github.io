@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Recurrent Neural Network on Yuthon&#39;s Blog</title>
+    <link>https://www.yuthon.com/tags/recurrent-neural-network/</link>
+    <description>Recent content in Recurrent Neural Network on Yuthon&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
+</copyright>
+    <lastBuildDate>Sun, 30 Oct 2016 14:59:17 +0000</lastBuildDate>
+    
+	<atom:link href="https://www.yuthon.com/tags/recurrent-neural-network/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Notes for CS231n Recurrent Neural Network</title>
+      <link>https://www.yuthon.com/post/tutorials/notes-for-cs231n-rnn/</link>
+      <pubDate>Sun, 30 Oct 2016 14:59:17 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/tutorials/notes-for-cs231n-rnn/</guid>
+      <description>从 RNN 开始, CS231n 的 Lecture Notes 就没有了, 因此我根据上课时的 Slides 整理了一些需要重视的知识点. 还可以参考这些文章或是视频来加深理解。 Lecture 10 Introduction Recurrent Networks offer a lot of flexibility: one to one: Vanilla Neural Networks one to many: e.g. Image Captioning (image -&amp;gt; sequence of words) many to one: e.g. Sentiment Classification (sequence of words -&amp;gt; sentiment) many to many: e.g. Machine</description>
+    </item>
+    
+  </channel>
+</rss>

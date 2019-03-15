@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Notes for Machine Learning - Week 5 - Yuthon&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yusu Pan" /><meta name="description" content="Neural Networks: Learning Cost Function and Backpropagation Cost Function Let&amp;rsquo;s first define a few variables that we will need to use: $L$ = total number of layers in the network $s_l$ = number of units (not counting bias unit) in layer $l$ $K$ = number of output units/classes Recall that the cost function for regularized logistic regression was: $J(\theta) = - \frac{1}{m} \sum_{i=1}^m \large[ y^{(i)}\ \log (h_\theta (x^{(i)})) &#43; (1 - y^{(i)})\ \log (1 - h_\theta(x^{(i)}))\large] &#43; \frac{\lambda}{2m}\sum_{j=1}^n \theta_j^2$ For neural networks, it is going to be slightly more complicated: $J(\Theta) = - \frac{1}{m} \sum_{i=1}^m \sum_{k=1}^K \left[y^{(i)}_k \log ((h_\Theta (x^{(i)}))_k)" /><meta name="keywords" content="yuthon, yusu-pan, blog, deep-learning, computer-vision" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://www.yuthon.com/post/tutorials/coursera-machine-learning-week-5/" />
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.yuthon.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.yuthon.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.yuthon.com/favicon-16x16.png">
+<link rel="manifest" href="https://www.yuthon.com/manifest.json">
+<link rel="mask-icon" href="https://www.yuthon.com/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="https://www.yuthon.com/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Notes for Machine Learning - Week 5" />
+<meta property="og:description" content="Neural Networks: Learning Cost Function and Backpropagation Cost Function Let&rsquo;s first define a few variables that we will need to use: $L$ = total number of layers in the network $s_l$ = number of units (not counting bias unit) in layer $l$ $K$ = number of output units/classes Recall that the cost function for regularized logistic regression was: $J(\theta) = - \frac{1}{m} \sum_{i=1}^m \large[ y^{(i)}\ \log (h_\theta (x^{(i)})) &#43; (1 - y^{(i)})\ \log (1 - h_\theta(x^{(i)}))\large] &#43; \frac{\lambda}{2m}\sum_{j=1}^n \theta_j^2$ For neural networks, it is going to be slightly more complicated: $J(\Theta) = - \frac{1}{m} \sum_{i=1}^m \sum_{k=1}^K \left[y^{(i)}_k \log ((h_\Theta (x^{(i)}))_k)" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.yuthon.com/post/tutorials/coursera-machine-learning-week-5/" />
+<meta property="article:published_time" content="2016-08-17T11:57:03&#43;00:00"/>
+<meta property="article:modified_time" content="2016-08-17T11:57:03&#43;00:00"/>
+
+<meta itemprop="name" content="Notes for Machine Learning - Week 5">
+<meta itemprop="description" content="Neural Networks: Learning Cost Function and Backpropagation Cost Function Let&rsquo;s first define a few variables that we will need to use: $L$ = total number of layers in the network $s_l$ = number of units (not counting bias unit) in layer $l$ $K$ = number of output units/classes Recall that the cost function for regularized logistic regression was: $J(\theta) = - \frac{1}{m} \sum_{i=1}^m \large[ y^{(i)}\ \log (h_\theta (x^{(i)})) &#43; (1 - y^{(i)})\ \log (1 - h_\theta(x^{(i)}))\large] &#43; \frac{\lambda}{2m}\sum_{j=1}^n \theta_j^2$ For neural networks, it is going to be slightly more complicated: $J(\Theta) = - \frac{1}{m} \sum_{i=1}^m \sum_{k=1}^K \left[y^{(i)}_k \log ((h_\Theta (x^{(i)}))_k)">
+
+
+<meta itemprop="datePublished" content="2016-08-17T11:57:03&#43;00:00" />
+<meta itemprop="dateModified" content="2016-08-17T11:57:03&#43;00:00" />
+<meta itemprop="wordCount" content="2083">
+
+
+
+<meta itemprop="keywords" content="Coursera,Machine Learning," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Notes for Machine Learning - Week 5"/>
+<meta name="twitter:description" content="Neural Networks: Learning Cost Function and Backpropagation Cost Function Let&rsquo;s first define a few variables that we will need to use: $L$ = total number of layers in the network $s_l$ = number of units (not counting bias unit) in layer $l$ $K$ = number of output units/classes Recall that the cost function for regularized logistic regression was: $J(\theta) = - \frac{1}{m} \sum_{i=1}^m \large[ y^{(i)}\ \log (h_\theta (x^{(i)})) &#43; (1 - y^{(i)})\ \log (1 - h_\theta(x^{(i)}))\large] &#43; \frac{\lambda}{2m}\sum_{j=1}^n \theta_j^2$ For neural networks, it is going to be slightly more complicated: $J(\Theta) = - \frac{1}{m} \sum_{i=1}^m \sum_{k=1}^K \left[y^{(i)}_k \log ((h_\Theta (x^{(i)}))_k)"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="https://www.yuthon.com/" class="logo">Yuthon&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="https://www.yuthon.com/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="https://www.yuthon.com/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="https://www.yuthon.com/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="https://www.yuthon.com/about/">
+        <li class="mobile-menu-item">About</li>
+      </a><a href="https://www.yuthon.com/resume/">
+        <li class="mobile-menu-item">Resume</li>
+      </a><a href="https://github.com/corenel">
+        <li class="mobile-menu-item">Works</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="https://www.yuthon.com/" class="logo">Yuthon&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/about/">About</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/resume/">Resume</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://github.com/corenel">Works</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Notes for Machine Learning - Week 5</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2016-08-17 </span>
+        <div class="post-category">
+            <a href="https://www.yuthon.com/categories/tutorials/"> Tutorials </a>
+            </div>
+          <span class="more-meta"> 2083 words </span>
+          <span class="more-meta"> 5 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#neural-networks-learning">Neural Networks: Learning</a>
+<ul>
+<li><a href="#cost-function-and-backpropagation">Cost Function and Backpropagation</a>
+<ul>
+<li><a href="#cost-function">Cost Function</a></li>
+<li><a href="#backpropagation-algorithm">Backpropagation Algorithm</a>
+<ul>
+<li><a href="#gradient-compuation">Gradient compuation</a></li>
+<li><a href="#backpropagation-algorithm-1">Backpropagation Algorithm</a></li>
+</ul></li>
+<li><a href="#backpropagation-intuition">Backpropagation Intuition</a>
+<ul>
+<li><a href="#forward-propagation">Forward propagation</a></li>
+<li><a href="#what-s-backpropagation-doing">What&rsquo;s backpropagation doing?</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#backpropagation-in-practice">Backpropagation in Practice</a>
+<ul>
+<li><a href="#implementation-note-unrolling-parameters">Implementation Note: Unrolling Parameters</a></li>
+<li><a href="#gradient-checking">Gradient Checking</a>
+<ul>
+<li><a href="#numerical-estimation-of-gradients">Numerical estimation of gradients</a></li>
+<li><a href="#gradient-checking-1">Gradient Checking</a></li>
+<li><a href="#implement-note">Implement Note</a></li>
+<li><a href="#important">Important</a></li>
+</ul></li>
+<li><a href="#random-initialization">Random Initialization</a></li>
+<li><a href="#putting-it-together">Putting It Together</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#quiz">Quiz</a></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<h1 id="neural-networks-learning">Neural Networks: Learning</h1>
+
+<!-- more -->
+
+<h2 id="cost-function-and-backpropagation">Cost Function and Backpropagation</h2>
+
+<h3 id="cost-function">Cost Function</h3>
+
+<p>Let&rsquo;s first define a few variables that we will need to use:</p>
+
+<ul>
+<li>$L$ = total number of layers in the network</li>
+<li>$s_l$ = number of units (not counting bias unit) in layer $l$</li>
+<li>$K$ = number of output units/classes</li>
+</ul>
+
+<p>Recall that the cost function for regularized logistic regression was:</p>
+
+<p>$J(\theta) = - \frac{1}{m} \sum_{i=1}^m \large[ y^{(i)}\ \log (h_\theta (x^{(i)})) + (1 - y^{(i)})\ \log (1 - h_\theta(x^{(i)}))\large] + \frac{\lambda}{2m}\sum_{j=1}^n \theta_j^2$</p>
+
+<p>For neural networks, it is going to be slightly more complicated:</p>
+
+<p>$J(\Theta) = - \frac{1}{m} \sum_{i=1}^m \sum_{k=1}^K \left[y^{(i)}_k \log ((h_\Theta (x^{(i)}))_k) + (1 - y^{(i)}_k)\log (1 - (h_\Theta(x^{(i)}))_k)\right] + \frac{\lambda}{2m}\sum_{l=1}^{L-1} \sum_{i=1}^{s_l} \sum_{j=1}^{s_{l+1}} ( \Theta_{j,i}^{(l)})^2$</p>
+
+<ul>
+<li>$h_\Theta (x) \in R^K$, $(h_\Theta (x))_i$ = $i^{th}$ output</li>
+<li><u>In the first part of the equation</u>, the double sum simply adds up the logistic regression costs calculated for each cell in the output layer</li>
+<li><u>In the regularization part</u>, the triple sum simply adds up the squares of all the individual $\Theta$s in the entire network.
+
+<ul>
+<li><u>The number of columns</u> in our current theta matrix is equal to the number of nodes in our current layer (<u>including</u> the bias unit).</li>
+<li><u>The number of rows</u> in our current theta matrix is equal to the number of nodes in the next layer (<u>excluding</u> the bias unit).</li>
+<li>This is like a bias unit and by analogy to what we were doing for logistic progression, we won&rsquo;t sum over those terms in our regularization term because <u>we don&rsquo;t want to regularize them</u> and string their values as zero.</li>
+</ul></li>
+</ul>
+
+<h3 id="backpropagation-algorithm">Backpropagation Algorithm</h3>
+
+<p><strong>&ldquo;Backpropagation&rdquo; (后向搜索)</strong> is neural-network terminology for minimizing our cost function, just like what we were doing with gradient descent in logistic and linear regression.</p>
+
+<p>Our goal is try to find parameters $\Theta$ to try to minimize $J(\Theta)$.</p>
+
+<p>In order to use either gradient descent or one of the advance optimization algorithms. What we need to do therefore is to write code that takes this input the parameters theta and computes $J(\Theta)$ and $\dfrac{\partial}{\partial \Theta_{i,j}^{(l)}}J(\Theta)$.</p>
+
+<h4 id="gradient-compuation">Gradient compuation</h4>
+
+<p>Given one training example $(x,y)$</p>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/ML_gradient_computation.png"
+         alt="gradient_computation" width="300px"/> 
+</figure>
+
+
+<p>Forward propagation:</p>
+
+<ul>
+<li>$a^{(1)} = x$</li>
+<li>$z^{(2)} = \Theta ^{(1)} a ^{(1)}$</li>
+<li>$a^{(2)} = g(z^{(2)})\ (add\ a^{(2)}_0)$</li>
+<li>$z^{(3)} = \Theta ^{(1)} a ^{(2)}$</li>
+<li>$a^{(3)} = g(z^{(3)})\ (add\ a^{(3)}_0)$</li>
+<li>$z^{(4)} = \Theta ^{(3)} a ^{(3)}$</li>
+<li>$a^{(2)} = h_\Theta (x) =  g(z^{(3)})$</li>
+</ul>
+
+<p>In backpropagation we&rsquo;re going to compute for every node:</p>
+
+<p>$\delta_j^{(l)}$ = &ldquo;error&rdquo; of node j in layer $l$ ($s_{l+1}$ elements vector)</p>
+
+<p>For each output unit (layer $L = 4$):</p>
+
+<p>$\delta ^{(4)} = a^{(4)} - y$</p>
+
+<p>To get the delta values of the layers before the last layer, we can use an equation that steps us back from right to left:</p>
+
+<p>$\delta^{(l)} = ((\Theta^{(l)})^T \delta^{(l+1)})\ .*\ g&rsquo;(z^{(l)})$</p>
+
+<p>The g-prime derivative terms can also be written out as:</p>
+
+<p>$g&rsquo;(z^{(l)}) = a^{(l)}\ .*\ (1 - a^{(l)})$</p>
+
+<p>There is no $\delta ^{(1)}$ term, because the first layer corresponds to the input layer and that&rsquo;s just the feature we observed in our training sets, so that doesn&rsquo;t have any error associated with that.</p>
+
+<p>It&rsquo;s possible to prove that if you ignore regularation, then the partial derivative terms you want are exactly given by the activations and these delta terms.</p>
+
+<p>$\dfrac{\partial J(\Theta)}{\partial \Theta_{i,j}^{(l)}} = a^{(i)}_j \delta^{(l+1)}_i\ (\text{ignoring }\lambda)$</p>
+
+<h4 id="backpropagation-algorithm-1">Backpropagation Algorithm</h4>
+
+<ul>
+<li>Training set $\lbrace (x^{(1)}, y^{(1)}) \cdots (x^{(m)}, y^{(m)})\rbrace$</li>
+<li>Set $\Delta^{(l)}_{i,j} := 0$ (for all $l, i, j$)</li>
+<li>For $i=1$ to $m$
+
+<ul>
+<li>Set $a^{(1)} := x^{(t)}$</li>
+<li>Perform forward propagation to compute $a^{(l)}$ for $l = 2,3,\dots ,L$</li>
+<li>Using $y^{(i)}$, compute $\delta^{(L)} = a^{(L)} - y^{(t)}$</li>
+<li>Compute $\delta^{(L-1)}, \delta^{(L-2)},\dots,\delta^{(2)}$</li>
+<li>$\Delta^{(l)}_{i,j} := \Delta^{(l)}_{i,j} + a_j^{(l)} \delta_i^{(l+1)}$  or with vectorization, $\Delta^{(l)} := \Delta^{(l)} + \delta^{(l+1)}(a^{(l)})^T$</li>
+</ul></li>
+<li>$D^{(l)}_{i,j} := \dfrac{1}{m}\left(\Delta^{(l)}_{i,j} + \lambda\Theta^{(l)}_{i,j}\right)$ <strong>If</strong> $j\ne 0$ </li>
+<li>$D^{(l)}_{i,j} := \dfrac{1}{m}\Delta^{(l)}_{i,j}$ <strong>If</strong> $j = 0$</li>
+</ul>
+
+<p>The capital-delta matrix is used as an &ldquo;accumulator&rdquo; to add up our values as we go along and eventually compute our partial derivative.</p>
+
+<p> the $D_{i,j}^{(l)}$ terms are the partial derivatives and the results we are looking for:</p>
+
+<p>$\dfrac{\partial J(\Theta)}{\partial \Theta_{i,j}^{(l)}} = D_{i,j}^{(l)}$</p>
+
+<h3 id="backpropagation-intuition">Backpropagation Intuition</h3>
+
+<h4 id="forward-propagation">Forward propagation</h4>
+
+<p><img src="https://www.yuthon.com/images/ML_forward_propagation_intuition.png" alt="forward_propagation_intuition.png" /></p>
+
+<h4 id="what-s-backpropagation-doing">What&rsquo;s backpropagation doing?</h4>
+
+<p>The cost function is:</p>
+
+<p>$J(\theta) = - \frac{1}{m} \sum_{t=1}^m\sum_{k=1}^K  \left[ y^{(t)}_k \ \log (h_\theta (x^{(t)}))_k + (1 - y^{(t)}_k)\ \log (1 - h_\theta(x^{(t)})_k)\right] + \frac{\lambda}{2m}\sum_{l=1}^{L-1} \sum_{i=1}^{s_l} \sum_{j=1}^{s_l+1} ( \theta_{j,i}^{(l)})^2$</p>
+
+<p>Focusing on  a single example $x^{(i)}, y^{(i)}$, the case of 1 output unit, and ignoring regularization ($\lambda = 0$),</p>
+
+<p>$cost(t) =y^{(t)} \ \log (h_\theta (x^{(t)})) + (1 - y^{(t)})\ \log (1 - h_\theta(x^{(t)}))$</p>
+
+<p>Intuitively, $\theta ^{(l)}_j$ is the &ldquo;error&rdquo; for $a ^{(l)}_j$ (unit $j$ in layer $l$). More formally, the delta values are actually the derivative of the cost function:</p>
+
+<p>$\delta_j^{(l)} = \dfrac{\partial}{\partial z_j^{(l)}} cost(t)$</p>
+
+<p><img src="https://www.yuthon.com/images/ML_backward_propagation_intuition.png" alt="backward_propagation_intuition.png" /></p>
+
+<p>In above, we can compute</p>
+
+<p>$\delta ^{(4)}_1 = y^{(i)} - a^{(4)}_1$</p>
+
+<p>$\delta ^{(3)}_2 = \Theta ^{(3)}_{12} \delta^{(4)}_1$</p>
+
+<p>$\delta ^{(2)}_2 = \Theta ^{(2)}_{12} \delta^{(3)}_1 + \Theta ^{(2)}_{22} \delta^{(3)}_2$</p>
+
+<h2 id="backpropagation-in-practice">Backpropagation in Practice</h2>
+
+<h3 id="implementation-note-unrolling-parameters">Implementation Note: Unrolling Parameters</h3>
+
+<p>We use following code to get the optimisation theta.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-octave" data-lang="octave"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-octave" data-lang="octave"><span class="k">function</span><span class="w"> </span>[jVal, gradient] <span class="p">=</span><span class="w"> </span><span class="nf">costFunction</span><span class="p">(</span>theta<span class="p">)</span><span class="w">
+</span><span class="w">  </span><span class="p">...</span><span class="err">
+</span><span class="err"></span><span class="n">optTheta</span> <span class="p">=</span> <span class="n">fminunc</span><span class="p">(@</span><span class="n">costFunction</span><span class="p">,</span> <span class="n">initialTheta</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>Where <code>gradient</code>, <code>theta</code>, <code>initialTheta</code> are vectors of $n+1$ dimension.</p>
+
+<p>In order to use optimizing functions such as <code>fminunc()</code>, we will want to &ldquo;unroll&rdquo; all the elements and put them into one long vector:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-octave" data-lang="octave"><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-octave" data-lang="octave"><span class="n">thetaVec</span> <span class="p">=</span> <span class="p">[</span><span class="n">Theta1</span><span class="p">(:);</span> <span class="n">Theta2</span><span class="p">(:);</span> <span class="n">Theta3</span><span class="p">(:)];</span><span class="err">
+</span><span class="err"></span><span class="n">DVec</span> <span class="p">=</span> <span class="p">[</span><span class="n">D1</span><span class="p">(:);</span> <span class="n">D2</span><span class="p">(:);</span> <span class="n">D3</span><span class="p">(:)];</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>If the dimensions of <code>Theta1</code> is $10\times11$, <code>Theta2</code> is $10\times 11$ and <code>Theta3</code> is $1\times 11$, then we can get back our original matrices from the &ldquo;unrolled&rdquo; versions as follows:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-octave" data-lang="octave"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-octave" data-lang="octave"><span class="n">Theta1</span> <span class="p">=</span> <span class="nb">reshape</span><span class="p">(</span><span class="n">thetaVector</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">110</span><span class="p">),</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">)</span><span class="err">
+</span><span class="err"></span><span class="n">Theta2</span> <span class="p">=</span> <span class="nb">reshape</span><span class="p">(</span><span class="n">thetaVector</span><span class="p">(</span><span class="mi">111</span><span class="p">:</span><span class="mi">220</span><span class="p">),</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">)</span><span class="err">
+</span><span class="err"></span><span class="n">Theta3</span> <span class="p">=</span> <span class="nb">reshape</span><span class="p">(</span><span class="n">thetaVector</span><span class="p">(</span><span class="mi">221</span><span class="p">:</span><span class="mi">231</span><span class="p">),</span><span class="mi">1</span><span class="p">,</span><span class="mi">11</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<h3 id="gradient-checking">Gradient Checking</h3>
+
+<p>Gradient checking will assure that our backpropagation works as intended.</p>
+
+<h4 id="numerical-estimation-of-gradients">Numerical estimation of gradients</h4>
+
+<p><img src="https://www.yuthon.com/images/ML_numerical_estimation_of_gradients.png" alt="numerical_estimation_of_gradients.png" /></p>
+
+<p>We can approximate the derivative of our cost function with:</p>
+
+<p>$\dfrac{\partial}{\partial\Theta}J(\Theta) \approx \dfrac{J(\Theta + \epsilon) - J(\Theta - \epsilon)}{2\epsilon}$</p>
+
+<p><strong>Implement</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-octave" data-lang="octave"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-octave" data-lang="octave"><span class="n">gradApprox</span> <span class="p">=</span> <span class="p">(</span><span class="n">J</span><span class="p">(</span><span class="n">theta</span> <span class="o">+</span> <span class="n">EPSILON</span><span class="p">)</span> <span class="o">-</span> <span class="n">J</span><span class="p">(</span><span class="n">theta</span> <span class="o">-</span> <span class="n">EPSILON</span><span class="p">))</span> <span class="o">/</span> <span class="p">(@</span> <span class="o">*</span> <span class="n">EPSILON</span><span class="p">);</span></code></pre></td></tr></table>
+</div>
+</div>
+<h4 id="gradient-checking-1">Gradient Checking</h4>
+
+<p>With multiple theta matrices, we can approximate the derivative <strong>with respect to</strong> $\Theta _J$ as follows:</p>
+
+<p>$\dfrac{\partial}{\partial\Theta_j}J(\Theta) \approx \dfrac{J(\Theta_1, \dots, \Theta_j + \epsilon, \dots, \Theta_n) - J(\Theta_1, \dots, \Theta_j - \epsilon, \dots, \Theta_n)}{2\epsilon}$</p>
+
+<p>A good small value for ϵ (epsilon), guarantees the math above to become true. If the value be much smaller, may we will end up with numerical problems. The professor Andrew usually uses the value $\epsilon = 10^{-4}$.</p>
+
+<p><strong>Implement</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-octave" data-lang="octave"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-octave" data-lang="octave"><span class="n">epsilon</span> <span class="p">=</span> <span class="mf">1e-4</span><span class="p">;</span><span class="err">
+</span><span class="err"></span><span class="k">for</span> <span class="n">i</span> <span class="p">=</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">n</span><span class="p">,</span><span class="err">
+</span><span class="err"></span>  <span class="n">thetaPlus</span> <span class="p">=</span> <span class="n">theta</span><span class="p">;</span><span class="err">
+</span><span class="err"></span>  <span class="n">thetaPlus</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+=</span> <span class="n">epsilon</span><span class="p">;</span><span class="err">
+</span><span class="err"></span>  <span class="n">thetaMinus</span> <span class="p">=</span> <span class="n">theta</span><span class="p">;</span><span class="err">
+</span><span class="err"></span>  <span class="n">thetaMinus</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">-=</span> <span class="n">epsilon</span><span class="p">;</span><span class="err">
+</span><span class="err"></span>  <span class="n">gradApprox</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="p">=</span> <span class="p">(</span><span class="n">J</span><span class="p">(</span><span class="n">thetaPlus</span><span class="p">)</span> <span class="o">-</span> <span class="n">J</span><span class="p">(</span><span class="n">thetaMinus</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">epsilon</span><span class="p">)</span><span class="err">
+</span><span class="err"></span><span class="k">end</span><span class="p">;</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>We then want to check that <code>gradApprox</code> $\approx$ <code>deltaVector</code>.</p>
+
+<h4 id="implement-note">Implement Note</h4>
+
+<ul>
+<li>Implement backprop to compute <code>DVec</code> (unrolled $D^{(1)}, D^{(2)}, D^{(3)}$).</li>
+<li>Implement numerical gradient check to compute <code>gradApprox</code>.</li>
+<li>Make sure they give similar values.</li>
+<li>Turn off gradient checking. Using backprop code for learning.</li>
+</ul>
+
+<h4 id="important">Important</h4>
+
+<ul>
+<li>Be sure to disable your gradient checking code before training your classifier. If you run numerical gradient computation on every iteration of gradient descent (or in the inner loop of <code>costFunction(...)</code>), your code will be <u>very</u> slow.</li>
+</ul>
+
+<h3 id="random-initialization">Random Initialization</h3>
+
+<p>Initializing all theta weights to zero does not work with neural networks. When we backpropagate, all nodes will update to the same value repeatedly.</p>
+
+<p>Instead we can randomly initialize our weights to break symmetry.</p>
+
+<ul>
+<li>Initialize each $\Theta^{(l)}_{ij}$ to a random value between $[-\epsilon, \epsilon]$
+
+<ul>
+<li>$\epsilon = \dfrac{\sqrt{6}}{\sqrt{\mathrm{Loutput} + \mathrm{Linput}}}$</li>
+<li>$\Theta^{(l)} = 2\epsilon\ rand(Loutput, Linput+1)-\epsilon$</li>
+</ul></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-octave" data-lang="octave"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-octave" data-lang="octave"><span class="c">% If the dimensions of Theta1 is 10x11, Theta2 is 10x11 and Theta3 is 1x11.</span><span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="n">Theta1</span> <span class="p">=</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">INIT_EPSILON</span><span class="p">)</span> <span class="o">-</span> <span class="n">INIT_EPSILON</span><span class="p">;</span><span class="err">
+</span><span class="err"></span><span class="n">Theta2</span> <span class="p">=</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">INIT_EPSILON</span><span class="p">)</span> <span class="o">-</span> <span class="n">INIT_EPSILON</span><span class="p">;</span><span class="err">
+</span><span class="err"></span><span class="n">Theta3</span> <span class="p">=</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">11</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">INIT_EPSILON</span><span class="p">)</span> <span class="o">-</span> <span class="n">INIT_EPSILON</span><span class="p">;</span></code></pre></td></tr></table>
+</div>
+</div>
+<blockquote>
+<p>Note: this epsilon is unrelated to the epsilon from Gradient Checking</p>
+</blockquote>
+
+<h3 id="putting-it-together">Putting It Together</h3>
+
+<p>First, pick a network architecture; choose the layout of your neural network, including how many hidden units in each layer and how many layers total.</p>
+
+<ul>
+<li>Number of input units = dimension of features $x^{(i)}$</li>
+<li>Number of output units = number of classes</li>
+<li>Number of hidden units per layer = usually more the better (must balance with cost of computation as it increases with more hidden units)</li>
+<li>Defaults: 1 hidden layer. If more than 1 hidden layer, then the same number of units in every hidden layer.</li>
+</ul>
+
+<p><strong>Training a Neural Network</strong></p>
+
+<ol>
+<li>Randomly initialize the weights</li>
+<li>Implement forward propagation to get $h_\theta(x^{(i)})$</li>
+<li>Implement the cost function</li>
+<li>Implement backpropagation to compute partial derivatives</li>
+<li>Use gradient checking to confirm that your backpropagation works. Then disable gradient checking.</li>
+<li>Use gradient descent or a built-in optimization function to minimize the cost function with the weights in theta.</li>
+</ol>
+
+<p>When we perform forward and back propagation, we loop on every training example:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">for i = 1:m,
+   Perform forward propagation and backpropagation using example (x(i),y(i))
+   (Get activations a(l) and delta terms d(l) for l = 2,...,L</pre></td></tr></table>
+</div>
+</div>
+<h1 id="quiz">Quiz</h1>
+
+<ol>
+<li>You are training a three layer neural network and would like to use backpropagation to compute the gradient of the cost function. In the backpropagation algorithm, one of the steps is to update <code>$\Delta^{(2)}_{ij} := \Delta^{(2)}_{ij} +  \delta^{(3)}_i * (a^{(2)})_j$</code> for every <code>$i,j$</code>. Which of the following is a correct vectorization of this step?
+
+<ul>
+<li>$\Delta(2) :=\Delta(2)+(a(3))^T \ast\delta(2)$</li>
+<li>$\Delta(2) :=\Delta(2)+\delta(3) \ast (a(3))^T$</li>
+<li>$\Delta(2) :=\Delta(2)+(a(2))^T \ast \delta(3)$</li>
+<li><u>$\Delta(2) :=\Delta(2)+\delta(3) \ast (a(2))^T$</u></li>
+</ul></li>
+<li>Suppose <code>Theta1</code> is a $5\times 3$ matrix, and <code>Theta2</code> is a $4\times 6$ matrix. You set <code>thetaVec=[Theta1(:);Theta2(:)]</code>. Which of the following correctly recovers <code>Theta2</code>?
+
+<ul>
+<li><u><code>reshape(thetaVec(16:39),4,6)</code></u></li>
+<li><code>reshape(thetaVec(15:38),4,6)</code></li>
+<li><code>reshape(thetaVec(16:24),4,6)</code></li>
+<li><code>reshape(thetaVec(15:39),4,6)</code></li>
+<li><code>reshape(thetaVec(16:39),6,4)</code></li>
+</ul></li>
+<li>Let $J(\theta) = 3\theta^3 + 2$. Let $\theta=1$, and $\epsilon=0.01$. Use the formula $\frac{J(\theta+\epsilon)-J(\theta-\epsilon)}{2\epsilon}$ to numerically compute an approximation to the derivative at $\theta=1$. What value do you get? (When $\theta=1$, the true/exact derivative is $ \frac{d J(\theta)}{ d\theta}=9$.)
+
+<ul>
+<li>9</li>
+<li>8.9997</li>
+<li>11</li>
+<li><u>9.0003</u></li>
+</ul></li>
+
+<li><p>Which of the following statements are true? Check all that apply.</p>
+
+<ul>
+<li>Computing the gradient of the cost function in a neural network has the same efficiency when we use backpropagation or when we numerically compute it using the method of gradient checking.</li>
+<li><u>For computational efficiency, after we have performed gradient checking to verify that our backpropagation code is correct, we usually disable gradient checking before using backpropagation to train the network.</u></li>
+<li><u>Using gradient checking can help verify if one&rsquo;s implementation of backpropagation is bug-free.</u></li>
+<li>Gradient checking is useful if we are using one of the advanced optimization methods (such as in fminunc) as our optimization algorithm. However, it serves little purpose if we are using gradient descent.</li>
+<li>Using a large value of $\lambda$ cannot hurt the performance of your neural network; the only reason we do not set $\lambda$ to be too large is to avoid numerical problems.</li>
+<li><u>If our neural network overfits the training set, one reasonable step to take is to increase the regularization parameter $\lambda$.</u></li>
+<li>Gradient checking is useful if we are using gradient descent as our optimization algorithm. However, it serves little purpose if we are using one of the advanced optimization methods (such as in fminunc).</li>
+</ul></li>
+
+<li><p>Which of the following statements are true? Check all that apply.</p>
+
+<ul>
+<li>Suppose that the parameter $\theta(1)$ is a square matrix (meaning the number of rows equals the number of columns). If we replace $\theta(1)$ with its transpose ($\theta(1)^T$), then we have not changed the function that the network is computing.</li>
+<li><u>Suppose we have a correct implementation of backpropagation, and are training a neural network using gradient descent. Suppose we plot $J(\theta)$ as a function of the number of iterations, and find that it is increasing rather than decreasing. One possible cause of this is that the learning rate $\alpha$ is too large.</u></li>
+<li><u>If we are training a neural network using gradient descent, one reasonable &ldquo;debugging&rdquo; step to make sure it is working is to plot $J(\theta)$ as a function of the number of iterations, and make sure it is decreasing (or at least non-increasing) after each iteration.</u></li>
+<li>Suppose we are using gradient descent with learning rate $\alpha$. For logistic regression and linear regression, $J(\theta)$ was a convex optimization problem and thus we did not want to choose a learning rate $\alpha$ that is too large. For a neural network however, $J(\theta)$ may not be convex, and thus choosing a very large value of $\alpha$ can only speed up convergence.</li>
+<li>Suppose you have a three layer network with parameters $\theta(1)$ (controlling the function mapping from the inputs to the hidden units) and $\theta(2)$ (controlling the mapping from the hidden units to the outputs). If we set all the elements of $\theta(1)$ to be 0, and all the elements of $\theta(2)$ to be 1, then this suffices for symmetry breaking, since the neurons are no longer all computing the same function of the input.</li>
+<li>If we initialize all the parameters of a neural network to ones instead of zeros, this will suffice for the purpose of &ldquo;symmetry breaking&rdquo; because the parameters are no longer symmetrically equal to zero.</li>
+</ul></li>
+</ol>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Yusu Pan</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2016-08-17
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">License</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="https://www.yuthon.com/tags/coursera/">Coursera</a>
+          <a href="https://www.yuthon.com/tags/machine-learning/">Machine Learning</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="https://www.yuthon.com/post/tutorials/coursera-machine-learning-week-6/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Notes for Machine Learning - Week 6</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="https://www.yuthon.com/post/tutorials/coursera-machine-learning-week-4/">
+            <span class="next-text nav-default">Notes for Machine Learning - Week 4</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'yuthons-blog';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xxdsox@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/5682817" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://twitter.com/corenel" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://www.facebook.com/xxdsox" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://github.com/corenel" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/pan-yu-su" class="iconfont icon-zhihu" title="zhihu"></a>
+  <a href="https://www.yuthon.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
+</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://www.yuthon.com/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      TeX: {equationNumbers: {autoNumber: "AMS"}},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script type="text/javascript" async src="https://www.yuthon.com/lib/mathjax/math-code.js"></script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-76233259-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

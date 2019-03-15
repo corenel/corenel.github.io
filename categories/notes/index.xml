@@ -159,5 +159,32 @@
 &lt;p&gt;同时, 本文还提出了一种 &lt;strong&gt;SLIC (simple linear iterative clustering)&lt;/strong&gt; 的算法, 用的是 k-means clustering 的方法.&lt;/p&gt;</description>
     </item>
     
+    <item>
+      <title>Notes for Machine Learning - Week 6</title>
+      <link>https://www.yuthon.com/post/tutorials/coursera-machine-learning-week-6/</link>
+      <pubDate>Sat, 10 Sep 2016 15:18:41 +0000</pubDate>
+      
+      <guid>https://www.yuthon.com/post/tutorials/coursera-machine-learning-week-6/</guid>
+      <description>&lt;h1 id=&#34;advice-for-applying-machine-learning&#34;&gt;Advice for Applying Machine Learning&lt;/h1&gt;
+
+&lt;h2 id=&#34;evaluating-a-learning-algorithm&#34;&gt;Evaluating a Learning Algorithm&lt;/h2&gt;
+
+&lt;h3 id=&#34;deciding-what-to-try-next&#34;&gt;Deciding What to Try Next&lt;/h3&gt;
+
+&lt;p&gt;Errors in your predictions can be troubleshooted by:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Getting more training examples&lt;/li&gt;
+&lt;li&gt;Trying smaller sets of features&lt;/li&gt;
+&lt;li&gt;Trying additional features&lt;/li&gt;
+&lt;li&gt;Trying adding polynomial features&lt;/li&gt;
+&lt;li&gt;Increasing or decreasing $\lambda$&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Don&amp;rsquo;t just pick one of these avenues at random. We&amp;rsquo;ll explore diagnostic techniques for choosing one of the above solutions in the following sections.&lt;/p&gt;
+
+&lt;p&gt;In the next few sections, We&amp;rsquo;ll first talk about how evaluate your learning algorithms and after that we&amp;rsquo;ll talk about some of these diagnostics which will hopefully let you much more effectively select more of the useful things to try mixing if your goal to improve the machine learning system.&lt;/p&gt;</description>
+    </item>
+    
   </channel>
 </rss>
