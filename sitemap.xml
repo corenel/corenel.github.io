@@ -24,6 +24,13 @@
   </url>
   
   <url>
+    <loc>https://www.yuthon.com/post/tutorials/an-overview-of-dcnn-architectures-efficient-models/</loc>
+    <lastmod>2018-03-25T15:00:13+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://www.yuthon.com/post/tutorials/from-progan-to-stylegan/</loc>
     <lastmod>2018-12-31T19:42:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -40,13 +47,6 @@
   <url>
     <loc>https://www.yuthon.com/post/tutorials/something-about-gans/</loc>
     <lastmod>2017-08-12T19:24:14+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.yuthon.com/post/tutorials/let-s-talk-about-zero-shot-learning/</loc>
-    <lastmod>2017-06-14T14:20:01+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -228,6 +228,13 @@
   
   <url>
     <loc>https://www.yuthon.com/categories/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.yuthon.com/tags/cnns/</loc>
+    <lastmod>2018-03-25T15:00:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
@@ -437,7 +444,7 @@
   
   <url>
     <loc>https://www.yuthon.com/tags/semantic-segmentation/</loc>
-    <lastmod>2017-06-14T14:20:01+00:00</lastmod>
+    <lastmod>2017-05-10T22:05:31+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
@@ -465,7 +472,7 @@
   
   <url>
     <loc>https://www.yuthon.com/tags/</loc>
-    <lastmod>2016-10-19T11:06:30+00:00</lastmod>
+    <lastmod>2018-03-25T15:00:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>

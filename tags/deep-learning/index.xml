@@ -46,15 +46,6 @@
     </item>
     
     <item>
-      <title>Let&#39;s talk about Zero-Shot Learning.</title>
-      <link>https://www.yuthon.com/post/tutorials/let-s-talk-about-zero-shot-learning/</link>
-      <pubDate>Wed, 14 Jun 2017 14:20:01 +0000</pubDate>
-      
-      <guid>https://www.yuthon.com/post/tutorials/let-s-talk-about-zero-shot-learning/</guid>
-      <description>&lt;p&gt;最近在看Zero-Shot learning方面的文章，有些想要记录备忘的东西，就写在这儿吧。&lt;/p&gt;</description>
-    </item>
-    
-    <item>
       <title>Notes for Amortized Inference and Learning in Latent CRF</title>
       <link>https://www.yuthon.com/post/papers/notes-for-amortized-inference-and-learning-in-latent-crf/</link>
       <pubDate>Wed, 10 May 2017 22:05:31 +0000</pubDate>

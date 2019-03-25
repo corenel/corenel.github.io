@@ -41,12 +41,21 @@
     </item>
     
     <item>
+      <title>An Overview of DCNN Architectures: Efficient Models</title>
+      <link>https://www.yuthon.com/post/tutorials/an-overview-of-dcnn-architectures-efficient-models/</link>
+      <pubDate>Sun, 25 Mar 2018 15:00:13 +0800</pubDate>
+      
+      <guid>https://www.yuthon.com/post/tutorials/an-overview-of-dcnn-architectures-efficient-models/</guid>
+      <description>&lt;p&gt;In this post, we discuss the computally efficient DCNN architectures, such as MobileNet, ShuffleNet and their variants.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>From ProGAN to StyleGAN</title>
       <link>https://www.yuthon.com/post/tutorials/from-progan-to-stylegan/</link>
       <pubDate>Mon, 26 Feb 2018 19:42:13 +0800</pubDate>
       
       <guid>https://www.yuthon.com/post/tutorials/from-progan-to-stylegan/</guid>
-      <description>&lt;p&gt;In this post, we are looking into two high-resolution image generation models: ProGAN and StyleGAN. They generates the artificial image gradually, starting from a very low resolution and continuing to a high resolution (finally $1024\times 1024​$).&lt;/p&gt;</description>
+      <description>&lt;p&gt;In this post, we are looking into two high-resolution image generation models: ProGAN and StyleGAN. They generates the artificial images gradually, starting from a very low resolution and continuing to a high resolution (finally $1024\times 1024$).&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -79,15 +88,6 @@
       
       <guid>https://www.yuthon.com/post/tutorials/something-about-gans/</guid>
       <description>&lt;p&gt;最近在看关于GANs的论文，并且自己动手用PyTorch写了一些经典文章的实现，想要稍微总结一下，故有此文。在最后我总结了我自己看过的有关GANs的一些比较好的资源，希望对读者有所帮助。&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Let&#39;s talk about Zero-Shot Learning.</title>
-      <link>https://www.yuthon.com/post/tutorials/let-s-talk-about-zero-shot-learning/</link>
-      <pubDate>Wed, 14 Jun 2017 14:20:01 +0000</pubDate>
-      
-      <guid>https://www.yuthon.com/post/tutorials/let-s-talk-about-zero-shot-learning/</guid>
-      <description>&lt;p&gt;最近在看Zero-Shot learning方面的文章，有些想要记录备忘的东西，就写在这儿吧。&lt;/p&gt;</description>
     </item>
     
     <item>

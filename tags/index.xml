@@ -8,10 +8,19 @@
     <language>en-us</language>
     <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
 </copyright>
-    <lastBuildDate>Wed, 19 Oct 2016 11:06:30 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 25 Mar 2018 15:00:13 +0800</lastBuildDate>
     
 	<atom:link href="https://www.yuthon.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Cnns</title>
+      <link>https://www.yuthon.com/tags/cnns/</link>
+      <pubDate>Sun, 25 Mar 2018 15:00:13 +0800</pubDate>
+      
+      <guid>https://www.yuthon.com/tags/cnns/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Convolutional Neural Network</title>
@@ -241,7 +250,7 @@
     <item>
       <title>Semantic Segmentation</title>
       <link>https://www.yuthon.com/tags/semantic-segmentation/</link>
-      <pubDate>Wed, 14 Jun 2017 14:20:01 +0000</pubDate>
+      <pubDate>Wed, 10 May 2017 22:05:31 +0000</pubDate>
       
       <guid>https://www.yuthon.com/tags/semantic-segmentation/</guid>
       <description></description>

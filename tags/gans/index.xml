@@ -19,7 +19,7 @@
       <pubDate>Mon, 26 Feb 2018 19:42:13 +0800</pubDate>
       
       <guid>https://www.yuthon.com/post/tutorials/from-progan-to-stylegan/</guid>
-      <description>&lt;p&gt;In this post, we are looking into two high-resolution image generation models: ProGAN and StyleGAN. They generates the artificial image gradually, starting from a very low resolution and continuing to a high resolution (finally $1024\times 1024​$).&lt;/p&gt;</description>
+      <description>&lt;p&gt;In this post, we are looking into two high-resolution image generation models: ProGAN and StyleGAN. They generates the artificial images gradually, starting from a very low resolution and continuing to a high resolution (finally $1024\times 1024$).&lt;/p&gt;</description>
     </item>
     
     <item>

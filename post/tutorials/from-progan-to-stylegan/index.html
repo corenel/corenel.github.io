@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="Yusu Pan" /><meta name="description" content="In this post, we are looking into two high-resolution image generation models: ProGAN and StyleGAN. They generates the artificial image gradually, starting from a very low resolution and continuing to a high resolution (finally $1024\times 1024​$).
+<meta name="author" content="Yusu Pan" /><meta name="description" content="In this post, we are looking into two high-resolution image generation models: ProGAN and StyleGAN. They generates the artificial images gradually, starting from a very low resolution and continuing to a high resolution (finally $1024\times 1024$).
 " /><meta name="keywords" content="yuthon, yusu-pan, blog, deep-learning, computer-vision" />
 
 
@@ -40,26 +40,26 @@
 
 
 <meta property="og:title" content="From ProGAN to StyleGAN" />
-<meta property="og:description" content="In this post, we are looking into two high-resolution image generation models: ProGAN and StyleGAN. They generates the artificial image gradually, starting from a very low resolution and continuing to a high resolution (finally $1024\times 1024​$)." />
+<meta property="og:description" content="In this post, we are looking into two high-resolution image generation models: ProGAN and StyleGAN. They generates the artificial images gradually, starting from a very low resolution and continuing to a high resolution (finally $1024\times 1024$)." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.yuthon.com/post/tutorials/from-progan-to-stylegan/" />
 <meta property="article:published_time" content="2018-02-26T19:42:13&#43;08:00"/>
 <meta property="article:modified_time" content="2018-12-31T19:42:13&#43;08:00"/>
 
 <meta itemprop="name" content="From ProGAN to StyleGAN">
-<meta itemprop="description" content="In this post, we are looking into two high-resolution image generation models: ProGAN and StyleGAN. They generates the artificial image gradually, starting from a very low resolution and continuing to a high resolution (finally $1024\times 1024​$).">
+<meta itemprop="description" content="In this post, we are looking into two high-resolution image generation models: ProGAN and StyleGAN. They generates the artificial images gradually, starting from a very low resolution and continuing to a high resolution (finally $1024\times 1024$).">
 
 
 <meta itemprop="datePublished" content="2018-02-26T19:42:13&#43;08:00" />
 <meta itemprop="dateModified" content="2018-12-31T19:42:13&#43;08:00" />
-<meta itemprop="wordCount" content="6013">
+<meta itemprop="wordCount" content="6069">
 
 
 
 <meta itemprop="keywords" content="GANs,Image Generation," />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="From ProGAN to StyleGAN"/>
-<meta name="twitter:description" content="In this post, we are looking into two high-resolution image generation models: ProGAN and StyleGAN. They generates the artificial image gradually, starting from a very low resolution and continuing to a high resolution (finally $1024\times 1024​$)."/>
+<meta name="twitter:description" content="In this post, we are looking into two high-resolution image generation models: ProGAN and StyleGAN. They generates the artificial images gradually, starting from a very low resolution and continuing to a high resolution (finally $1024\times 1024$)."/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -138,7 +138,7 @@
             <a href="https://www.yuthon.com/categories/notes/"> Notes </a>
             <a href="https://www.yuthon.com/categories/tutorials/"> Tutorials </a>
             </div>
-          <span class="more-meta"> 6013 words </span>
+          <span class="more-meta"> 6069 words </span>
           <span class="more-meta"> 13 mins read </span>
         
       </div>
@@ -191,7 +191,7 @@
   </div>
 </div>
     <div class="post-content">
-      <p>In this post, we are looking into two high-resolution image generation models: ProGAN and StyleGAN. They generates the artificial image gradually, starting from a very low resolution and continuing to a high resolution (finally $1024\times 1024​$).</p>
+      <p>In this post, we are looking into two high-resolution image generation models: ProGAN and StyleGAN. They generates the artificial images gradually, starting from a very low resolution and continuing to a high resolution (finally $1024\times 1024$).</p>
 
 <table>
 <thead>
@@ -267,12 +267,12 @@
 
 <figure class="zoomable">
     <img src="https://www.yuthon.com/images/ProGAN_discriminator.png"/> <figcaption>
-            <h4>ProGAN网络Discriminator结构 (Source: [DL輪読会]Progressive Growing of GANs for Improved Quality, Stability, and Variation)</h4>
+            <h4>ProGAN网络Discriminator结构 (Source: Sarah Wolf’s blog post on ProGAN</h4>
         </figcaption>
 </figure>
 
 
-<p>当增大分辨率时，Generator与Discriminator都会增加卷积层。为了让新加层快速收敛，同时又不对原有层造成过大的影响，ProGAN提出了一种Fade-in的机制。如上图所示，在Fade-in阶段时，旧有的层的输出经过上采样放大两倍，而后通过<code>toRGB</code>层转化为RGB图像，与新加层的输出通过<code>toRGB</code>层转化后的图像进行加权和，形成最终的输出。这一融合由一个参数$\alpha$进行控制，$x&rsquo;=\alpha x_{i-1} + (1-\alpha) x_i$。随着训练的进行，$\alpha$从$1$线性减少为$0$，最终输出也逐渐转为新加层的输出占主导。</p>
+<p>当增大分辨率时，Generator与Discriminator都会增加卷积层。为了让新加层快速收敛，同时又不对原有层造成过大的影响，ProGAN提出了一种Fade-in的机制。如上图所示，在Fade-in阶段时，旧有的层的输出经过上采样放大两倍，而后通过<code>toRGB</code>层转化为RGB图像，与新加层的输出通过<code>toRGB</code>层转化后的图像进行加权和，形成最终的输出。这一融合由一个参数$\alpha​$进行控制，<code>$x'=\alpha x_{i} + (1-\alpha) x_{i-1}$</code>。随着训练的进行，$\alpha​$从$1​$线性减少为$0​$，最终输出也逐渐转为新加层的输出占主导。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code class="language-python" data-lang="python"><span class="lnt"> 1
@@ -309,12 +309,12 @@
 
 <figure class="zoomable">
     <img src="https://www.yuthon.com/images/ProGAN_minibatch_std.png"/> <figcaption>
-            <h4>ProGAN网络Discrimiantor中的minibatch standard deviation层 (Source: Sarah Wolf’s blog post on ProGAN)</h4>
+            <h4>ProGAN网络Discrimiantor中的minibatch standard deviation层 (Source: [DL輪読会]Progressive Growing of GANs for Improved Quality, Stability, and Variation))</h4>
         </figcaption>
 </figure>
 
 
-<p>ProGAN为了解决GANs生成的图像多样性较差的问题，在discriminator的最后增加了一个minibatch standard deviation层。  这个层没有需要训练的参数，其作用为求取minibatch内的所有feature maps ($N\times H\times W \times 3$)上各个像素位置对应的标准差，将这些逐像素的标准差拼起来，组成一张新的feature map ($1\times H\times W \times1 $)作为新的通道加入。这有助于统计minibatch内的信息，让discriminator根据这些额外的统计信息来区分真是样本的batch与生成样本的batch。从而让generator需要生成更加多样化、更加接近真实样本分布的样本来“骗过”discriminator，最终达到增强generator生成多样化样本的目的。</p>
+<p>ProGAN为了解决GANs生成的图像多样性较差的问题，在discriminator的最后增加了一个minibatch standard deviation层。  这个层没有需要训练的参数，其作用为求取minibatch内的所有feature maps ($N\times C\times H\times W$)上各个像素位置对应的标准差($C\times H\times W$)，再求其平均值($\text{scalar}$)，将其展开为一张新的feature map ($N \times 1\times H\times W$)作为新的通道加入。这有助于统计minibatch内的信息，让discriminator根据这些额外的统计信息来区分真是样本的batch与生成样本的batch。从而让generator需要生成更加多样化、更加接近真实样本分布的样本来“骗过”discriminator，最终达到增强generator生成多样化样本的目的。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code class="language-python" data-lang="python"><span class="lnt">1
@@ -409,7 +409,7 @@ $$
 </div>
 <h4 id="equalized-learning-rate">Equalized Learning Rate</h4>
 
-<p>为了保证Generator与Discriminator之间的良性竞争，ProGAN指出需要使得各个卷积层以相似的速度进行学习。为了达到equlized learnig rate，ProGAN采用了与<a href="https://arxiv.org/abd/1502.01852">He initialization</a>相似的方法，也就是将每个层的权重乘以其权重参数量。而且不仅仅是初始化权重时这么做，在训练过程的每次forwarding时都进行此操作。</p>
+<p>为了保证Generator与Discriminator之间的良性竞争，ProGAN指出需要使得各个卷积层以相似的速度进行学习。为了达到equlized learnig rate，ProGAN采用了与<a href="https://arxiv.org/abs/1502.01852">He initialization</a>相似的方法，也就是将每个层的权重乘以其权重参数量。而且不仅仅是初始化权重时这么做，在训练过程的每次forwarding时都进行此操作。</p>
 
 <div>
 $$
@@ -417,7 +417,7 @@ W = W_{orig} \times \sqrt{\frac{2}{\text{fan_in}}}
 $$
 </div>
 
-<p>其中$W_{orig}$、$W$分别为原始权重与实际使用的权重，对于卷积层来说，$\text{fan_in} = k\times k \times c$$k$为kernel大小，$c$为</p>
+<p>其中$W_{orig}$、$W$分别为原始权重与实际使用的权重，对于卷积层来说，$\text{fan_in} = k\times k \times c$，$k$为kernel大小，$c$为通道数。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code class="language-python" data-lang="python"><span class="lnt"> 1
@@ -757,7 +757,7 @@ $$
 <ol>
 <li>对卷积层的输出进行Instance Normalization，也就是将输出的每个通道都进行归一化，得到<code>$\frac{x_i - \mu(x_i)}{\sigma(x_i)}$</code></li>
 <li>对输入的中间表示$\mathbf{w}$（维度$512$）通过一个FC层$A$转换为针对$n$个通道的scale (<code>$y_{s,i}$</code>)与bias (<code>$y_{b,i}$</code>)，维度为$2n$</li>
-<li>通过第2部得到的scale与bias，对于第1步得到的归一化输出的每个通道都进行shift。这种操作相当于对卷积层的每个滤波器的输出进行加权平均，而这个权重是可学习的。通过训练，使得$\mathbf{w}$所代表的权重能够被转化为视觉表示。</li>
+<li>通过第2步得到的scale与bias，对于第1步得到的归一化输出的每个通道都进行shift。这种操作相当于对卷积层的每个滤波器的输出进行加权，而这个权重是可学习的。通过训练，使得$\mathbf{w}$所代表的权重能够被转化为视觉表示。</li>
 </ol>
 
 <figure class="zoomable">
@@ -899,6 +899,7 @@ $$
 <ul>
 <li><a href="https://towardsdatascience.com/progan-how-nvidia-generated-images-of-unprecedented-quality-51c98ec2cbd2">ProGAN: How NVIDIA Generated Images of Unprecedented Quality</a></li>
 <li><a href="https://towardsdatascience.com/progressively-growing-gans-9cb795caebee">Progressively-Growing GANs Review</a></li>
+<li><a href="https://tsunotsuno.hatenablog.com/entry/pggan">【論文メモ:PGGAN】Progressive Growing of GANs for Improved Quality, Stability, and Variation</a></li>
 <li><a href="https://towardsdatascience.com/explained-a-style-based-generator-architecture-for-gans-generating-and-tuning-realistic-6cb2be0f431">Explained: A Style-Based Generator Architecture for GANs - Generating and Tuning Realistic Artificial Faces</a></li>
 <li><a href="rosinality/style-based-gan-pytorch">rosinality/style-based-gan-pytorch</a></li>
 </ul>
@@ -928,9 +929,9 @@ $$
           <a href="https://www.yuthon.com/tags/image-generation/">Image Generation</a>
           </div>
       <nav class="post-nav">
-        <a class="prev" href="https://www.yuthon.com/post/tutorials/notes-for-object-detection-one-stage-methods/">
+        <a class="prev" href="https://www.yuthon.com/post/tutorials/an-overview-of-dcnn-architectures-efficient-models/">
             <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">Notes for Object Detection: One Stage Methods</span>
+            <span class="prev-text nav-default">An Overview of DCNN Architectures: Efficient Models</span>
             <span class="prev-text nav-mobile">Prev</span>
           </a>
         <a class="next" href="https://www.yuthon.com/post/papers/notes-for-adversarial-discriminative-domain-adaptation/">

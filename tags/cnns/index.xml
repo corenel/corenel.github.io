@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Cnns on Yuthon&#39;s Blog</title>
+    <link>https://www.yuthon.com/tags/cnns/</link>
+    <description>Recent content in Cnns on Yuthon&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
+</copyright>
+    <lastBuildDate>Sun, 25 Mar 2018 15:00:13 +0800</lastBuildDate>
+    
+	<atom:link href="https://www.yuthon.com/tags/cnns/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>An Overview of DCNN Architectures: Efficient Models</title>
+      <link>https://www.yuthon.com/post/tutorials/an-overview-of-dcnn-architectures-efficient-models/</link>
+      <pubDate>Sun, 25 Mar 2018 15:00:13 +0800</pubDate>
+      
+      <guid>https://www.yuthon.com/post/tutorials/an-overview-of-dcnn-architectures-efficient-models/</guid>
+      <description>&lt;p&gt;In this post, we discuss the computally efficient DCNN architectures, such as MobileNet, ShuffleNet and their variants.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

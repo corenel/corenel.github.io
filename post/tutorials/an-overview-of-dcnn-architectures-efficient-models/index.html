@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>An Overview of DCNN Architectures: Efficient Models - Yuthon&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yusu Pan" /><meta name="description" content="In this post, we discuss the computally efficient DCNN architectures, such as MobileNet, ShuffleNet and their variants.
+" /><meta name="keywords" content="yuthon, yusu-pan, blog, deep-learning, computer-vision" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://www.yuthon.com/post/tutorials/an-overview-of-dcnn-architectures-efficient-models/" />
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.yuthon.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.yuthon.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.yuthon.com/favicon-16x16.png">
+<link rel="manifest" href="https://www.yuthon.com/manifest.json">
+<link rel="mask-icon" href="https://www.yuthon.com/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="https://www.yuthon.com/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="An Overview of DCNN Architectures: Efficient Models" />
+<meta property="og:description" content="In this post, we discuss the computally efficient DCNN architectures, such as MobileNet, ShuffleNet and their variants." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.yuthon.com/post/tutorials/an-overview-of-dcnn-architectures-efficient-models/" />
+<meta property="article:published_time" content="2018-03-25T15:00:13&#43;08:00"/>
+<meta property="article:modified_time" content="2018-03-25T15:00:13&#43;08:00"/>
+
+<meta itemprop="name" content="An Overview of DCNN Architectures: Efficient Models">
+<meta itemprop="description" content="In this post, we discuss the computally efficient DCNN architectures, such as MobileNet, ShuffleNet and their variants.">
+
+
+<meta itemprop="datePublished" content="2018-03-25T15:00:13&#43;08:00" />
+<meta itemprop="dateModified" content="2018-03-25T15:00:13&#43;08:00" />
+<meta itemprop="wordCount" content="3775">
+
+
+
+<meta itemprop="keywords" content="CNNs," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="An Overview of DCNN Architectures: Efficient Models"/>
+<meta name="twitter:description" content="In this post, we discuss the computally efficient DCNN architectures, such as MobileNet, ShuffleNet and their variants."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="https://www.yuthon.com/" class="logo">Yuthon&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="https://www.yuthon.com/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="https://www.yuthon.com/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="https://www.yuthon.com/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="https://www.yuthon.com/about/">
+        <li class="mobile-menu-item">About</li>
+      </a><a href="https://www.yuthon.com/resume/">
+        <li class="mobile-menu-item">Resume</li>
+      </a><a href="https://github.com/corenel">
+        <li class="mobile-menu-item">Works</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="https://www.yuthon.com/" class="logo">Yuthon&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/about/">About</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/resume/">Resume</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://github.com/corenel">Works</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">An Overview of DCNN Architectures: Efficient Models</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2018-03-25 </span>
+        <div class="post-category">
+            <a href="https://www.yuthon.com/categories/notes/"> Notes </a>
+            <a href="https://www.yuthon.com/categories/tutorials/"> Tutorials </a>
+            </div>
+          <span class="more-meta"> 3775 words </span>
+          <span class="more-meta"> 8 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#convolution-operation-and-its-variants">Convolution Operation and Its Variants</a>
+<ul>
+<li><a href="#standard-convolution">Standard Convolution</a>
+<ul>
+<li><a href="#conv-3x3">Conv 3x3</a></li>
+<li><a href="#conv-1x1">Conv 1x1</a></li>
+</ul></li>
+<li><a href="#grouped-convolution">Grouped Convolution</a></li>
+<li><a href="#depthwise-convolution">Depthwise Convolution</a></li>
+<li><a href="#channel-shuffle">Channel Shuffle</a></li>
+</ul></li>
+<li><a href="#efficient-models">Efficient Models</a>
+<ul>
+<li><a href="#resnet-resnext">ResNet &amp; ResNeXt</a></li>
+<li><a href="#squeezenet">SqueezeNet</a></li>
+<li><a href="#mobilenet">MobileNet</a></li>
+<li><a href="#shufflenet">ShuffleNet</a></li>
+<li><a href="#mobilenet-v2">MobileNet V2</a></li>
+<li><a href="#squeezenext">SqueezeNeXt</a></li>
+<li><a href="#shufflenet-v2">ShuffleNet V2</a></li>
+</ul></li>
+<li><a href="#cheat-sheet">Cheat Sheet</a></li>
+<li><a href="#reference">Reference</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>In this post, we discuss the computally efficient DCNN architectures, such as MobileNet, ShuffleNet and their variants.</p>
+
+<table>
+<thead>
+<tr>
+<th>Architectures</th>
+<th>Resources</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>ResNet</td>
+<td>[<a href="https://arxiv.org/abs/1512.03385">paper</a>] [<a href="https://github.com/pytorch/vision/blob/master/torchvision/models/resnet.py">code (pytorch)</a>]</td>
+</tr>
+
+<tr>
+<td>ResNeXt</td>
+<td>[<a href="https://arxiv.org/abs/1611.05431">paper</a>] [<a href="https://github.com/facebookresearch/ResNeXt">code (lua, official)</a>] [<a href="https://github.com/prlz77/ResNeXt.pytorch">code (pytorch)</a>]</td>
+</tr>
+
+<tr>
+<td>MobileNet</td>
+<td>[<a href="https://arxiv.org/abs/1704.04861">paper</a>] [code]</td>
+</tr>
+
+<tr>
+<td>MobiletNet V2</td>
+<td>[<a href="https://arxiv.org/abs/1801.04381">paper</a>] [code]</td>
+</tr>
+
+<tr>
+<td>ShuffleNet</td>
+<td>[<a href="https://arxiv.org/abs/1707.01083">paper</a>] [code]</td>
+</tr>
+
+<tr>
+<td>ShuffleNet V2</td>
+<td>[<a href="https://arxiv.org/abs/1807.11164">paper</a>] [code]</td>
+</tr>
+
+<tr>
+<td>SqueezeNet</td>
+<td>[paper] [code]</td>
+</tr>
+
+<tr>
+<td>SqueezeNeXt</td>
+<td>[paper] [code]</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="convolution-operation-and-its-variants">Convolution Operation and Its Variants</h2>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/Efficient_Models_conv.png"/> <figcaption>
+            <h4>卷积操作 (Source: Yusuke Uchida’s blog post)</h4>
+        </figcaption>
+</figure>
+
+
+<p>首先来回顾一下卷积操作的计算成本的表示方式。给定以下条件：</p>
+
+<ul>
+<li>输入：尺寸为$H\times W\times N​$的feature map</li>
+<li>卷积：$M$个$K\times K\times N$大小的卷积核</li>
+<li>输出：尺寸为$H\times W\times M$的feature map</li>
+</ul>
+
+<p>则卷积操作的计算成本为$HWNK^2M​$。可以看出，该计算成本主要受限于：</p>
+
+<ol>
+<li>输出feature map的空间尺寸$H\times W$</li>
+<li>卷积核尺寸$K\times K​$</li>
+<li>输入与输出的channel数量$N$与$M$</li>
+</ol>
+
+<p>一般来说，输出feature map的尺寸是无法改变的，所以efficient models主要是在第2、3点上做文章。</p>
+
+<h3 id="standard-convolution">Standard Convolution</h3>
+
+<p>基本的卷积指的是同时在空间（$H$与$W$方向）与通道（$C$方向）上进行卷积操作，其操作成本即为上述的$HWNK^2M$。</p>
+
+<h4 id="conv-3x3">Conv 3x3</h4>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/Efficient_Models_conv_3x3.png"/> <figcaption>
+            <h4>$3\times 3​$卷积操作 (Source: Yusuke Uchida’s blog post)</h4>
+        </figcaption>
+</figure>
+
+
+<p>$3\times 3$的卷积操作如上图所示，可以看出，在空间与通道上都是稠密的连接，其计算成本为$9\times HWNM​$。</p>
+
+<ul>
+<li>空间上，output map上的每一点都与input map上的9个点（图中只表现了3个）相关联</li>
+<li>通道上，output map的每个通道都与input map上的所有通道相关联</li>
+</ul>
+
+<h4 id="conv-1x1">Conv 1x1</h4>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/Efficient_Models_conv_1x1.png"/> <figcaption>
+            <h4>$1\times 1$卷积操作 (Source: Yusuke Uchida’s blog post)</h4>
+        </figcaption>
+</figure>
+
+
+<p>$1\times 1$的卷积又称为pointwise卷积，主要作用是改变input map的通道数量，“融合”各通道的信息。其计算成本为$HWKM$，是$3\times 3$卷积的$<sup>1</sup>&frasl;<sub>9</sub>$。</p>
+
+<ul>
+<li>空间上，output map上的每一点都只与input map上的一个点相关联</li>
+<li>通道上，与$3\times 3$卷积类似，output map的每个通道都与input map上的所有通道相关联</li>
+</ul>
+
+<h3 id="grouped-convolution">Grouped Convolution</h3>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/Efficient_Models_gconv_3x3_g2.png"/> <figcaption>
+            <h4>$G=2$时的$3\times 3$分组卷积操作 (Source: Yusuke Uchida’s blog post)</h4>
+        </figcaption>
+</figure>
+
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/Efficient_Models_gconv_3x3_g3.png"/> <figcaption>
+            <h4>$G=3​$时的$3\times 3​$分组卷积操作 (Source: Yusuke Uchida’s blog post)</h4>
+        </figcaption>
+</figure>
+
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/Efficient_Models_gconv_1x1_g2.png"/> <figcaption>
+            <h4>$G=2$时的$1\times 1$分组卷积操作 (Source: Yusuke Uchida’s blog post)</h4>
+        </figcaption>
+</figure>
+
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/Efficient_Models_gconv_1x1_g3.png"/> <figcaption>
+            <h4>$G=3$时的$1\times 1$分组卷积操作 (Source: Yusuke Uchida’s blog post)</h4>
+        </figcaption>
+</figure>
+
+
+<p>分组卷积是基本卷积的变种，主要是将input feature map的通道分组进行卷积，各个组之间卷积操作相互独立，最后再将各个组的结果连接起来。</p>
+
+<ul>
+<li>令$G$代表分组数量，则其计算成本为$HWNK^2M/G$，是基本卷积的$1/G$</li>
+<li>$G$越大，则在通道上的卷积操作越稀疏</li>
+</ul>
+
+<h3 id="depthwise-convolution">Depthwise Convolution</h3>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/Efficient_Models_depthwise_conv.png"/> <figcaption>
+            <h4>Depthwise卷积操作 (Source: Yusuke Uchida’s blog post)</h4>
+        </figcaption>
+</figure>
+
+
+<p>Depthwise卷积是对input map的每一个通道进行单独的卷积，可以视为$G=N$的分组卷积操作的特例。</p>
+
+<ul>
+<li><p>使用$N$个尺寸为$K\times K\times 1$的卷积核对尺寸为$H\times W\times N ​$的输入feature map进行卷积，输出相同尺寸的feature map</p></li>
+
+<li><p>计算成本为$HWNK^2$，通过忽略通道方面的卷积，depthwise卷积大幅减少了计算成本</p></li>
+</ul>
+
+<h3 id="channel-shuffle">Channel Shuffle</h3>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/Efficient_Models_channel_shuffle_g2.png"/> <figcaption>
+            <h4>$G=2​$时的Channel Shuffle操作 (Source: Yusuke Uchida’s blog post)</h4>
+        </figcaption>
+</figure>
+
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/Efficient_Models_channel_shuffle_g3.png"/> <figcaption>
+            <h4>$G=3​$时的Channel Shuffle操作 (Source: Yusuke Uchida’s blog post)</h4>
+        </figcaption>
+</figure>
+
+
+<p>Channel shuffle是将input feature map的通道顺序进行随机打乱的一种操作。其操作主要通过reshape与transpose实现：</p>
+
+<ol>
+<li>输入feature map尺寸为$H\times W\times N$，其中$N=GN&rsquo;$</li>
+<li>将输入reshape为$H\times W \times G\times N&rsquo;$</li>
+<li>将输入transpose为$H\times W\times N&rsquo;\times G$</li>
+<li>将输入reshape回$H\times W\times N$，作为输出</li>
+</ol>
+
+<p>其计算成本无法用加法与乘法的操作次数来衡量，不过也是有一定开销的。</p>
+
+<h2 id="efficient-models">Efficient Models</h2>
+
+<h3 id="resnet-resnext">ResNet &amp; ResNeXt</h3>
+
+<p>对ResNet/ResNeXt的详细介绍可见<a href="">之前的文章</a>，这里主要介绍其卷积操作的结构。</p>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/Efficient_Models_resnet.png"/> <figcaption>
+            <h4>ResNet的bottleneck结构 (Source: Yusuke Uchida’s blog post)</h4>
+        </figcaption>
+</figure>
+
+
+<p>ResNet的residual unit主要是一种bottleneck的结构，其能从一定程度上降低计算成本：</p>
+
+<ol>
+<li>先用一个$1\times 1​$的卷积减少输入的通道数，从而减少之后$3\times 3​$卷积的计算成本</li>
+<li>而后用$3\times 3​$的卷积进行卷积</li>
+<li>最后用$1\times 1​$的卷积来恢复通道数</li>
+</ol>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/Efficient_Models_resnext.png"/> <figcaption>
+            <h4>ResNeXt的bottleneck结构 (Source: Yusuke Uchida’s blog post)</h4>
+        </figcaption>
+</figure>
+
+
+<p>ResNeXt的主要改进在于使用分组的$3\times 3​$卷积代替了ResNet中的普通$3\times 3​$卷积。如此一来，节省下的计算成本可以让第一步$1\times 1​$卷积的通道缩减比率变得小一些，从而使得ResNeXt能在与ResNet相近的计算成本时获得更好的准确率。</p>
+
+<h3 id="squeezenet">SqueezeNet</h3>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/Efficient_Models_squeezenet.png"/> <figcaption>
+            <h4>SqueezeNet的卷积结构</h4>
+        </figcaption>
+</figure>
+
+
+<p>主要是改进了Inception的结构，提出所谓的squeeze + expand的fire module：</p>
+
+<ol>
+<li>先用一个$1\times 1$的卷积减少输入的通道数，从而减少之后的计算成本</li>
+<li>而后分别用$1\times1$与$3\times 3$的卷积进行卷积</li>
+<li>在通道上连接上一步的两个输出结果</li>
+</ol>
+
+<h3 id="mobilenet">MobileNet</h3>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/Efficient_Models_mobilenet.png"/> <figcaption>
+            <h4>MobileNet的卷积结构 (Source: Yusuke Uchida’s blog post)</h4>
+        </figcaption>
+</figure>
+
+
+<p>MobileNet主要是使用了separable convolution modules，也就是1个depthwise卷积加上1个pointwise卷积（也就是$1\times 1​$卷积），使得卷积在空间与通道上的操作分离开来，从而显著地减少了计算成本。</p>
+
+<ol>
+<li>首先使用depthwise卷积处理$H\times W\times N$的输入，其中使用了$N$个$K\times K\times 1$的卷积核，计算成本为$HWNK^2$</li>
+<li>其次使用pixelwise的卷积处理上一步的输出，其中使用了$M$个$1\times 1\times N$的卷积核，计算成本为$HWNM$</li>
+</ol>
+
+<p>所以1次separable卷积的计算成本为$HWN(K^2+M)$，而普通的卷积操作的计算成本为$HWNK^2M$。由于一般情况下（例如$M=32, K=3$时），$M\gg K^2$，所以separable卷积的计算成本为普通方式的$\frac{K^2+M}{K^2M}\approx\frac{1}{K^2}$，即大约$<sup>1</sup>&frasl;<sub>8</sub>$或者$<sup>1</sup>&frasl;<sub>9</sub>$倍。</p>
+
+<p>同时，可以看出，此时的计算成本的瓶颈主要在于$1\times 1$卷积计算成本中的$M$因素。</p>
+
+<h3 id="shufflenet">ShuffleNet</h3>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/Efficient_Models_shufflenet.png"/> <figcaption>
+            <h4>ShuffleNet的卷积结构 (Source: Yusuke Uchida’s blog post)</h4>
+        </figcaption>
+</figure>
+
+
+<p>ShuffleNet主要是使用分组卷积来降低separable卷积操作中的$1\times 1$卷积的计算成本。同时，ShuffleNet还在分组卷积之后增加了channel shuffle操作，防止某一通道只在某一组中进行卷积，使得各个通道的输出都有可能传入到各个组中去，从而避免了精度降低。</p>
+
+<h3 id="mobilenet-v2">MobileNet V2</h3>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/Efficient_Models_mobilenet_v2.png"/> <figcaption>
+            <h4>MobileNet V2的卷积结构 (Source: Yusuke Uchida’s blog post)</h4>
+        </figcaption>
+</figure>
+
+
+<p>MobileNet V2主要在ResNet的residual unit的基础上，</p>
+
+<ol>
+<li>使用depthwise卷积替换了普通的$3\times 3$卷积</li>
+<li>使用$1\times 1$卷积首先扩大通道数，而后在最后减少通道数</li>
+</ol>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/Efficient_Models_mobilenet_v2_2.png"/> <figcaption>
+            <h4>MobileNet V2的卷积结构的另一种表示 (Source: Yusuke Uchida’s blog post)</h4>
+        </figcaption>
+</figure>
+
+
+<p>当然，MobielNet V2的unit也可以表示成如上图这样的形式（由于MobileNet V2是由一堆units叠在一起的，所以可以这么看）。这样的话，原始版本的<a href="#mobilenet">MobileNet</a>中的$1\times 1$卷积就被拆成了两个。令$T$表示通道数的减小比率，则原始的$1\times 1$卷积的计算成本为$HWN^2$，拆成2个$1\times 1$卷积的计算成本为$2HWN^2/T$。MobileNet V2使用$T=6$，则其$1\times 1$卷积的计算成本是MobileNet V1的$<sup>1</sup>&frasl;<sub>3</sub>$。</p>
+
+<h3 id="squeezenext">SqueezeNeXt</h3>
+
+<h3 id="shufflenet-v2">ShuffleNet V2</h3>
+
+<p>ShuffleNet V2主要是通过实验研究了在设计与评价轻量级网络的方法，并从中归纳了一些经验性的准则。</p>
+
+<p>首先是直接指标（例如速度）与间接指标（例如 FLOPs）之间的差异。由于FLOPs仅和卷积部分相关，尽管这一部分需要消耗大部分的时间，但其它过程例如数据I/O、数据重排和元素级运算（张量加法、ReLU等）也需要消耗一定程度的时间。FLOPs近似的网络也会有不同的速度。这两者的差异主要在于：</p>
+
+<ul>
+<li>对速度有较大影响的几个重要因素对 FLOPs 不产生太大作用。
+
+<ul>
+<li>其中一个因素是<u>内存访问成本 (MAC)</u>。在某些操作（如组卷积）中，MAC 占运行时间的很大一部分。对于像 GPU 这样具备强大计算能力的设备而言，这就是瓶颈。在网络架构设计过程中，内存访问成本不能被简单忽视。</li>
+<li>另一个因素是<u>并行度</u>。当 FLOPs 相同时，高并行度的模型可能比低并行度的模型快得多。</li>
+</ul></li>
+<li>FLOPs 相同的运算可能有着不同的运行时间，这取决于<u>硬件平台以及其网络实现</u>。</li>
+</ul>
+
+<p>通过实验研究，该文章提出了评价与设计的经验准则：</p>
+
+<ul>
+<li>评价准则：
+
+<ul>
+<li>应该用直接指标（例如速度）替换间接指标（例如 FLOPs）</li>
+<li>这些指标应该在目标平台上进行评估。</li>
+</ul></li>
+<li>设计准则：
+
+<ul>
+<li>相同的通道宽度可最小化MAC</li>
+<li>过度的组卷积会增加 MAC</li>
+<li>网络碎片化（例如GoogLeNet或者Inception的多路径分支结构）会降低并行度</li>
+<li>元素级运算的计算成本不可忽视</li>
+</ul></li>
+</ul>
+
+<p>基于此，该文章提出了ShuffleNet V2的单元结构：</p>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/Efficient_Models_shufflenet_v2.png"/> <figcaption>
+            <h4>ShuffleNet V2的卷积结构 (Source: original paper)</h4>
+        </figcaption>
+</figure>
+
+
+<h2 id="cheat-sheet">Cheat Sheet</h2>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/Efficient_Models_cheatsheet.png"/> <figcaption>
+            <h4>本文所述卷积操作与网络结构总结 (Source: Yusuke Uchida’s blog post)</h4>
+        </figcaption>
+</figure>
+
+
+<h2 id="reference">Reference</h2>
+
+<ul>
+<li><a href="https://medium.com/@yu4u/why-mobilenet-and-its-variants-e-g-shufflenet-are-fast-1c7048b9618d">Why MobileNet and Its Variants (e.g. ShuffleNet) Are Fast</a></li>
+<li><a href="https://towardsdatascience.com/types-of-convolutions-in-deep-learning-717013397f4d">An Introduction to different Types of Convolutions in Deep Learning</a></li>
+</ul>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Yusu Pan</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2018-03-25
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">License</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="https://www.yuthon.com/tags/cnns/">CNNs</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="https://www.yuthon.com/post/tutorials/notes-for-object-detection-one-stage-methods/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Notes for Object Detection: One Stage Methods</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="https://www.yuthon.com/post/tutorials/from-progan-to-stylegan/">
+            <span class="next-text nav-default">From ProGAN to StyleGAN</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'yuthons-blog';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xxdsox@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/5682817" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://twitter.com/corenel" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://www.facebook.com/xxdsox" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://github.com/corenel" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/pan-yu-su" class="iconfont icon-zhihu" title="zhihu"></a>
+  <a href="https://www.yuthon.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
+</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://www.yuthon.com/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      TeX: {equationNumbers: {autoNumber: "AMS"}},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script type="text/javascript" async src="https://www.yuthon.com/lib/mathjax/math-code.js"></script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-76233259-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>
