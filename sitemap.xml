@@ -10,6 +10,13 @@
   </url>
   
   <url>
+    <loc>https://www.yuthon.com/post/tutorials/notes-for-dl-optimizers/</loc>
+    <lastmod>2019-02-11T15:39:13+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://www.yuthon.com/resume/</loc>
     <lastmod>2019-01-11T19:38:29+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -360,7 +367,7 @@
   
   <url>
     <loc>https://www.yuthon.com/categories/notes/</loc>
-    <lastmod>2018-12-31T21:45:13+08:00</lastmod>
+    <lastmod>2019-02-11T15:39:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
@@ -387,6 +394,13 @@
   </url>
   
   <url>
+    <loc>https://www.yuthon.com/tags/optimzier/</loc>
+    <lastmod>2019-02-11T15:39:13+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://www.yuthon.com/tags/os-x/</loc>
     <lastmod>2016-05-16T20:20:08+00:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -395,7 +409,7 @@
   
   <url>
     <loc>https://www.yuthon.com/post/</loc>
-    <lastmod>2018-12-31T21:45:13+08:00</lastmod>
+    <lastmod>2019-02-11T15:39:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
@@ -493,7 +507,7 @@
   
   <url>
     <loc>https://www.yuthon.com/categories/tutorials/</loc>
-    <lastmod>2018-12-31T21:45:13+08:00</lastmod>
+    <lastmod>2019-02-11T15:39:13+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>

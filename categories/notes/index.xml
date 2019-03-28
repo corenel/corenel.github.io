@@ -8,10 +8,19 @@
     <language>en-us</language>
     <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
 </copyright>
-    <lastBuildDate>Mon, 31 Dec 2018 21:45:13 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 11 Feb 2019 15:39:13 +0800</lastBuildDate>
     
 	<atom:link href="https://www.yuthon.com/categories/notes/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Notes for Deep Learning: Optimization Algorithms</title>
+      <link>https://www.yuthon.com/post/tutorials/notes-for-dl-optimizers/</link>
+      <pubDate>Mon, 11 Feb 2019 15:39:13 +0800</pubDate>
+      
+      <guid>https://www.yuthon.com/post/tutorials/notes-for-dl-optimizers/</guid>
+      <description>&lt;p&gt;This post is an overview of different optimization algorithms for neural networks.&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>Notes for Object Detection: One Stage Methods</title>

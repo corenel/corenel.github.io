@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Notes for Deep Learning: Optimization Algorithms - Yuthon&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yusu Pan" /><meta name="description" content="This post is an overview of different optimization algorithms for neural networks.
+" /><meta name="keywords" content="yuthon, yusu-pan, blog, deep-learning, computer-vision" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://www.yuthon.com/post/tutorials/notes-for-dl-optimizers/" />
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.yuthon.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.yuthon.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.yuthon.com/favicon-16x16.png">
+<link rel="manifest" href="https://www.yuthon.com/manifest.json">
+<link rel="mask-icon" href="https://www.yuthon.com/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="https://www.yuthon.com/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Notes for Deep Learning: Optimization Algorithms" />
+<meta property="og:description" content="This post is an overview of different optimization algorithms for neural networks." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.yuthon.com/post/tutorials/notes-for-dl-optimizers/" />
+<meta property="article:published_time" content="2019-02-11T15:39:13&#43;08:00"/>
+<meta property="article:modified_time" content="2019-02-11T15:39:13&#43;08:00"/>
+
+<meta itemprop="name" content="Notes for Deep Learning: Optimization Algorithms">
+<meta itemprop="description" content="This post is an overview of different optimization algorithms for neural networks.">
+
+
+<meta itemprop="datePublished" content="2019-02-11T15:39:13&#43;08:00" />
+<meta itemprop="dateModified" content="2019-02-11T15:39:13&#43;08:00" />
+<meta itemprop="wordCount" content="8245">
+
+
+
+<meta itemprop="keywords" content="Optimzier," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Notes for Deep Learning: Optimization Algorithms"/>
+<meta name="twitter:description" content="This post is an overview of different optimization algorithms for neural networks."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="https://www.yuthon.com/" class="logo">Yuthon&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="https://www.yuthon.com/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="https://www.yuthon.com/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="https://www.yuthon.com/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="https://www.yuthon.com/about/">
+        <li class="mobile-menu-item">About</li>
+      </a><a href="https://www.yuthon.com/resume/">
+        <li class="mobile-menu-item">Resume</li>
+      </a><a href="https://github.com/corenel">
+        <li class="mobile-menu-item">Works</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="https://www.yuthon.com/" class="logo">Yuthon&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/about/">About</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://www.yuthon.com/resume/">Resume</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://github.com/corenel">Works</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Notes for Deep Learning: Optimization Algorithms</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-02-11 </span>
+        <div class="post-category">
+            <a href="https://www.yuthon.com/categories/notes/"> Notes </a>
+            <a href="https://www.yuthon.com/categories/tutorials/"> Tutorials </a>
+            </div>
+          <span class="more-meta"> 8245 words </span>
+          <span class="more-meta"> 17 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#problem">Problem</a></li>
+<li><a href="#gradient-descent-and-its-variants">Gradient Descent and Its Variants</a>
+<ul>
+<li><a href="#batch-gradient-descent">Batch Gradient Descent</a></li>
+<li><a href="#stochastic-gradient-descent">Stochastic Gradient Descent</a></li>
+<li><a href="#mini-batch-gradient-descent">Mini-batch Gradient Descent</a></li>
+<li><a href="#drawbacks">Drawbacks</a>
+<ul>
+<li><a href="#local-optima-saddle-point">Local Optima &amp; Saddle Point</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#gradient-descent-optimization-algorithms">Gradient Descent Optimization Algorithms</a>
+<ul>
+<li><a href="#momentum">Momentum</a>
+<ul>
+<li><a href="#exponentially-weighted-moving-average">Exponentially Weighted Moving Average</a></li>
+<li><a href="#momentum-in-ema">Momentum in EMA</a></li>
+</ul></li>
+<li><a href="#nesterov">Nesterov</a></li>
+<li><a href="#adagrad">Adagrad</a></li>
+<li><a href="#rmsprop">RMSprop</a></li>
+<li><a href="#adadelta">AdaDelta</a></li>
+<li><a href="#adam">Adam</a></li>
+<li><a href="#adamax">AdaMax</a></li>
+<li><a href="#nadam">NAdam</a></li>
+</ul></li>
+<li><a href="#recent-adam-variants">Recent Adam Variants</a>
+<ul>
+<li><a href="#amsgrad">AMSGrad</a></li>
+<li><a href="#adamw">AdamW</a></li>
+<li><a href="#adambound">AdamBound</a></li>
+</ul></li>
+<li><a href="#reference">Reference</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>This post is an overview of different optimization algorithms for neural networks.</p>
+
+<table>
+<thead>
+<tr>
+<th>Optimization Algorithms</th>
+<th>Resources</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Adam</td>
+<td>[paper] [code]</td>
+</tr>
+
+<tr>
+<td>ANSGrad</td>
+<td>[<a href="https://openreview.net/forum?id=ryQu7f-RZ">paper</a>] [code]</td>
+</tr>
+
+<tr>
+<td>AdamW</td>
+<td>[paper] [code]</td>
+</tr>
+
+<tr>
+<td>AdamBound</td>
+<td>[paper] [code]</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="problem">Problem</h2>
+
+<p>本篇博文主要讨论基于梯度下降的优化算法。</p>
+
+<p>给定模型参数<code>$\theta \in \mathbb{R}^d$</code>以及目标函数<code>$J(\theta)$</code>，梯度下降方法通过在梯度<code>$\nabla_\theta J(\theta)$</code> 相反的方向上更新参数<code>$\theta$</code>，来最小化<code>$J(\theta)$</code>。学习率$\eta$则决定了更新的步长。关于为何可以使用梯度下降方法来最小化目标函数，可见<a href="https://zh.d2l.ai/chapter_optimization/gd-sgd.html#%E5%A4%9A%E7%BB%B4%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D">此文章</a>，摘录如下：</p>
+
+<p>目标函数的输入为向量，输出为标量。假设目标函数<code>$J: \mathbb{R}^d \rightarrow \mathbb{R}$</code>的输入是一个<code>$d$</code>维向量<code>$\boldsymbol{\theta} = [\theta_1, \theta_2, \ldots, \theta_d]^\top$</code>。目标函数<code>$f(\boldsymbol{\theta})$</code>有关<code>$\boldsymbol{\theta}$</code>的梯度是一个由<code>$d$</code>个偏导数组成的向量：</p>
+
+<div>
+$$
+\nabla_{\boldsymbol{\theta}} J(\boldsymbol{\theta}) = \bigg[\frac{\partial J(\boldsymbol{\theta})}{\partial \theta_1}, \frac{\partial J(\boldsymbol{\theta})}{\partial \theta_2}, \ldots, \frac{\partial J(\boldsymbol{\theta})}{\partial \theta_d}\bigg]^\top.
+$$
+</div>
+
+<p>为表示简洁，我们用<code>$\nabla J(\boldsymbol{\theta})$</code>代替<code>$\nabla_{\boldsymbol{\theta}} J(\boldsymbol{\theta})$</code>。梯度中每个偏导数元素<code>$\partial J(\boldsymbol{\theta})/\partial \theta_i$</code>代表着<code>$J$</code>在<code>$\boldsymbol{\theta}$</code>有关输入<code>$\theta_i$</code>的变化率。为了测量<code>$f$</code>沿着单位向量<code>$\boldsymbol{u}$</code>（即<code>$|\boldsymbol{u}|=1$</code>）方向上的变化率，在多元微积分中，我们定义<code>$f$</code>在<code>$\boldsymbol{\theta}$</code>上沿着<code>$\boldsymbol{u}$</code>方向的方向导数为</p>
+
+<div>
+$$
+\text{D}_{\boldsymbol{u}} J(\boldsymbol{\theta}) = \lim_{h \rightarrow 0} \frac{J(\boldsymbol{\theta} + h \boldsymbol{u}) - J(\boldsymbol{\theta})}{h}.
+$$
+</div>
+
+<p>依据方向导数性质，以上方向导数可以改写为</p>
+
+<div>
+$$
+\text{D}_{\boldsymbol{u}} J(\boldsymbol{\theta}) = \nabla J(\boldsymbol{\theta}) \cdot \boldsymbol{u}.
+$$
+</div>
+
+<p>方向导数<code>$\text{D}_{\boldsymbol{u}} J(\boldsymbol{\theta})$</code>给出了<code>$J$</code>在<code>$\boldsymbol{\theta}$</code>上沿着所有可能方向的变化率。为了最小化<code>$J$</code>，我们希望找到<code>$J$</code>能被降低最快的方向。因此，我们可以通过单位向量<code>$\boldsymbol{u}$</code>来最小化方向导数<code>$\text{D}_{\boldsymbol{u}} J(\boldsymbol{\theta})$</code>。</p>
+
+<p>由于<code>$\text{D}_{\boldsymbol{u}} J(\boldsymbol{\theta}) = |\nabla J(\boldsymbol{\theta})| \cdot |\boldsymbol{u}| \cdot \text{cos} (\varphi) = |\nabla J(\boldsymbol{\theta})| \cdot \text{cos} (\varphi)$</code>， 其中<code>$\varphi$</code>为梯度<code>$\nabla J(\boldsymbol{\theta})$</code>和单位向量<code>$\boldsymbol{u}$</code>之间的夹角，当<code>$\varphi = \pi$</code>时，<code>$\text{cos}(\varphi)$</code>取得最小值<code>$-1$</code>。因此，当<code>$\boldsymbol{u}$</code>在梯度方向<code>$\nabla J(\boldsymbol{\theta})$</code>的相反方向时，方向导数<code>$\text{D}_{\boldsymbol{u}} J(\boldsymbol{\theta})$</code>被最小化。因此，我们可能通过梯度下降算法来不断降低目标函数<code>$J$</code>的值：</p>
+
+<div>
+$$
+\boldsymbol{\theta} \leftarrow \boldsymbol{\theta} - \eta \nabla J(\boldsymbol{\theta}).
+$$
+</div>
+
+<p>同样，其中<code>$\eta$</code>（取正数）称作学习率。这是一个超参数，需要人工设定。</p>
+
+<ul>
+<li>如果使用过小的学习率，会导致\theta$$更新缓慢从而需要更多的迭代才能得到较好的解。</li>
+<li>如果使用过大的学习率，$\left|\nabla J(\boldsymbol{\theta})\right|​$可能会过大从而使前面提到的一阶泰勒展开公式不再成立：这时我们无法保证迭代$\boldsymbol{\theta}​$会降低$J(\boldsymbol{\theta})​$的值。</li>
+</ul>
+
+<h2 id="gradient-descent-and-its-variants">Gradient Descent and Its Variants</h2>
+
+<h3 id="batch-gradient-descent">Batch Gradient Descent</h3>
+
+<p>朴素的梯度下降方法（又被称为batch gradient descent方法），是在整个训练数据集上，计算目标函数关于参数的梯度$\nabla_\theta J(\theta)$，而后更新参数：</p>
+
+<p>$$
+\boldsymbol{\theta} = \boldsymbol{\theta} - \eta \cdot \nabla_\boldsymbol{\theta} J( \boldsymbol{\theta})
+$$</p>
+
+<p>其代码实现为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nb_epochs</span><span class="p">):</span>
+  <span class="n">params_grad</span> <span class="o">=</span> <span class="n">evaluate_gradient</span><span class="p">(</span><span class="n">loss_function</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+  <span class="n">params</span> <span class="o">=</span> <span class="n">params</span> <span class="o">-</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">params_grad</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>也就是说，其遍历一次训练数据集，更新参数的次数为$1$。</p>
+
+<p>其优点在于：</p>
+
+<ul>
+<li>一次性在整个数据集上求梯度并更新参数，可以保证其求出的梯度方向至少是局部最优的；</li>
+<li>对于凸优化问题，可以保证收敛到全局最优；对于非凸问题，可以保证收敛到局部最优。</li>
+</ul>
+
+<p>其缺点在于：</p>
+
+<ul>
+<li>每次自变量迭代的计算开销为$\mathcal{O}(n)$，它随着$n​$线性增长。因此，当训练数据样本数很大时，梯度下降每次迭代的计算开销很高。而且如果整个训练数据集超过了内存大小，就很难实现这种计算方式；</li>
+<li>同时，这种优化方式不能够实现在线更新，不能实时添加新的样本。</li>
+</ul>
+
+<h3 id="stochastic-gradient-descent">Stochastic Gradient Descent</h3>
+
+<p>随机梯度下降方法（stochastic gradient descent, SGD）相对于batch gradient descent方法，主要在于其每次求梯度并更新参数时，只使用一个训练样本：
+$$
+\boldsymbol{\theta} = \boldsymbol{\theta} - \eta \cdot \nabla_\boldsymbol{\theta} J( \boldsymbol{\theta}; \boldsymbol{x}^{(i)}; \boldsymbol{y}^{(i)})
+$$
+其代码实现为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nb_epochs</span><span class="p">):</span>
+  <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">example</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+    <span class="n">params_grad</span> <span class="o">=</span> <span class="n">evaluate_gradient</span><span class="p">(</span><span class="n">loss_function</span><span class="p">,</span> <span class="n">example</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">params</span> <span class="o">-</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">params_grad</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>其优点在于：</p>
+
+<ul>
+<li>相比于batch gradient descent，由于其每次更新参数只用一个训练样本，所以更新速度快，可以在线学习</li>
+<li>随机梯度<code>$\nabla J_i(\boldsymbol{\theta})$</code>是对梯度<code>$\nabla J(\boldsymbol{\theta})$</code>的无偏估计：<code>$E_i \nabla J_i(\boldsymbol{\theta}) = \frac{1}{n} \sum_{i = 1}^n \nabla J_i(\boldsymbol{\theta}) = \nabla J(\boldsymbol{\theta})$</code>。这意味着，平均来说，随机梯度是对梯度的一个良好的估计。</li>
+</ul>
+
+<p>其缺点在于：</p>
+
+<ul>
+<li>减少了每次迭代的计算开销，每次迭代的计算开销从GD的$\mathcal{O}(n)$降到了常数$\mathcal{O}(1)$。</li>
+<li>其引入的噪声大，会使得目标函数大幅波动</li>
+<li>每次更新不能保证向局部最优收敛，很容易超调，收敛困难</li>
+</ul>
+
+<h3 id="mini-batch-gradient-descent">Mini-batch Gradient Descent</h3>
+
+<p>Mini-batch Gradient Descent方法结合了上述两种方法的优点，其每次随机均匀采样一个小批量的训练样本来计算梯度并更新参数：
+$$
+\boldsymbol{\theta} = \boldsymbol{\theta} - \eta \cdot \nabla_\boldsymbol{\theta} J( \boldsymbol{\theta}; \boldsymbol{x}^{(i:i+B)}; \boldsymbol{y}^{(i:i+B)})
+$$
+其代码实现为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nb_epochs</span><span class="p">):</span>
+  <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">get_batches</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+    <span class="n">params_grad</span> <span class="o">=</span> <span class="n">evaluate_gradient</span><span class="p">(</span><span class="n">loss_function</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">params</span> <span class="o">-</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">params_grad</span></code></pre></td></tr></table>
+</div>
+</div>
+<ul>
+<li>$|\mathcal{B}|​$代表批量大小，即小批量中样本的个数，为一超参数，主要根据模型大小以及显存大小决定。</li>
+<li>基于随机采样得到的梯度的方差在迭代过程中无法减小，因此<u>在实际中，（小批量）随机梯度下降的学习率可以在迭代过程中自我衰减</u>，例如<code>$\eta_t=\eta t^\alpha$</code>（通常<code>$\alpha=-1$</code>或者<code>$-0.5$</code>）、<code>$\eta_t = \eta \alpha^t$</code>（如<code>$\alpha=0.95$</code>）或者每迭代若干次后将学习率衰减一次。如此一来，学习率和（小批量）随机梯度乘积的方差会减小。而梯度下降在迭代过程中一直使用目标函数的真实梯度，无须自我衰减学习率。</li>
+<li>小批量随机梯度下降中每次迭代的计算开销为<code>$\mathcal{O}(|\mathcal{B}|)$</code>。<u>当批量大小为$1$时，该算法即为随机梯度下降；当批量大小等于训练数据样本数时，该算法即为梯度下降。</u>其在每个迭代周期的耗时介于梯度下降和随机梯度下降的耗时之间。</li>
+</ul>
+
+<p>其优点在于：</p>
+
+<ul>
+<li>相比于SGD，减少了训练过程中参数更新的方差，使得训练过程更加稳定；</li>
+<li>相比于GD，由于只使用了部分训练样本，使得训练速度得以提升。</li>
+</ul>
+
+<h3 id="drawbacks">Drawbacks</h3>
+
+<p>上述三种梯度下降的方法虽然能用，但是还有一些缺陷没能解决：</p>
+
+<ul>
+<li><strong>合适的学习率问题。</strong>学习率太小会使得收敛过慢，太高则会使模型难以收敛，甚至发散；</li>
+<li><strong>学习率的调整问题。</strong>现有的学习率调整方法（linear annealing或者step annealing等）都需要事先定义好，在训练过程中难以根据训练数据的特性来调整；</li>
+<li><strong>避开或者跳出大量局部最小值或者鞍点的问题。</strong></li>
+</ul>
+
+<h4 id="local-optima-saddle-point">Local Optima &amp; Saddle Point</h4>
+
+<p>假设一个函数的输入为$k$维向量，输出为标量，那么它的海森矩阵（Hessian matrix）有$k$个特征值。</p>
+
+<div>
+$$
+\begin{split}\boldsymbol{H} =
+\begin{bmatrix}
+    \frac{\partial^2 J}{\partial \boldsymbol{\theta}_1^2} & \frac{\partial^2 J}{\partial \boldsymbol{\theta}_1 \partial \boldsymbol{\theta}_2} & \dots  & \frac{\partial^2 J}{\partial \boldsymbol{\theta}_1 \partial \boldsymbol{\theta}_n} \\
+    \frac{\partial^2 J}{\partial \boldsymbol{\theta}_2 \partial \boldsymbol{\theta}_1} & \frac{\partial^2 J}{\partial \boldsymbol{\theta}_2^2} & \dots  & \frac{\partial^2 J}{\partial \boldsymbol{\theta}_2 \partial \boldsymbol{\theta}_n} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    \frac{\partial^2 J}{\partial \boldsymbol{\theta}_n \partial \boldsymbol{\theta}_1} & \frac{\partial^2 J}{\partial \boldsymbol{\theta}_n \partial \boldsymbol{\theta}_2} & \dots  & \frac{\partial^2 J}{\partial \boldsymbol{\theta}_n^2}
+\end{bmatrix},\end{split}
+$$
+</div>
+
+<p>其中二阶偏导数</p>
+
+<div>
+$$
+\frac{\partial^2 J}{\partial \boldsymbol{\theta}_i \partial \boldsymbol{\theta}_j} = \frac{\partial }{\partial \boldsymbol{\theta}_j} \left(\frac{\partial J}{ \partial \boldsymbol{\theta}_i}\right).
+$$
+</div>
+
+<p>该函数在梯度为$0$的位置上可能是局部最小值、局部最大值或者鞍点。</p>
+
+<ul>
+<li>当函数的海森矩阵在梯度为零的位置上的特征值全为正时，该函数得到局部最小值。</li>
+<li>当函数的海森矩阵在梯度为零的位置上的特征值全为负时，该函数得到局部最大值。</li>
+<li>当函数的海森矩阵在梯度为零的位置上的特征值有正有负时，该函数得到鞍点，其在某些方向上取得局部最小值，在另外的方向上取得局部最大值。</li>
+</ul>
+
+<p>随机矩阵理论告诉我们，对于一个大的高斯随机矩阵来说，任一特征值是正或者是负的概率都是$0.5$。那么，以上第一种情况的概率为$0.5^k$。由于深度学习模型参数通常都是高维的（$k$很大），<u>目标函数的鞍点通常比局部最小值更常见。</u></p>
+
+<h2 id="gradient-descent-optimization-algorithms">Gradient Descent Optimization Algorithms</h2>
+
+<p>为了解决原始的梯度下降方法的不足，研究者们又提出了新的改进算法。</p>
+
+<h3 id="momentum">Momentum</h3>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/Optimizers_momentum.jpeg"/> <figcaption>
+            <h4>Momentum方法与SGD比较 (Source: Sebastian Ruder’s blog post)</h4>
+        </figcaption>
+</figure>
+
+
+<p>设时间步<code>$t$</code>的自变量为<code>$\boldsymbol{\theta}_t$</code>，梯度为<code>$\boldsymbol{g}_t = \nabla J(\boldsymbol{\theta})$</code>，学习率为<code>$\eta_t$</code>。 在时间步<code>$0$</code>，动量法创建速度变量<code>$\boldsymbol{v}_0$</code>，并将其元素初始化成<code>$0$</code>。在时间步<code>$t&gt;0$</code>，动量法对每次迭代的步骤做如下修改：</p>
+
+<div>
+$$
+\begin{aligned}
+\boldsymbol{v}_t &\leftarrow \gamma \boldsymbol{v}_{t-1} + \eta_t \boldsymbol{g}_t, \\
+\boldsymbol{\theta}_t &\leftarrow \boldsymbol{\theta}_{t-1} - \boldsymbol{v}_t, 
+\end{aligned} 
+$$
+</div>
+
+<p>其中，动量超参数<code>$\gamma$</code>满足<code>$0 \leq \gamma &lt; 1$</code>。当<code>$\gamma=0$</code>时，动量法等价于Mini-batch SGD。</p>
+
+<blockquote>
+<p>通俗地理解，使用动量之后，梯度下降的方向更加倾向于在过往的历次梯度方向中都具有比较大的梯度值的方向。如上图所示，所有梯度在水平方向上为正（向右），而在竖直方向上时正（向上）时负（向下）。动量法的使用，能够减少梯度方向的振荡，并且能够下降到更加相关的方向。</p>
+</blockquote>
+
+<h4 id="exponentially-weighted-moving-average">Exponentially Weighted Moving Average</h4>
+
+<p>为了从数学上理解动量法，让我们先解释一下指数加权移动平均（exponentially weighted moving average）。给定超参数<code>$0 \leq \gamma &lt; 1$</code>，当前时间步$t$的变量<code>$y_t$</code>是上一时间步$t-1$的变量<code>$y_{t-1}$</code>和当前时间步另一变量<code>$x_t$</code>的线性组合：</p>
+
+<div>
+$$
+y_t = \gamma y_{t-1} + (1-\gamma) x_t.
+$$
+</div>
+
+<p>我们可以对<code>$y_t$</code>展开：</p>
+
+<div>
+$$
+\begin{aligned}
+y_t &= (1-\gamma) x_t + \gamma y_{t-1} \\
+&= (1-\gamma)x_t + (1-\gamma) \cdot \gamma x_{t-1} + \gamma^2y_{t-2}\\
+&= (1-\gamma)x_t + (1-\gamma) \cdot \gamma x_{t-1} + (1-\gamma) \cdot \gamma^2x_{t-2} + \gamma^3y_{t-3}\\
+&\ldots
+\end{aligned}
+$$
+</div>
+
+<p>令<code>$n = 1/(1-\gamma)$</code>，那么<code>$\left(1-1/n\right)^n = \gamma^{1/(1-\gamma)}$</code>。因为</p>
+
+<div>
+$$
+\lim_{n \rightarrow \infty} \left(1-\frac{1}{n}\right)^n = \exp(-1) \approx 0.3679,
+$$
+</div>
+
+<p>所以当<code>$\gamma \rightarrow 1$</code>时，<code>$\gamma^{1/(1-\gamma)}=\exp(-1)$</code>，如<code>$0.95^{20} \approx \exp(-1)$</code>。如果把<code>$\exp(-1)$</code>当作一个比较小的数，我们可以在近似中忽略所有含<code>$\gamma^{1/(1-\gamma)}$</code>和比<code>$\gamma^{1/(1-\gamma)}$</code>更高阶的系数的项。例如，当<code>$\gamma=0.95$</code>时，</p>
+
+<div>
+$$
+y_t \approx 0.05 \sum_{i=0}^{19} 0.95^i x_{t-i}.
+$$
+</div>
+
+<p>因此，在实际中，我们常常将<code>$y_t$</code>看作是对最近<code>$1/(1-\gamma)$</code>个时间步的<code>$x_t$</code>值的加权平均。例如，当<code>$\gamma = 0.95$</code>时，<code>$y_t$</code>可以被看作对最近20个时间步的<code>$x_t$</code>值的加权平均；当<code>$\gamma = 0.9$</code>时，<code>$y_t$</code>可以看作是对最近10个时间步的<code>$x_t$</code>值的加权平均。而且，离当前时间步$t$越近的<code>$x_t$</code>值获得的权重越大（越接近1）。</p>
+
+<h4 id="momentum-in-ema">Momentum in EMA</h4>
+
+<p>现在，我们对动量法的速度变量做变形：</p>
+
+<div>
+$$
+\boldsymbol{v}_t \leftarrow \gamma \boldsymbol{v}_{t-1} + (1 - \gamma) \left(\frac{\eta_t}{1 - \gamma} \boldsymbol{g}_t\right).
+$$
+</div>
+
+<p>由指数加权移动平均的形式可得，速度变量<code>$\boldsymbol{v}t$</code>实际上对序列<code>${\eta{t-i}\boldsymbol{g}_{t-i} /(1-\gamma):i=0,\ldots,1/(1-\gamma)-1}$</code>做了指数加权移动平均。换句话说，相比于小批量随机梯度下降，动量法在每个时间步的自变量更新量近似于将前者对应的最近<code>$1/(1-\gamma)$</code>个时间步的更新量做了指数加权移动平均后再除以<code>$1-\gamma$</code>。所以，在动量法中，自变量在各个方向上的移动幅度不仅取决当前梯度，还取决于过去的各个梯度在各个方向上是否一致。也就是说，<u>动量法依赖指数加权移动平均使得自变量的更新方向更加一致，从而降低发散的可能。</u></p>
+
+<blockquote>
+<p>Momentum的最终速度是Mini-batch SGD的$1/(1-\gamma)$倍。</p>
+</blockquote>
+
+<h3 id="nesterov">Nesterov</h3>
+
+<figure class="zoomable">
+    <img src="https://www.yuthon.com/images/Optimizers_nesterov.jpeg"/> <figcaption>
+            <h4>Nesterov方法与Momentum比较 (Source: Sebastian Ruder’s blog post)</h4>
+        </figcaption>
+</figure>
+
+
+<p>Nesterov相当于在动量法的基础上增加了对于二阶梯度的近似，作为一个校正项，这使得优化的收敛速度更为加快。</p>
+
+<div>
+$$
+\begin{aligned}
+\boldsymbol{v}_t &\leftarrow \gamma \: \boldsymbol{v}_{t-1} + \eta \nabla_\theta J(\boldsymbol{\theta} - \gamma \boldsymbol{v}_{t-1})\\
+\boldsymbol{\theta} &\leftarrow \boldsymbol{\theta} - \boldsymbol{v}_t
+\end{aligned}
+$$
+</div>
+
+<h3 id="adagrad">Adagrad</h3>
+
+<p>AdaGrad算法是针对Mini-batch SGD的改进，根据自变量在每个维度的梯度值的大小来调整各个维度上的学习率，从而避免统一的学习率难以适应所有维度的问题。</p>
+
+<blockquote>
+<p>例如，当<code>$\theta_1$</code>和<code>$\theta_2$</code>的梯度值有较大差别时，之前介绍的优化算法，对于参数重的每一个元素，在相同时间步都使用同一个学习率来自我迭代。这时，我们需要选择足够小的学习率使得自变量在梯度值较大的维度上不发散，但这样又会导致自变量在梯度值较小的维度上迭代过慢。</p>
+</blockquote>
+
+<p>AdaGrad算法会使用一个小批量随机梯度<code>$\boldsymbol{g}_t$</code>按元素平方的累加变量<code>$\boldsymbol{s}_t$</code>。在时间步0，AdaGrad将<code>$\boldsymbol{s}_0$</code>中每个元素初始化为0。在时间步<code>$t$</code>，首先将小批量随机梯度<code>$\boldsymbol{g}_t$</code>按元素平方后累加到变量<code>$\boldsymbol{s}_t$</code>：</p>
+
+<div>
+$$
+\boldsymbol{s}_t \leftarrow \boldsymbol{s}_{t-1} + \boldsymbol{g}_t \odot \boldsymbol{g}_t,
+$$
+</div>
+
+<p>其中<code>$\odot$</code>是按元素相乘。接着，我们将目标函数自变量中每个元素的学习率通过按元素运算重新调整一下：</p>
+
+<div>
+$$
+\boldsymbol{\theta}_t \leftarrow \boldsymbol{\theta}_{t-1} - \frac{\eta}{\sqrt{\boldsymbol{s}_t + \epsilon}} \odot \boldsymbol{g}_t,
+$$
+</div>
+
+<p>其中<code>$\eta$</code>是学习率，<code>$\epsilon$</code>是为了维持数值稳定性而添加的常数，如<code>$10^{-6}$</code>。这里开方、除法和乘法的运算都是按元素运算的。这些按元素运算使得目标函数自变量中每个元素都分别拥有自己的学习率。</p>
+
+<p>其优点在于，<u>AdaGrad算法在迭代过程中不断调整学习率，并让目标函数自变量中每个元素都分别拥有自己的学习率。</u>小批量随机梯度按元素平方的累加变量<code>$\boldsymbol{s}_t$</code>出现在学习率的分母项中。因此，如果目标函数有关自变量中某个元素的偏导数一直都较大，那么该元素的学习率将下降较快；反之，如果目标函数有关自变量中某个元素的偏导数一直都较小，那么该元素的学习率将下降较慢。</p>
+
+<p>其缺点在于，由于<code>$\boldsymbol{s}_t$</code>一直在累加按元素平方的梯度，自变量中每个元素的学习率在迭代过程中一直在降低（或不变）。所以，<u>当学习率在迭代早期降得较快且当前解依然不佳时，AdaGrad算法在迭代后期由于学习率过小，可能较难找到一个有用的解。</u></p>
+
+<h3 id="rmsprop">RMSprop</h3>
+
+<p><u>为了解决<a href="#adagrad">AdaGrad</a>在迭代后期学习率过小导致难以找到合适的解的问题，RMSProp将AdaGrad中的梯度平方的累加和换成了梯度平方的指数移动加权平均</u>：</p>
+
+<div>
+$$
+\begin{aligned}
+\boldsymbol{s}_t &\leftarrow \gamma \boldsymbol{s}_{t-1} + (1 - \gamma) \boldsymbol{g}_t \odot \boldsymbol{g}_t, \\
+\boldsymbol{\theta}_t &\leftarrow \boldsymbol{\theta}_{t-1} - \frac{\eta}{\sqrt{\boldsymbol{s}_t + \epsilon}} \odot \boldsymbol{g}_t,
+\end{aligned}
+$$
+</div>
+
+<p>其中<code>$\eta$</code>是学习率，<code>$\epsilon$</code>是为了维持数值稳定性而添加的常数，如<code>$10^{-6}$</code>。因为RMSProp算法的状态变量<code>$\boldsymbol{s}_t$</code>是对平方项<code>$\boldsymbol{g}_t \odot \boldsymbol{g}_t$</code>的指数加权移动平均，所以可以看作是最近<code>$1/(1-\gamma)$</code>个时间步的小批量随机梯度平方项的加权平均。如此一来，自变量每个元素的学习率在迭代过程中就不再一直降低（或不变）。</p>
+
+<h3 id="adadelta">AdaDelta</h3>
+
+<p>同样为了解决<a href="#adagrad">AdaGrad</a>在迭代后期学习率过小导致难以找到合适的解的问题，<u>AdaDelta方法在<a href="#rmsprop">RMSProp</a>使用梯度平方的移动加权平均替代梯度平方累加和的基础上，还使用参数变化量平方的指数移动加权平均<code>$\sqrt{\Delta\boldsymbol{\theta}_{t-1}}$</code>来替代超参数<code>$\eta$</code>。</u></p>
+
+<div>
+$$
+\begin{aligned}
+\boldsymbol{s}_t &\leftarrow \rho \boldsymbol{s}{t-1} + (1 - \rho) \boldsymbol{g}_t \odot \boldsymbol{g}_t, \\
+\boldsymbol{g}_t' &\leftarrow \sqrt{\frac{\Delta\boldsymbol{\theta}_{t-1} + \epsilon}{\boldsymbol{s}_t + \epsilon}} \odot \boldsymbol{g}_t, \\
+\Delta\boldsymbol{\theta}_t &\leftarrow \rho \Delta\boldsymbol{\theta}{t-1} + (1 - \rho) \boldsymbol{g}'_t \odot \boldsymbol{g}'_t \\
+\boldsymbol{\theta}_t &\leftarrow \boldsymbol{\theta}_{t-1} - \boldsymbol{g}'_t.
+\end{aligned}
+$$
+</div>
+
+<p>其中$\epsilon$是为了维持数值稳定性而添加的常数，如$10^{-5}$。当$t=0$时，<code>$\boldsymbol{s}_t$</code>与<code>$\sqrt{\Delta\boldsymbol{\theta}_{t-1}}$</code>均被初始化为$0$。</p>
+
+<h3 id="adam">Adam</h3>
+
+<p><u>Adam算法可以视为是<a href="#rmsprop">RMSProp算法</a>与<a href="#momentum">动量法</a>的结合，其在RMSProp算法基础上对小批量随机梯度也做了指数加权移动平均。</u>也就是说，Adam算法使用了动量变量<code>$\boldsymbol{v}_t$</code>和RMSProp算法中小批量随机梯度按元素平方的指数加权移动平均变量<code>$\boldsymbol{s}_t$</code>，并在时间步<code>$t=0$</code>将它们中每个元素初始化为<code>$0$</code>。</p>
+
+<p>同动量法中一样，给定超参数<code>$0 \leq \beta_1 &lt; 1$</code>（算法作者建议设为<code>$0.9$</code>），时间步<code>$t$</code>的动量变量<code>$\boldsymbol{v}_t$</code>即小批量随机梯度<code>$\boldsymbol{g}_t$</code>的指数加权移动平均：</p>
+
+<div>
+$$
+\boldsymbol{v}_t \leftarrow \beta_1 \boldsymbol{v}_{t-1} + (1 - \beta_1) \boldsymbol{g}_t.
+$$
+</div>
+
+<p>和RMSProp算法中一样，给定超参数<code>$0 \leq \beta_2 &lt; 1$</code>（算法作者建议设为<code>$0.999$</code>）， 将小批量随机梯度按元素平方后的项<code>$\boldsymbol{g}_t \odot \boldsymbol{g}_t$</code>做指数加权移动平均得到<code>$\boldsymbol{s}_t$</code>：</p>
+
+<div>
+$$
+\boldsymbol{s}_t \leftarrow \beta_2 \boldsymbol{s}_{t-1} + (1 - \beta_2) \boldsymbol{g}_t \odot \boldsymbol{g}_t. 
+$$
+</div>
+
+<p>由于我们将<code>$\boldsymbol{v}_0$</code>和<code>$\boldsymbol{s}_0$</code>中的元素都初始化为<code>$0$</code>， 在时间步<code>$t$</code>我们得到<code>$\boldsymbol{v}t = (1-\beta_1) \sum{i=1}^t \beta_1^{t-i} \boldsymbol{g}i$</code>。将过去各时间步小批量随机梯度的权值相加，得到 <code>$(1-\beta_1) \sum{i=1}^t \beta_1^{t-i} = 1 - \beta_1^t$</code>。需要注意的是，当<code>$t$</code>较小时，过去各时间步小批量随机梯度权值之和会较小。例如，当<code>$\beta_1 = 0.9$</code>时，<code>$\boldsymbol{v}_1 = 0.1\boldsymbol{g}_1$</code>。为了消除这样的影响，对于任意时间步<code>$t$</code>，我们可以将<code>$\boldsymbol{v}_t$</code>再除以<code>$1 - \beta_1^t$</code>，从而使过去各时间步小批量随机梯度权值之和为<code>$1$</code>。这也叫作<u><strong>偏差修正</strong></u>。在Adam算法中，我们对变量<code>$\boldsymbol{v}_t$</code>和<code>$\boldsymbol{s}_t$</code>均作偏差修正：</p>
+
+<div>
+$$
+\begin{aligned}
+\hat{\boldsymbol{v}}_t &\leftarrow \frac{\boldsymbol{v}_t}{1 - \beta_1^t}, \\
+\hat{\boldsymbol{s}}_t &\leftarrow \frac{\boldsymbol{s}_t}{1 - \beta_2^t}. 
+\end{aligned}
+$$
+</div>
+
+<p>接下来，Adam算法使用以上偏差修正后的变量<code>$\hat{\boldsymbol{v}}_t$</code>和<code>$\hat{\boldsymbol{s}}_t$</code>，将模型参数中每个元素的学习率通过按元素运算重新调整：</p>
+
+<div>
+$$
+\boldsymbol{g}_t' \leftarrow \frac{\eta \hat{\boldsymbol{v}}_t}{\sqrt{\hat{\boldsymbol{s}}_t} + \epsilon},
+$$
+</div>
+
+<p>其中$\eta$是学习率，$\epsilon$是为了维持数值稳定性而添加的常数，如$10^{-8}$。和AdaGrad算法及其衍生算法（RMSProp算法以及AdaDelta算法）一样，目标函数自变量中每个元素都分别拥有自己的学习率。最后，使用$\boldsymbol{g}_t&rsquo;$迭代自变量：</p>
+
+<div>
+$$
+\boldsymbol{\theta}_t \leftarrow \boldsymbol{\theta}_{t-1} - \boldsymbol{g}_t'. 
+$$
+</div>
+
+<h3 id="adamax">AdaMax</h3>
+
+<p>Adam中的梯度平方的指数移动加权平均项，可以看作是对梯度的<code>$L_2$</code>正则的指数移动加权平均项。推而广之，可以写作<code>$L_p$</code>正则的形式：</p>
+
+<div>
+$$
+\boldsymbol{s}_t \leftarrow \beta_2^p \boldsymbol{s}_{t-1} + (1 - \beta_2^p) ||\boldsymbol{g}_t||_p. 
+$$
+</div>
+
+<p>AdaMax就是使用了<code>$L_\infty$</code>正则化的梯度的Adam算法：</p>
+
+<div>
+$$
+\begin{aligned}
+\boldsymbol{s}_t &\leftarrow \beta_2^\infty \boldsymbol{s}_{t-1} + (1 - \beta_2^\infty) ||\boldsymbol{g}_t||_\infty \\
+&= \max (\beta_2 \boldsymbol{s}_{t-1}, |\boldsymbol{g}_t| )
+\end{aligned}
+$$
+</div>
+
+<blockquote>
+<ul>
+<li>AdaMax相对于Adam的优点主要在于优化稀疏的参数的场景中（例如Word Embedding）。当<code>$|\boldsymbol{g}_t|$</code>足够小时，由于$\max$函数的作用，其会被完全忽略。这意味着速度<code>$\boldsymbol{s}_t$</code>受到小梯度的影响较少，因此对于梯度的噪声较为鲁棒。</li>
+<li>同时，由于<code>$\boldsymbol{s}_t$</code>取决于<code>$\max$</code>操作，其初始值不宜为$0$，所以此时不需要像Adam那样，对变量<code>$\boldsymbol{s}_t$</code>作偏差修正。</li>
+</ul>
+</blockquote>
+
+<h3 id="nadam">NAdam</h3>
+
+<p>相比于Adam结合了Momentum与RMSProp，NAdam将Neserov与RMSProp方法结合起来。</p>
+
+<p>Neserov方法可以改写为以下形式：</p>
+
+<div>
+$$
+\begin{aligned}
+\boldsymbol{v}_t &\leftarrow \gamma \: \boldsymbol{v}_{t-1} + \eta \boldsymbol{g}_t\\
+\boldsymbol{\theta} &\leftarrow \boldsymbol{\theta} - (\gamma \boldsymbol{v}_t + \eta \boldsymbol{g}_t)
+\end{aligned}
+$$
+</div>
+
+<p>则NAdam可以表示为：</p>
+
+<div>
+$$
+\begin{aligned}
+\hat{\boldsymbol{v}}_t &\leftarrow \beta_1 \hat{\boldsymbol{v}}_{t-1} + \frac{(1 - \beta_1) \boldsymbol{g}_{t-1}}{1 - \beta^{t-1}_1} \\ 
+\boldsymbol{\theta}_{t} &\leftarrow \boldsymbol{\theta}_{t-1} - \frac{\eta \hat{\boldsymbol{v}}_t}{\sqrt{\hat{\boldsymbol{s}}_{t-1}} + \epsilon}
+\end{aligned}
+$$
+</div>
+
+<h2 id="recent-adam-variants">Recent Adam Variants</h2>
+
+<h3 id="amsgrad">AMSGrad</h3>
+
+<h3 id="adamw">AdamW</h3>
+
+<h3 id="adambound">AdamBound</h3>
+
+<h2 id="reference">Reference</h2>
+
+<ul>
+<li><a href="https://medium.com/datadriveninvestor/overview-of-different-optimizers-for-neural-networks-e0ed119440c3">Overview of different Optimizers for neural networks</a></li>
+<li><a href="https://arxiv.org/abs/1609.04747">An overview of gradient descent optimization algorithms</a></li>
+<li><a href="https://www.fast.ai/2018/07/02/adam-weight-decay/">AdamW and Super-convergence is now the fastest way to train neural nets</a></li>
+<li><a href="https://zh.d2l.ai/chapter_optimization/index.html">动手学深度学习：优化算法</a></li>
+</ul>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Yusu Pan</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2019-02-11
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">License</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="https://www.yuthon.com/tags/optimzier/">Optimzier</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="https://www.yuthon.com/post/tutorials/notes-for-object-detection-one-stage-methods/">
+            <span class="next-text nav-default">Notes for Object Detection: One Stage Methods</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'yuthons-blog';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:xxdsox@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://stackoverflow.com/users/5682817" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="https://twitter.com/corenel" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://www.facebook.com/xxdsox" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="https://github.com/corenel" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/pan-yu-su" class="iconfont icon-zhihu" title="zhihu"></a>
+  <a href="https://www.yuthon.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
+</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://www.yuthon.com/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      TeX: {equationNumbers: {autoNumber: "AMS"}},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script type="text/javascript" async src="https://www.yuthon.com/lib/mathjax/math-code.js"></script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-76233259-1', 'auto');
+	ga('set', 'anonymizeIp', true);
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>
