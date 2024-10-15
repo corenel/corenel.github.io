@@ -8,6 +8,10 @@
     <language>en-us</language>
     <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License, please give source if you wish to quote or reproduce.
 </copyright>
+    <follow_challenge>
+        <feedId>55671961821216779</feedId>
+        <userId>41701247195660288</userId>
+    </follow_challenge>
     <lastBuildDate>Fri, 11 Jan 2019 19:34:52 +0800</lastBuildDate>
     
 	<atom:link href="https://www.yuthon.com/index.xml" rel="self" type="application/rss+xml" />
